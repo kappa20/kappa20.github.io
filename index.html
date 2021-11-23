@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ar">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+		<link rel="icon" href="img/morocco_flags_flag_17039.ico" type="image/x-icon"/>
+		<title>Site du Maroc</title>
+	</head>
+	<style>
+		*,
+		*::after,
+		*::before{
+			margin:0;
+			padding:0;
+			box-sizing: border-box;
+		}
+		html{
+			scroll-behavior: smooth;
+		}
+		body{
+			background-color: /* #0fa101 *//* rgb(68, 250, 150) */
+			
+			rgba(40,42,53,255);
+			color:white;
+			letter-spacing: 2px;
+			word-spacing:5px;
+			font-family: 'Roboto',sans-serif;
+			
+		}
+		h1.site{
+			background-color: #fa0945;
+			text-align: center;
+			font-size:40px;
+			margin-top:0px;
+			opacity: 100%;
+			font-family: 'Roboto',sans-serif;
+			border:none;
+			text-shadow: 2px 2px 5px black;
+			padding-top: 7px;
+			padding-bottom: 7px;
+			letter-spacing: 7px;
+			border-radius: 5px;
+			box-shadow: 0px 0px 20px 0px #fa0945,
+			0px 0px 20px 0px #0fa101	;
+			position:sticky;
+			top:0;
+			text-transform: uppercase;
+		}
+		h1.site:hover{
+			background-color: black;
+			color:#fa0945;
+			outline:1px solid white;
+			box-shadow: 0px 0px 20px 0px white;
+			transition:all 0.5s ease 0s;
+			text-shadow: 2px 2px 5px rgb(223, 34, 34);
+		}
+		.container{
+      		display: flex;
+      		flex-flow: row wrap;	
+			
+		}
+		.child{
+			flex-grow: 1;
+      		width:33%;
+      		border:1px solid black;
+
+				}
+		h2{
+			font-size:2em ;
+			word-wrap: break-word;
+			font-family:cursive;
+			text-shadow: 2px 2px 5px black ;
+			text-align: center;
+			border:2px solid black;
+			width:200px;
+			margin:1px auto 10% auto;
+			border-radius:10px;
+			margin:5px auto;
+			padding:5px;
+			outline:none;
+			box-shadow: 2px -5px 10px 0px black;
+			transition:all 0.5s ease-in-out 0s;
+		}
+		h2:hover{
+			color:white;
+			background-color: rgb(19, 17, 17);
+			border:2px solid white;
+			box-shadow: -2px 5px 10px 0px black
+			
+		}
+		img{
+			width:17vw;
+			height:14vh;
+			float:left;
+		
+			
+		}
+		h4{
+			text-align: center;
+			font-size:larger;
+			font-family: 'Sofia';
+			font-weight: bolder;
+			font-size:28px;
+		}
+		p{
+			text-align: center;
+			font-size: 16px;
+			font-family: 'Roboto',sans-serif;
+			font-weight:bold;
+		}
+		@media (max-width: 500px) {
+  		.container{
+    			flex-direction: column;
+
+  		}
+		  .child{
+			  align-self: stretch;
+			  width:100%;
+		  }
+		  img{
+			width:35vw;
+			height:20vh;
+			float:left
+
+		  }
+		  
+	}
+	
+		
+	</style>
+	<body>
+		<h1 class="site"> Les villes du Maroc </h1>
+
+		<div class="container">
+			<div class="child">
+				<h2>Casablanca</h2>
+				<img src="img/casablanca.jpg" alt="casa">
+				<h4>Information :</h4>
+				<p>Casablanca  is the largest city of Morocco.
+					  Located on the Atlantic coast of the Chaouia 
+					  plain in the central-western part of Morocco,
+					   it is the second largest city in the Maghreb 
+					   region and the eighth-largest in the Arab world.</p>
+			</div>
+			<div class="child">
+				<h2>Tangier</h2>
+				<img src="img/tanger.jpg" alt="tanger">
+				<h4>Information :</h4>
+				<p>
+					Tangier
+					 is a city in northwestern Morocco. It is on 
+					 the Maghreb coast at the western entrance to 
+					 the Strait of Gibraltar, where the Mediterranean
+					  Sea meets the Atlantic Ocean off Cape Spartel.
+					   The town is the capital of the Tanger-Tetouan-Al
+					    Hoceima region, as well as the Tangier-Assilah
+						 prefecture of Morocco.
+				</p>
+			</div>
+			<div class="child">
+				<h2>Marrakech</h2>
+				<img src="img/marrakesh.jpg" alt="marrakesh">
+				<h4>Information :</h4>
+				<p>
+					Marrakesh or Marrakech  is the fourth largest
+					 city in the Kingdom of Morocco.[2] It is one
+					  of the four Imperial cities of Morocco and 
+					  is the capital of the Marrakesh-Safi region
+					  . The city is situated west of the foothill
+					  s of the Atlas Mountains. Marrakesh is 580 
+					  km (360 mi) southwest of Tangier, 327 km (2
+					  03 mi) southwest of the Moroccan capital of
+					   Rabat, 239 km (149 mi) south of Casablanca
+					   , and 246 km (153 mi) northeast of Agadir.
+
+				</p>
+			</div>
+			<div class="child">
+				<h2>Rabat</h2>
+				<img src="img/rabat.jpg" alt="rabat">
+				<h4>Information :</h4>
+				<p>Rabat 
+					   is the capital city of Morocco and th
+					   e country's seventh largest city with
+					    an urban population of approximately 
+						580,000 (2014)[2] and a metropolitan 
+						population of over 1.2 million. It is 
+						also the capital city of the Rabat-Salé-Kénitra
+						 administrative region.[6] Rabat is located 
+						 on the Atlantic Ocean at the mouth of the 
+						 river Bou Regreg, opposite Salé, the city's
+						  main commuter town.</p>
+			</div>
+
+			<div class="child">
+				<h2>Fes</h2>
+				<img src="img/fes.jpg" alt="fes">
+				<h4>Information :</h4>
+				<p>
+					Fez or Fes is a city
+					   in northern inland Morocco and the capital
+					    of the Fès-Meknès administrative region. 
+						It is the third largest city in Morocco, 
+						with a population of 1.15 million according 
+						to the 2014 census.[4] Located to the northea
+						st of the Atlas Mountains, Fez is linked to 
+						several important cities of different region
+						s; it is 206 km (128 mi) from Tangier to the
+						 northwest, 246 km (153 mi) from Casablanca,
+						  189 km (117 mi) from Rabat to the west. Th
+						  e Trans-Saharan trade route may be accesse
+						  d via Marrakesh, 387 km (240 mi) to the so
+						  uthwest of Fez.</p>
+			</div>
+
+			<div class="child">
+				<h2>Oujda</h2>
+				<img src="img/oujda.jpg" alt="oujda">
+				<h4>Information :</h4>
+				<p>
+					Oujda (is a major Moroccan cit
+					y in its northeast near the border with Algeria.
+
+Oujda is the capital city of the Oriental region of northeastern 
+Morocco and has a population of about 558,000 people. It is located 
+about 15 kilometres (9 miles) west of the Moroccan-Algerian border
+ in the south of Beni-Znassen mountains and about 55 km (34 miles)
+  south of the Mediterranean Sea coast.
+				</p>
+			</div>
+			<div class="child">
+				<h2>Agadir</h2>
+				<img src="img/agadir.jpg" alt="agadir">
+				<h4>Information :</h4>
+				<p>
+					Agadir  is a major city in Morocco, on the shore 
+					  of the Atlantic Ocean near the foot of the Atlas
+					   Mountains, just north of the point where the Souss
+					    River flows into the ocean, and 509 kilometres 
+						(316 mi) south of Casablanca. Agadir is the capital 
+						of the Agadir Ida-U-Tanan Prefecture and of the 
+						Souss-Massa economic region. The majority of its 
+						inhabitants speak Berber, one of Morocco’s two 
+						official languages. It was the site of the 1911 
+						Agadir Crisis that exposed tensions between France
+						 and Germany, foreshadowing World War I.
+				</p>
+			</div>
+
+			<div class="child">
+				<h2>Dakhla</h2>
+				<img src="img/dakhla.jpg" alt="dakhla">
+				<h4>Information :</h4>
+				<p>
+					Dakhla  is a 
+					 city in the disputed territory of Western Sahar
+					 a, currently occupied by Morocco. It i
+					 s the capital of the claimed Moroccan administr
+					 ative region Dakhla-Oued Ed-Dahab. It has a pop
+					 ulation of 106,277 and is on a narrow penins
+					 ula of the Atlantic Coast, the Río de Oro Penin
+					 sula, about 550 km (340 mi) south of Laayoune.
+				</p>
+			</div>
+
+			<div class="child">
+				<h2>Meknes</h2>
+				<img src="img/meknes.jpg" alt="meknes">
+				<h4>Information :</h4>
+				<p>
+					Meknes  is one of 
+					  the four Imperial cities of Morocco, located 
+					  in northern central Morocco and the sixth lar
+					  gest city by population in the kingdom. Found
+					  ed in the 11th century by the Almoravids as a
+					   military settlement, Meknes became the capit
+					   al of Morocco under the reign of Sultan Moul
+					   ay Ismaïl (1672–1727), son of the founder of
+					    the Alaouite dynasty. Moulay Ismaïl created
+						 a massive imperial palace complex and endo
+						 wed the city with extensive fortifications
+						  and monumental gates.
+				</p>
+			</div>
+
+
+
+		</div>
+	</body>
+</html>
