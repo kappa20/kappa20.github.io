@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  
+  <title>Frontend Mentor | NFT preview card component</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    /* .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); } */
+    *{
+      padding:0;
+      margin:0;
+      box-sizing: border-box;
+    }
+    body{
+      background-color: hsl(217, 54%, 11%);
+      font-family: 'Outfit', sans-serif;
+      
+    }
+    .container{
+      display:flex;
+      flex-flow: column wrap;
+      background-color:hsl(216, 50%, 16%) ;
+      height: 35rem;
+      width:21rem;
+      margin: 5rem auto;
+      padding: 1.25rem;
+      border-radius: 0.7rem ;
+      box-shadow:0px 20px 5px 15px  hsl(214, 51%, 9%);
+
+    }
+
+    .container > .nft_img{
+
+  
+      width:18.78rem;
+      border-radius: 0.6rem;
+      height: 18.75rem;
+      margin-bottom: 1.4rem;
+      
+    }
+    img{
+      width:100%;
+      border-radius: 0.6rem;
+    }
+
+   
+    
+    .container > .nft_description > p {
+      font-size:18px;
+      color:hsl(215, 51%, 70%);
+      margin-bottom: 1rem;
+    }
+    .container > .nft_name > h2{
+      color:hsl(0, 0%, 100%);
+      margin-bottom: 0.8rem;
+
+    }
+    .container > .nft_name > h2:hover{
+      color:hsl(178, 100%, 50%);
+      cursor: pointer;
+    }
+    .container > .nft_info{
+      display: inline-block;
+    }
+   .nft_price{
+      float:left;
+      color:hsl(178, 100%, 50%);
+      
+
+    }
+    .nft_price::before{
+      content: url('img/icon-ethereum.svg');
+      margin: 0 5px 0 0;
+      
+    }
+    .nft_info{
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+    .nft_time{
+      float:right;
+      color:hsl(215, 51%, 70%);
+    }
+    .nft_time::before{
+      content:url('img/icon-clock.svg');
+      margin: 0 5px 0 0;
+
+    }
+    .line{
+      border:0.02em solid gray;
+      margin-bottom: 1rem;
+    }
+
+     .img_creator{
+      background-image:url('img/image-avatar.png');
+      width:30px;
+      height: 30px;
+      background-size: cover;
+      border-radius: 50%;
+      border:1px solid white;
+      float:left;
+      margin: 0 0.7rem 0 0;
+    }
+    .nft_creator > p{
+      float:left;
+      margin-top: 0.4rem;
+      color:hsl(215, 51%, 70%);
+    }
+    .nft_creator > p > span{
+      color:hsl(0, 0%, 100%);
+    }
+    .nft_creator > p > span:hover{
+      color:hsl(178, 100%, 50%);
+      cursor: pointer;
+    }
+    
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nft_img">
+      <img src="img/image-equilibrium.jpg">
+    </div>
+    <div class="nft_name"><h2>Equilibrium #3429</h2></div>
+
+    <div class="nft_description"><p>Our Equilibrium collection promotes balance and calm.</p></div>
+
+    <div class="nft_info">
+      <div class="nft_price">0.041 ETH</div>
+        <div class="nft_time">3 days left</div>
+    </div>
+    <div class="line"></div>
+  
+    <div class="nft_creator">
+      <div class="img_creator"></div>
+      <p>Creation of <span>Jules Wyvern</span></p></div>
+  </div>
+
+  <!-- <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div> -->
+</body>
+</html>
