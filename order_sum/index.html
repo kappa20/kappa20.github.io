@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Order summary card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    /* .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); } */
+    *{
+      padding:0;
+      margin:0;
+      box-sizing: border-box;
+    }
+    body{
+      background: url('img/pattern-background-desktop.svg') no-repeat;
+      background-size: 100% 100%;
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 16px;
+    }
+    .container{
+      display:flex;
+      height:34rem;
+      width:23rem;
+      margin:6rem auto;
+      flex-flow: row wrap;
+      border-radius:15px;
+      background-color: white;
+      box-shadow: 0 0 7px hsl(224, 23%, 55%);
+    }
+    .img_container {
+      border-bottom-right-radius: none;
+      border-top-right-radius: 15px;
+      border-top-left-radius:15px ;
+      width: 100%;
+      background-image: url('img/illustration-hero.svg');
+      background-size: cover;
+      height: 180px;
+      margin-bottom: 0px;
+    }
+    .sub_container{
+      margin-top: 0px;
+    }
+    .sub_container > .head {
+      text-align: center;
+      width: 100%;
+      height: min-content;
+      margin-top: 0px;
+      margin-bottom: 1.1rem;
+    }
+    .head > h2{
+      margin-bottom: 10px;
+      color:hsl(223, 47%, 23%);
+    }
+
+    .sub_container{
+      width: 100%;
+      padding:40px 50px;
+    }
+    .cha{
+      width:100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    input{
+      width: 100%;
+      margin:15px 0 0 0;
+    }
+    .head > p{
+      color:hsl(224, 23%, 55%);
+      font-size: 0.8rem;
+      line-height: 1.6rem;
+      font-weight: 600;
+    }
+    .container > .sub_container > .cha > .change{
+      padding-top: 10px;
+    }
+    .container > .sub_container > .cha > .change > a{
+      color:hsl(245, 75%, 52%);
+      font-size: 0.75rem;
+      font-weight: 900;
+    }
+    .container > .sub_container > .cha > .change > a:active,
+    .container > .sub_container > .cha > .change > a:hover{
+      text-decoration: none;
+      color:hsl(224, 23%, 55%);
+      cursor: pointer;
+    }
+    .plan > p{
+      color:hsl(223, 47%, 23%);
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .subscription > p{
+      color:hsl(224, 23%, 55%);
+      font-size: 0.9rem;
+    }
+    .sub_container >.cha > .papapa{
+      position: relative;
+      right:22px;
+    }
+    input[type="submit"]{
+      color:white;
+      padding:11px 70px;
+      font-weight: 600;
+      font-size: 12px;
+      background-color:hsl(245, 75%, 52%);
+      border-radius: 10px;
+      border: none;
+    }
+    
+    input[type="reset"]{
+      color:hsl(224, 23%, 55%);
+      border:none;
+      font-weight: 700;
+      margin-top: 20px;
+      font-size: 0.8rem;
+    }
+    input[type="submit"]:active,input[type="submit"]:hover{
+      opacity: 0.7;
+      cursor: pointer;
+    }
+    input[type="reset"]:active,input[type="reset"]:hover{
+      color:hsl(223, 47%, 23%);
+      cursor: pointer;
+    }
+
+    @media screen and (max-width:375px){
+        body{
+          background:url('img/pattern-background-mobile.svg') no-repeat cover;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+      <div class="img_container">
+      </div>
+      <div class="sub_container">
+          <div class="head">
+            <h2>Order Summary</h2>
+            <p>You can now listen to millions of songs, audiobooks, and podcasts on any 
+                device anywhere you like!</p>
+          </div>
+          <div class="cha">
+            <div calss="music-icon">
+              <img src="img/icon-music.svg" alt="music">
+            </div>
+            <div class="papapa">
+              <div class="plan">
+                <p>Annual Plan</p>
+              </div>
+              <div class="subscription">
+                <p>$59.99/year</p>
+              </div>
+            </div>
+            <div class="change">
+              <a href="#">Change</a>
+            </div>
+          </div>
+    <div class="checkout">
+        <form action="#">
+            <input type="submit" value="Proceed to Payment">
+            <input type="reset" value="Cancel Order">
+        </form>
+  </div>
+
+  </div>
+</div>
+  <!-- <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div> -->
+</body>
+</html>
