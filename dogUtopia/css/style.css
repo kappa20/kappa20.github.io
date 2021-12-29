@@ -1,0 +1,95 @@
+
+*,*::before,*::after{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+
+header{
+    height: 15vh;
+    width: 100%;
+    background-color: #333;
+}
+.logo-slogan{
+
+width:max-content;
+display: flex;
+height: 100%;
+
+}
+.brand-logo{
+   
+    align-self: center;
+    width: 60px;
+    margin-left: 20px;
+}
+.brand-logo > img{
+    width: 100%;
+}
+.brand-text{
+    
+    align-self: center;
+    margin-left: 5px;
+    font-family: 'Roboto', sans-serif;
+}
+.brand-text > a {
+    text-decoration: none;
+    font-size: 30px;
+    color: white;
+}
+header{
+    position:sticky;
+    top:0;
+    left:0;
+}
+.label-menu-icon{
+    width:60px;
+    position:absolute;
+    top:25px;
+    right:10px;
+    cursor:pointer;
+}
+.label-menu-icon > img {
+    width: 100%;
+}
+.content{
+    height: 1000px;
+    background-color: burlywood;
+    color:black;
+}
+nav{
+    background-color: #333;
+    padding: 5px 15px;
+    transform:scale(1,0);
+    transform-origin: top;
+    transition: transform 400ms ease-in-out;
+}
+nav > ul > li {
+    list-style: none;
+    padding:7px 0px;
+}
+nav > ul > li > a {
+    color:rgba(255,255,255);
+    text-decoration:none;
+    font-size: 1.7rem;
+    opacity:0;
+    transition:opacity 250ms ease-in-out 250ms;
+}
+.momo:checked ~ nav > ul > li > a{
+    opacity:1;
+}
+nav > ul > li > a:hover{
+    color:grey;
+}
+#menu-toggler{
+    display: none;
+}
+.momo:checked ~ nav{
+    transform:scale(1,1);
+}
+
+/*     font-family: 'Lato', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Sofia', cursive; */
+
+ 
