@@ -1,0 +1,118 @@
+
+*,*::before,*::after{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #333333;
+    font-family: 'Roboto', sans-serif;
+}
+.container{
+    background-color: lightblue;
+    width: 100%;
+    position:sticky;
+    
+}
+.container{
+    display:grid;
+    grid-template-columns: 200px 80px ;
+    height: 70px;
+    row-gap:10px ;
+}
+.items{
+    padding: 0;
+    text-align: center;
+    
+    background-color: lightblue;
+}
+
+.item1{
+    display: flex;
+    width: max-content;
+    justify-content: center;
+    column-gap: 10px;
+}
+.item1 > img{
+    width:60px;
+    height: 55px;
+    margin-top: 5px;
+}
+.item1 > a{
+    color:black;
+    text-decoration: none;
+    font-size: 25px;
+    align-self: center;
+    font-weight: 600;
+}
+
+.item2{
+    position: absolute;
+    top:5px;
+    right:10px;
+   
+
+}
+
+.item2 > label > img{
+    width:60px;
+    cursor: pointer;
+}
+
+
+
+.item3{
+    position: relative;
+    grid-column: 1/4;
+    transform: scale(1,0);
+    transform-origin: top;
+    transition:transform 400ms ease-in-out;
+}
+.item3 > ul{
+    list-style-type: none;
+}
+.item3 > ul > li > a{
+    color:black;
+    text-decoration: none;
+    font-size: 2rem;
+    opacity: 0;
+    transition: opacity 300ms ease-in-out 250ms;
+}
+.menu-press:checked ~ div.item3 > ul > li > a{
+    opacity: 1;
+}
+.item3 > ul > li > a:hover{
+    color:gray;
+}
+.menu-press{
+    display: none;
+}
+.menu-press:checked ~ div.item3{
+    transform: scale(1,1);
+}
+@media only screen and (min-width:700px){
+    .item2{
+        display: none;
+    }
+    .item3{
+        transform: scale(1);
+        grid-row: 1/2;
+        grid-column: 2/4;
+
+    }
+    .item3 >ul{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;    
+        height: 100%;
+    }
+    .item3 > ul > li > a{
+        opacity: 1;
+    }
+}
+
+/*     font-family: 'Lato', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Sofia', cursive; */
+
+ 
