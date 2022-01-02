@@ -1,0 +1,53 @@
+*,*::after,*::before{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body{
+    background-color: #333333;
+}
+.img-container{
+    width: 70vw;
+    max-height: 70vh;
+    overflow: hidden;
+    margin:10px auto;
+}
+.buttons{
+    display: flex;
+    justify-content: space-around;   
+    height: auto;
+}
+#prev,#next{
+    margin-top: 10px;
+    padding:1em 3em;
+    font-size: 15;
+    font-weight: bold;
+    font-family: cursive,sans-serif;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: outline 0.5s ease;
+    
+    position: relative;
+    color: white;
+    outline:1px solid white;
+    
+    
+}
+#next{
+    background-color: rgb(197, 48, 48);  
+}
+#prev{
+    background-color: rgb(64, 190, 64);
+}
+#prev:hover{
+    background-color: white;
+    outline: 1px solid rgb(64, 190, 64);
+    color:rgb(64, 190, 64)
+}
+#next:hover{
+    background-color: white;
+    outline: 1px solid rgb(197, 48, 48);
+    color:rgb(197, 48, 48)
+}
