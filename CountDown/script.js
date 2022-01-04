@@ -17,9 +17,17 @@ function cont(){
     secondsLeft =  */
     
     days.innerHTML = Math.floor(day);
-    hours.innerHTML =  Math.floor(hour);
-    minutes.innerHTML = Math.floor(minute);
-    seconds.innerHTML = Math.floor(second);
+    hours.innerHTML =  format(Math.floor(hour));
+    minutes.innerHTML = format(Math.floor(minute));
+    seconds.innerHTML = format(Math.floor(second));
     setTimeout(cont, 1000);
 }
 
+function format(time){
+    if ( time < 10){
+        return `0${time}`;
+    }
+    else{
+        return time;
+    }
+}
