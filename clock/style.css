@@ -8,6 +8,7 @@
 body {
   background-color: #333;
   min-width: 100vw;
+  min-height: 100vh;
 }
 
 .made{
@@ -24,6 +25,8 @@ body {
   margin: auto;
   text-align: center;
   color: transparent;
+  position: absolute;
+  bottom:0;
 }
 
 .clock_container {
