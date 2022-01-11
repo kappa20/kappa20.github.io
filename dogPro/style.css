@@ -1,0 +1,110 @@
+@import 'resets.css';
+@import 'variables.css';
+@import 'footer_style.css';
+.nav{
+    height: auto;
+    background-color: transparent;
+    display: flex;
+    
+    flex-direction: row;
+    justify-content: center;
+    
+}
+.nav > * {
+    justify-self: center;
+    align-self: center;
+}
+.logo-container{
+    width:10vh;
+    margin-left: 10px;
+    user-select: none;
+}
+/* .connect{
+    background-color: var(--head-btn-color);
+    font-size: 1.2em;
+    padding: 0.5em;
+    border:1.5px solid rgb(17, 16, 16);
+    border-radius: 0.5em;
+    margin-right: 10px;
+} */
+.help-text{
+    grid-area:header;
+}
+.dogs{
+    grid-area: dogs;
+}
+.cats{
+    grid-area: cats;
+}
+.food{
+    grid-area: food;
+}
+.items{
+    grid-area: items;
+}
+.services{
+    border:2px solid black;
+    width:95%;
+    
+    margin:5px auto;
+    gap:1em;
+    border-radius: 0.5rem;
+    padding: 2em;
+    box-shadow: 0px 2px 0.2em black;
+    display:grid;
+    grid-template-areas:
+    "header header header header"
+    "dogs dogs dogs dogs"
+    "cats cats cats cats"
+    "food food food food"
+    "items items items items";
+}
+
+.description{
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    padding:1em 0;
+    display: block;
+    border-bottom-left-radius:10px ;
+    border-bottom-right-radius:10px ;
+    text-decoration: none;
+    height: 20%;
+}
+
+.serv-img{
+    margin-bottom: 20px;
+    height: auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 100px rgb(35, 35, 66);
+    background-color: transparent;
+}
+.footer{
+    height: 70px;
+}
+.help-text{
+    font-size: 25px;
+    color:rgb(233, 233, 233);
+    font-weight: 900;
+    padding: 1em 0;
+    text-align: center;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+    background-color: transparent;
+    text-shadow: 1px 2px 7px black;
+    box-shadow: 0px 0px 7px black;
+}
+@media only screen and (min-width: 600px) {
+    .services{
+        grid-template-areas:
+        "header header  header header"
+        "dogs dogs cats cats"
+        "dogs dogs cats cats"
+        "food food items items"
+        "food food items items";
+        max-width: 700px;
+    }
+  }
