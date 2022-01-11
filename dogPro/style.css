@@ -45,7 +45,6 @@
 .services{
     border:2px solid black;
     width:95%;
-    
     margin:5px auto;
     gap:1em;
     border-radius: 0.5rem;
@@ -65,7 +64,8 @@
     color: white;
     text-align: center;
     font-size: 30px;
-    padding:1em 0;
+    margin-top: 5px;
+    padding:0.5rem 0;
     display: block;
     border-bottom-left-radius:10px ;
     border-bottom-right-radius:10px ;
@@ -73,13 +73,17 @@
     height: 20%;
 }
 
+
 .serv-img{
     margin-bottom: 20px;
-    height: auto;
+    height: 300px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 5px 100px rgb(35, 35, 66);
     background-color: transparent;
+}
+.serv-img a.im{
+    object-fit:none;
 }
 .footer{
     height: 70px;
