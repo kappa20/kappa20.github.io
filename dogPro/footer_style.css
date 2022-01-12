@@ -44,7 +44,8 @@ ul li{
 
 ul li a {
     position:relative;
-    padding: 15px;
+    width: 60px;
+    height: 60px;
     display:inline-block;
     border-radius: 10px;
     display: flex;
@@ -59,15 +60,31 @@ ul li a {
     backdrop-filter: blur(2px);
     transition: 0.5s;
     text-decoration: none;
+    overflow: hidden;
 }
 
 ul li a:hover{
     transform: translateY(-20px);
 }
+ul li a::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:50px;
+    height:100%;
+    background:rgba(255,255,255,0.5);
+    transform: skewX(45deg) translateX(150px);
+    transition: 0.5s;
+}
+ul li a:hover::before{
+    transform: skewX(45deg) translateX(-150px);
+}
 @media only screen and (max-width: 400px) {
     ul li a{
         font-size: 1em;
-        padding: 10px;
+        width: 40px;
+        height: 40px;
     }
     .By{
         font-size: 15px;
