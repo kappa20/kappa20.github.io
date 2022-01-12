@@ -35,14 +35,12 @@
     grid-area: items;
 }
 .services{
-    border:2px solid black;
     width:95%;
-    max-width: 700px;
     margin:5px auto;
     gap:1em;
     border-radius: 0.5rem;
     padding: 2em;
-    box-shadow: 0px 2px 0.2em black;
+   /*  box-shadow: 0px 2px 0.2em black; */
     display:grid;
     grid-template-areas:
     "header header header header"
@@ -74,12 +72,16 @@
     overflow: hidden;
     box-shadow: 0 5px 100px rgb(35, 35, 66);
     background-color: transparent;
+    transition: transform 250ms ease;
 }
 .serv-img a.im{
     object-fit:none;
 }
 .footer{
     height: 70px;
+}
+.serv-img:hover{
+    transform: scale(1.1);
 }
 .help-text{
     font-size: 25px;
@@ -94,7 +96,7 @@
     text-shadow: 1px 2px 7px black;
     box-shadow: 0px 0px 7px black;
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 550px) {
     .services{
         grid-template-areas:
         "header header  header header"
@@ -102,6 +104,16 @@
         "dogs dogs cats cats"
         "food food items items"
         "food food items items";
+        
+    }
+  }
+
+  @media only screen and (min-width: 1000px) {
+    .services{
+        grid-template-areas:
+        "header header  header header"
+        "dogs cats food items"
+        "dogs cats food items";
         
     }
   }

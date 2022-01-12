@@ -33,13 +33,13 @@ ul{
     display: flex;
     justify-content: space-evenly;
     width: 95%;
-    margin-top:10px ;
+    margin-bottom:10px ;
 }
 ul li{
     position:relative;
     list-style-type: none;
 
-    margin:10px;
+    margin: 0 10px;
 }
 
 ul li a {
