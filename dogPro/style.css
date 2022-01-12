@@ -19,14 +19,6 @@
     margin-left: 10px;
     user-select: none;
 }
-/* .connect{
-    background-color: var(--head-btn-color);
-    font-size: 1.2em;
-    padding: 0.5em;
-    border:1.5px solid rgb(17, 16, 16);
-    border-radius: 0.5em;
-    margin-right: 10px;
-} */
 .help-text{
     grid-area:header;
 }
@@ -45,6 +37,7 @@
 .services{
     border:2px solid black;
     width:95%;
+    max-width: 700px;
     margin:5px auto;
     gap:1em;
     border-radius: 0.5rem;
@@ -109,6 +102,6 @@
         "dogs dogs cats cats"
         "food food items items"
         "food food items items";
-        max-width: 700px;
+        
     }
   }

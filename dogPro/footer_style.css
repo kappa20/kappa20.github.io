@@ -1,0 +1,75 @@
+.footer-links{
+    display: grid;
+    grid-template-areas:
+    "follow follow"
+    "team team";
+    width: 95%;
+    margin: auto;
+}
+.follow{
+    display: inline-flex;
+    justify-content: space-around;
+    align-content: center;
+    align-items:center;
+    grid-area: follow;
+}
+.By{
+    display: grid;
+    place-items: center;
+    font-size: 20px;
+    padding: 1em 3em;
+    grid-area: team;
+}
+.footer-links >  .By > h1{
+    font-family: var(--sofia-font);
+    text-shadow: 0px 5px 7px rgba(0,0,0,1);
+    mix-blend-mode: overlay;
+
+}
+
+ul{
+    position:relative;
+    top:0;left:0;
+    display: flex;
+    justify-content: space-evenly;
+    width: 95%;
+    margin-top:10px ;
+}
+ul li{
+    position:relative;
+    list-style-type: none;
+
+    margin:10px;
+}
+
+ul li a {
+    position:relative;
+    padding: 15px;
+    display:inline-block;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    color:#fff;
+    font-size:2em;
+    border:1px solid rgba(255,255,255,0.4);
+    border-right:1px solid rgba(255,255,255,0.2);
+    border-bottom:1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 5px 45px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    transition: 0.5s;
+    text-decoration: none;
+}
+
+ul li a:hover{
+    transform: translateY(-20px);
+}
+@media only screen and (max-width: 400px) {
+    ul li a{
+        font-size: 1em;
+        padding: 10px;
+    }
+    .By{
+        font-size: 15px;
+    }
+}
