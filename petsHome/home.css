@@ -106,7 +106,7 @@ header {
   background-color: black;
   height: 85vh;
   background-image: linear-gradient(rgb(0, 0, 0), rgba(0, 0, 0, 0.897)),
-    url("../img/indexImage/Back_home.jpg");
+    url("indexImage/Back_home.jpg");
   background-size: cover;
   background-position-y: center;
   display: flex;
@@ -452,7 +452,7 @@ html {
   transform: scale(0, 0);
   transition: transform 250ms;
 }
-  .modal {
+.modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -475,45 +475,45 @@ html {
   width: 20em;
   box-shadow: 0 0 3px #fff;
 }
-@media (min-width: 500px){
-  .modal-content{
+@media (min-width: 500px) {
+  .modal-content {
     width: 50%;
     margin: 7em;
   }
 }
-@media (min-width: 1000px){
-  .modal-content{
+@media (min-width: 1000px) {
+  .modal-content {
     width: 35%;
     margin: auto;
   }
 }
-.D-modal input{
+.D-modal input {
   width: 100%;
   height: 2.7em;
   border: 1px solid rgba(128, 128, 128, 0.39);
-  box-shadow: gray 0 0 1px ;
+  box-shadow: gray 0 0 1px;
   border-radius: 3px;
 }
-.v2{
+.v2 {
   width: 94%;
   margin: 0.8em;
 }
-#done{
+#done {
   padding: 0.5em;
   width: 6em;
   border-radius: 4px;
   border: none;
-  background-color:#03b6d28c ;
+  background-color: #03b6d28c;
   font-size: medium;
   cursor: pointer;
 }
-#done:hover{
+#done:hover {
   background-color: #03b5d2;
 }
-.D-modal{
+.D-modal {
   padding: 1em;
 }
-.Dv2{
+.Dv2 {
   display: flex;
   justify-content: space-between;
 }
@@ -530,4 +530,4 @@ html {
   color: #000;
   text-decoration: none;
   cursor: pointer;
-  }
+}
