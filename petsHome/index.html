@@ -54,9 +54,12 @@ header {
   font-size: 1.9em;
 /*   margin-right: 0.5vw; */
 }
+.list-project{
+  align-self: flex-end;
+}
 .list-project ul li {
   position: relative;
-  margin-top: 10px;
+
   width: 80px;
  /*  margin-left: 6vw; */
   color: rgb(255, 255, 255);
@@ -172,7 +175,6 @@ header {
   width: 96%;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 3rem;
-/*   margin-right: 1vw; */
 }
 @media (max-width: 1000px) {
   .hero {
@@ -247,13 +249,16 @@ header {
 }
 @media (max-width: 720px) {
   .discp {
-    display: inline-block;
-    margin-bottom: 30px;
+   flex-direction: column;
+   row-gap: 25px;
   }
   .discp_m {
     
     margin-top: 30px;
     width: 100%;
+  }
+  .discp_p{
+    width: 90%;
   }
 }
 .C-hr {
@@ -331,8 +336,8 @@ html {
 }
 .container {
   margin: 0 auto;
-  padding: 4rem;
-  padding-left: 0;
+  padding: 1rem;
+  
   width: 100%;
 }
 
@@ -659,7 +664,7 @@ html {
             <div class="accordion">
               <div class="accordion-item">
                 <button id="accordion-button-1" aria-expanded="false">
-                  <span class="accordion-title">Why is the moon sometimes out during the day?</span>
+                  <span class="accordion-title">What is our main Goal ?</span>
                   <span class="icon" aria-hidden="true"></span>
                 </button>
                 <div class="accordion-content">
