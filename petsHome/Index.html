@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakim As</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"> 
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+</head>
+<script>
+    function closeDone(){
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+</script>
+<body>
+    <!-- navbar -->
+    <header>
+        <div>
+            <a href="#" class="brand"><span class="logo">!P</span>ETS</a>
+        </div>
+        
+        <nav class="list-project navbar">
+            <ul>
+                <li> <a href="#accord">Services</a></li>
+                <li class="hard"><a href="#footer">Contact</a></li>
+            </ul>
+        </nav>
+        </header>
+    <section class="home">
+        <h1 class="title">FIND YOUR PET</h1>
+        <p class="p-title">
+            Find Easly your favorite pet with our site web <br>press the bell icon to subscribe.
+        </p>
+        <button class="btn" id="myBtn">Subscribe</button>
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="D-modal">
+                    <span class="close">&times;</span>
+                    <h1 class="H-modal">Welcome</h1>
+                </div>
+                    <hr class="M-hr">
+                <div class="D-modal">
+                    <label for="Fname">First Name</label>
+                    <hr style="padding: 0.1em;border: 1px solid #fff;">
+                    <input id="Fname" style="padding: 0 10px;" placeholder="  First name" type="text">
+                    <hr style="padding: 0.4em;border: 1px solid #fff;">
+                    <label for="Lname">Last Name</label>
+                    <hr style="padding: 0.1em;border: 1px solid #fff;">
+                    <input id="Lname" style="padding: 0 10px;" type="text" placeholder="  Last Name">
+                    <hr style="padding: 0.4em;border: 1px solid #fff;">
+                    <label for="Gamail">Email Adresse</label>
+                    <hr style="padding: 0.1em;border: 1px solid #fff;">
+                    <input id="Gmail" style="padding: 0 10px;" type="email" placeholder="  Your Email">
+                </div>
+                    <hr class="M-hr v2">   
+                <div class="D-modal Dv2">
+                    <p>Sign Up For Free</p>
+                    <button id="done" onclick=" closeDone();">Submit</button>
+                </div>
+              
+            </div>
+          </div>
+          <script src="modal.js"></script>
+    </section>
+    <section class="discp">
+        <img class="discp_m" src="indexImage/discp.svg" alt="">
+        <div class="discp_p">
+            <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore dolores nobis ratione deleniti rerum voluptas consequuntur autem ipsam fugiat illo nesciunt distinctio amet aliquid in eum, voluptate non, earum repudiandae modi expedita nulla quasi quaerat. Quibusdam reiciendis enim velit eaque!</h3>
+        </div>
+    </section>
+    <section class="hero">
+        <div class="caards">
+            <div class="caard card1">
+                <div class="coontainer">
+                    <img  class="discp_img" src="indexImage/home_dog.jpg" alt="">
+                </div>
+                <div class="deetails">
+                    <h3>Dog</h3>
+                    <hr class="C-hr">
+                    <p id="accord">
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                    </p>
+                    <button class="RM"><a href="#">Read More</a></button>
+                </div>
+            </div>
+            <div class="caard card2">
+                <div class="coontainer">
+                    <img class="discp_img" src="indexImage/home_cat.jpg" alt="">
+                </div>
+                <div class="deetails">
+                    <h3>Dog</h3>
+                    <hr class="C-hr">
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                    </p>
+                    <button class="RM"><a href="#">Read More</a></button>
+                </div>
+            </div>
+            <div class="caard card3">
+                <div class="coontainer">
+                    <img class="discp_img" src="indexImage/home_petFood.jpg" alt="">
+                </div>
+                <div class="deetails">
+                    <h3>Dog</h3>
+                    <hr class="C-hr">
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                    </p>
+                    <button class="RM"><a href="#">Read More</a></button>
+                </div>
+            </div>
+            <div class="caard card4">
+                <div class="coontainer">
+                    <img class="discp_img" src="indexImage/home_accesso.jpg" alt="">
+                </div>
+                <div class="deetails">
+                    <h3>Dog</h3>
+                    <hr class="C-hr">
+                    <p>
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                        Lorem ipsum dolor, sit amet consectetur
+                    </p>
+                    <button class="RM"><a href="#">Read More</a></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="accordien">
+        <div class="container">
+            <h2 style="text-align: center;margin-bottom: 1rem;">Frequently Asked Questions</h2>
+            <div class="accordion">
+              <div class="accordion-item">
+                <button id="accordion-button-1" aria-expanded="false">
+                  <span class="accordion-title">Why is the moon sometimes out during the day?</span>
+                  <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
+                    Ut tortor pretium viverra suspendisse potenti.
+                  </p>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <button id="accordion-button-2" aria-expanded="false">
+                  <span class="accordion-title">Why is the sky blue?</span>
+                  <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
+                    Ut tortor pretium viverra suspendisse potenti.
+                  </p>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <button id="accordion-button-3" aria-expanded="false">
+                  <span class="accordion-title">Will we ever discover aliens?</span>
+                  <span class="icon" aria-hidden="true"></span>
+                </button>
+                <div class="accordion-content">
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
+                    Ut tortor pretium viverra suspendisse potenti.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script src="script.js"></script>
+    </section>
+    <section class="final">
+        <footer id="footer">
+            <div class="footer_container">
+                <h3>hello world</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, dolores.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, consectetur.
+                </p>
+                <ul class="socials">
+                    <li><a href="#" class="fab fa-facebook"></a></li>
+                    <li><a href="#" class="fab fa-twitter"></a></li>
+                    <li><a href="#" class="fab fa-google-plus-g"></a></li>
+                    <li><a href="#" class="fab fa-youtube"></a></li>
+                    <li><a href="#" class="fab fa-linkedin"></a></li>
+                </ul>
+            </div>
+            <div class="footer_bottom">
+                <p>copyright &copy;2022 !PETS. designed by hakim</p>
+            </div>
+        </footer>
+    </section>
+    
+</body>
+</html>
