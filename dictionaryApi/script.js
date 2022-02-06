@@ -13,6 +13,7 @@ then(json =>{
     console.log("success");
 })
 .catch(err => {
+    explanation.value = "Word not found"
 	console.error(err);
 });
 }
