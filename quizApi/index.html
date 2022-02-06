@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./res/kappa.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <title>Kappa Quiz</title>
+</head>
+<body>
+    <!-- body -->
+    <h1 class="title">Quiz App</h1>
+    <div style="text-align: center;margin-top: 10vh;"><button id="startBtn" onclick="start()">Start</button></div>
+    <div id="answerQuestion">
+        <div class="answersContainer">
+            <button onclick='update()' class="answer" id="answer_a"></button>
+            <button onclick='update()' class="answer" id="answer_b"></button>
+            <button onclick='update()' class="answer" id="answer_c"></button>
+            <button onclick='update()' class="answer" id="answer_d"></button>
+            <button onclick='update()' class="answer" id="answer_e"></button>
+            <button onclick='update()' class="answer" id="answer_f"></button> 
+        </div>
+        <div class="question" id="quizQuestion" >this is question</div>
+        <div id="questionCount"></div>
+    </div>
+    
+    <!-- script -->
+    <script src="script.js"></script>
+</body>
+</html>
