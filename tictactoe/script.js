@@ -80,6 +80,8 @@ function reset(){
     for(let i = 0 ; i < images.length ; i++){
         images[i].style.opacity = "0"   
     }
+    xplaces = []
+    oplaces = []
 }
 
 
