@@ -23,9 +23,10 @@ for(let j = 0;j<images.length ; j++){
     images[j].addEventListener("click",function(){
         if(role === "x"){
             this.style.opacity = "1";
+            
             xplaces.push(Number(this.alt));
             if(checkWinner(xplaces,role)){
-                alert(`${role.toUpperCase()} Wins`);
+               alert(`${role.toUpperCase()} Wins`);
                 reset();
                 xplaces = [];
                 oplaces = []
@@ -37,7 +38,7 @@ for(let j = 0;j<images.length ; j++){
             this.style.opacity = "1";
             oplaces.push(Number(this.alt));
             if(checkWinner(oplaces,role)){
-                alert(`${role.toUpperCase()} Wins`);
+             alert(`${role.toUpperCase()} Wins`);
                 reset();
                 xplaces = [];
                 oplaces = []

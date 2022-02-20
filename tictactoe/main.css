@@ -4,7 +4,7 @@
   padding: 0;
   margin: 0;
   -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 body {
@@ -14,28 +14,34 @@ body {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: Consolas;
+}
+
+h1 {
+  text-align: center;
 }
 
 #gamecontainer {
   width: 90%;
   height: 300px;
   max-width: 350px;
-  background-color: #333;
+  background-color: #11a7ec;
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr) [3];
-  grid-template-columns: repeat(3, 1fr);
-  -ms-grid-rows: (1fr) [3];
-  grid-template-rows: repeat(3, 1fr);
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  -ms-grid-rows: (1fr)[3];
+      grid-template-rows: repeat(3, 1fr);
+  border-radius: 11px;
 }
 
 #gamecontainer > div {
@@ -43,4 +49,18 @@ body {
   display: -ms-grid;
   display: grid;
   place-items: center;
+  cursor: pointer;
+}
+
+button {
+  padding: 1rem 2rem;
+  border-radius: 7px;
+  margin-top: 5px;
+  border: none;
+  -webkit-box-shadow: 0 0 2px 0 black;
+          box-shadow: 0 0 2px 0 black;
+  font-weight: 700;
+  font-size: 18px;
+  background-color: #00c3ff;
+  cursor: pointer;
 }
