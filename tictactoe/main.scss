@@ -1,0 +1,23 @@
+@import "resets";
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#gamecontainer {
+  width: 90%;
+  height: 300px;
+  max-width: 350px;
+  background-color: #333;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+#gamecontainer > div {
+  border: 1px solid white;
+  display: grid;
+  place-items: center;
+}
