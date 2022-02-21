@@ -7,6 +7,7 @@ changesrc(role);
 var cad  = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 var xplaces = [];
 var oplaces = [];
+var round = 1
 var xSourceImage = "./croix.svg";
 var oSourceImage = "./circle.svg";
 for(let j = 0;j<images.length ; j++){
@@ -21,10 +22,13 @@ for(let j = 0;j<images.length ; j++){
         }
     })
     images[j].addEventListener("click",function(){
-        if(role === "x"){
+        if(role === "x" && this.style.opacity !=="1"){
             this.style.opacity = "1";
+            if(xplaces.length < round){
+                xplaces.push(Number(this.alt));
+                console.log(xplaces)
+            }
             
-            xplaces.push(Number(this.alt));
             if(checkWinner(xplaces,role)){
                alert(`${role.toUpperCase()} Wins`);
                 reset();
@@ -34,9 +38,14 @@ for(let j = 0;j<images.length ; j++){
             role ="o"
             changesrc(role)
         }
-        else if(role ==="o"){
+        else if(role ==="o" && this.style.opacity !=="1"){
             this.style.opacity = "1";
-            oplaces.push(Number(this.alt));
+            if(oplaces.length < round){
+                oplaces.push(Number(this.alt));
+                console.log(oplaces)
+                round+=1
+            }
+            
             if(checkWinner(oplaces,role)){
              alert(`${role.toUpperCase()} Wins`);
                 reset();
