@@ -29,11 +29,11 @@ for(let j = 0;j<images.length ; j++){
                 console.log(xplaces)
             }
             
-            if(checkWinner(xplaces,role)){
-               alert(`${role.toUpperCase()} Wins`);
-                reset();
-                xplaces = [];
-                oplaces = []
+            if(checkWinner(xplaces)){
+                alert(`${role.toUpperCase()} Wins`)
+               location.reload();
+               
+            
             }
             role ="o"
             changesrc(role)
@@ -46,14 +46,19 @@ for(let j = 0;j<images.length ; j++){
                 round+=1
             }
             
-            if(checkWinner(oplaces,role)){
-             alert(`${role.toUpperCase()} Wins`);
-                reset();
-                xplaces = [];
-                oplaces = []
+            if(checkWinner(oplaces)){
+                
+                
+                alert(`${role.toUpperCase()} Wins`);
+                location.reload();
+                
             }
             role = "x"
             changesrc(role)
+            
+        }
+        if(oplaces.length + xplaces.length === 9){
+            alert("TIE")
         }
         
     })
@@ -95,7 +100,7 @@ function reset(){
 }
 
 
-function checkWinner(arr,role){
+function checkWinner(arr){
     var winner ;
     for(let i = 0 ;i < cad.length ; i++){
         winner = true
@@ -108,6 +113,7 @@ function checkWinner(arr,role){
     if(winner === false){
         continue;
     }else if(winner === true){
+        reset();
        return true;
     }
 }
