@@ -37,6 +37,9 @@ for(let j = 0;j<images.length ; j++){
             }
             role ="o"
             changesrc(role)
+            if(oplaces.length + xplaces.length === 9){
+                alert("TIE")
+            }
         }
         else if(role ==="o" && this.style.opacity !=="1"){
             this.style.opacity = "1";
@@ -55,11 +58,12 @@ for(let j = 0;j<images.length ; j++){
             }
             role = "x"
             changesrc(role)
+            if(oplaces.length + xplaces.length === 9){
+                alert("TIE")
+            }
             
         }
-        if(oplaces.length + xplaces.length === 9){
-            alert("TIE")
-        }
+       
         
     })
 
