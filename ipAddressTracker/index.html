@@ -5,30 +5,220 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
 
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet"> 
   <title>Frontend Mentor | IP Address Tracker</title>
 
   <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
   <style>
+   
+    *,*::after,*::before{
+      padding:0;
+      margin:0;
+      box-sizing: border-box;
+      font-family: 'Rubik', sans-serif;
+    }
+    body{
+      background-color: aquamarine;
+    }
+    header{
+      background-image: url("./images/pattern-bg.png");
+      width: 100vw;
+      height: 150px;
+      min-height: 130px;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      display: grid;
+      place-items: center;
+
+    }
+    header > *{
+      margin: 10px 0;
+    }
+    #searchContainer{
+      display: grid;
+      grid-template-columns: 7fr 1fr;
+      width:90%;
+      overflow: hidden;
+      border-radius: 7px;
+      max-width: 440px;
+      min-width: 250px;
+    }
+    #searchField{
+      padding: 15px;
+      background-color: #ffffff;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    #searchBtn{
+      display: grid;
+      place-items: center;
+      background-color: #333;
+      border:none;
+      cursor: pointer;
+    }
+    #userInfo{
+      display: grid;
+      grid-template-columns: 1fr;
+      min-width: 250px;
+      place-items: center;
+      padding-top: 10px;
+      row-gap: 10px;
+      background-color: white;
+      border-radius: 7px;
+      width: 90%;
+      position: relative;
+      z-index: 100;
+    }
+    p{
+      text-align: center;
+      color:hsl(0, 0%, 59%);
+      font-size: 12px;
+    }
+    h4{
+      color:hsl(0, 0%, 17%);
+      font-size: 14px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+    #map {
+       height: 75vh;
+       position: relative;
+        z-index: 10;
+      }
+     /*  #location{
+        font-size: 12px;
+      } */
+    @media only screen  and (min-width:700px){
+      #userInfo{
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            min-width: 250px;
+          height: 100px;
+      }
+      p{
+      font-size: 15px;
+    }
+    h4{
+      font-size: 17px;
+    }
+    }
     .attribution { font-size: 11px; text-align: center; }
     .attribution a { color: hsl(228, 45%, 44%); }
   </style>
 </head>
 <body>
+  <header>
+    <h2 style="text-align: center;color:white"> IP Address Tracker</h2>
+ 
+    <div id="searchContainer">
+      <input type="text" id="searchField" value="8.8.8.8"  placeholder="Search for any IP address or domain">
+      <button id="searchBtn" onclick="ipInfo(document.getElementById('searchField').value)" ><img src="./images/icon-arrow.svg" alt="arrow"></button>
+    </div>
 
-  IP Address Tracker
+    <div id="userInfo">
+        <div>
+          <p>IP Address</p>
+          <h4 id="ip"></h4>
+        </div>
+        <div>
+          <p>Location</p>
+          <h4 id="location"></h4>
+        </div>
+        <div>
+          <p>Timezone</p>
+          <h4 id="timezone"></h4>
+        </div>
+        <div>
+          <p>ISP</p>
+          <h4 id="isp"></h4>
+        </div>
+    </div>
+  </header>
+  <div id="map">
 
-  Search for any IP address or domain
+  </div>
+  
 
-  IP Address
-  Location
-  Timezone
-    UTC <!-- add offset value dynamically using the API -->
-  ISP
   
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
+    Coded by <a href="#">Kappa20</a>.
   </div>
+  <script>
+      const geoApiKeyip = "https://geo.ipify.org/api/v2/country,city?apiKey=at_naBYTl5jby1Cc3JbYKjCjrRCBUGtq&ipAddress="
+      const geoApiKeydomain = "https://geo.ipify.org/api/v2/country,city?apiKey=at_naBYTl5jby1Cc3JbYKjCjrRCBUGtq&domain="
+      const searchInput = document.getElementById("searchField")
+      const ipfield = document.getElementById("ip")
+      const locationfield = document.getElementById("location")
+      const timezonefield = document.getElementById("timezone")
+      const ispfield = document.getElementById("isp")
+      var map = L.map('map').setView([51.505, -0.09], 13);
+      var accessToken = "pk.eyJ1Ijoia2FwcGEyMCIsImEiOiJjbDAxZWZzZDMwM3Z4M2RvMHIzdTJ4eTd4In0.1T638A8cGV28aXL-ut5m2g"
+      L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${accessToken}`, {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: `${accessToken}`}).addTo(map);
+    var blackIcon = L.icon({
+    iconUrl: './images/icon-location.svg',
+    iconSize: [38, 50],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowAnchor: [22, 94]
+});
+      function ipInfo(x){
+        if(/(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/.test(x)){
+       x = x.match(/(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/)
+        var link = geoApiKeyip + x
+        alert(link)
+      }
+      else if(/(\w+\.[a-zA-Z]+)/.test(x)){
+        x = x.match(/\w+\.[a-zA-Z]+/)
+        var link = geoApiKeydomain + x
+        alert(link)
+      }
+          getdata(link).
+        then((result)=>{
+          ipfield.innerText = result.ip;
+          locationfield.innerText = result.region +" "+result.city +" " +result.postalcode;
+          timezonefield.innerText = "UTC "+result.time;
+          ispfield.innerText = result.isp;
+          map.setView(new L.LatLng(result.lat, result.long), 13);
+          L.marker([result.lat, result.long], {icon:blackIcon}).addTo(map);
+         
+        }).catch(err => alert("Something Went Wrong"))
+        
+      }
+      async function getdata(x){
+    
+        const response = await fetch(x)
+        
+        const data = await response.json()
+        return {
+          ip:data.ip,
+          long:data.location["lng"],
+          lat:data.location["lat"],
+          region:data.location.region,
+          city:data.location.city,
+          postalcode:data.location.postalCode,
+          time:data.location.timezone,
+          isp:data.isp
+        }
+
+      }
+      window.onload = ipInfo(document.getElementById('searchField').value)
+  </script>
 </body>
 </html>
