@@ -182,12 +182,10 @@
         if(/(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/.test(x)){
        x = x.match(/(?:\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/)
         var link = geoApiKeyip + x
-        alert(link)
       }
       else if(/(\w+\.[a-zA-Z]+)/.test(x)){
         x = x.match(/\w+\.[a-zA-Z]+/)
         var link = geoApiKeydomain + x
-        alert(link)
       }
           getdata(link).
         then((result)=>{
