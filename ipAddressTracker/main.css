@@ -36,6 +36,8 @@ header > * {
       grid-template-columns: 7fr 1fr;
   width: 90%;
   overflow: hidden;
+  border: none;
+  overflow: none;
   border-radius: 7px;
   max-width: 440px;
   min-width: 250px;
@@ -53,9 +55,13 @@ header > * {
   display: -ms-grid;
   display: grid;
   place-items: center;
-  background-color: #333;
+  background-color: black;
   border: none;
   cursor: pointer;
+}
+
+#searchBtn:hover {
+  background-color: #333;
 }
 
 #userInfo {
@@ -66,6 +72,8 @@ header > * {
   min-width: 250px;
   place-items: center;
   padding-top: 10px;
+  -webkit-box-shadow: 0 0 4px #2b2b2b;
+          box-shadow: 0 0 4px #2b2b2b;
   row-gap: 10px;
   background-color: white;
   border-radius: 7px;
