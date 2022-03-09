@@ -30,7 +30,7 @@ header {
   color: $NeonGreen;
 }
 main {
-  background-color: $GrayishBlue;
+  background-color: #313a49;
   position: relative;
   display: flex;
   padding: 50px 20px;
@@ -40,7 +40,7 @@ main {
   align-items: center;
   flex-direction: column;
   width: 90%;
-  max-width: 450px;
+  max-width: 600px;
   /*   width: 90%; */
   border-radius: 7px;
   box-shadow: 0 0 5px black;
@@ -48,7 +48,7 @@ main {
 section {
   text-align: center;
   color: $LightCyan;
-  font-size: 25px;
+  font-size: 18px;
 }
 
 #dividerContainer {
@@ -61,8 +61,8 @@ section {
   position: absolute;
   bottom: -25px;
   border: none;
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -76,4 +76,13 @@ section {
 
 .qu {
   font-size: 35px;
+}
+@media only screen and (min-width: 600px) {
+  section {
+    font-size: 25px;
+  }
+  #diceContainer {
+    width: 80px;
+    height: 80px;
+  }
 }
