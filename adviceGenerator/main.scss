@@ -14,27 +14,41 @@
   color: hsl(228, 45%, 44%);
 } */
 body {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  display: grid;
-
-  place-items: center;
+  display: flex;
+  font-family: $family;
+  justify-content: center;
+  align-items: center;
   background-color: $DarkGrayishBlue;
+}
+#dividerContainer > img {
+  width: 100%;
+  height: 100%;
+}
+header {
+  color: $NeonGreen;
 }
 main {
   border: 1px solid black;
   background-color: $GrayishBlue;
   position: relative;
   display: flex;
-  padding: 20px;
-  row-gap: 10px;
+  padding: 50px 20px;
+  padding-bottom: 90px;
+  row-gap: 40px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 90%;
+  max-width: 450px;
+  /*   width: 90%; */
+  border-radius: 7px;
 }
 section {
   text-align: center;
+  color: $LightCyan;
+  font-size: 20px;
 }
 
 #dividerContainer {
@@ -46,11 +60,16 @@ section {
 #diceContainer {
   position: absolute;
   bottom: -25px;
-  border: 1px solid red;
-  width: 50px;
-  height: 50px;
+  border: none;
+  width: 70px;
+  height: 70px;
   display: grid;
   place-items: center;
   border-radius: 50%;
+  background-color: $NeonGreen;
   cursor: pointer;
+}
+#diceContainer:hover {
+  box-shadow: 0 0 10px $NeonGreen, 0 0 12px hsl(145, 93%, 58%),
+    0 0 14px hsl(145, 96%, 54%), 0 0 16px hsl(130, 93%, 53%);
 }

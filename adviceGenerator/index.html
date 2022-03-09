@@ -32,7 +32,7 @@
     const quoteId = document.getElementById("quoteId");
     function newQuote(){
       getdata().then(result => {
-        quote.innerText = result.quote;
+        quote.innerText = `"${result.quote}"`;
         quoteId.innerText = result.id;
       }).cathc(err => console.log(err))
     }
