@@ -40,7 +40,6 @@ header {
 }
 
 main {
-  border: 1px solid black;
   background-color: #4e5d73;
   position: relative;
   display: -webkit-box;
@@ -63,12 +62,14 @@ main {
   max-width: 450px;
   /*   width: 90%; */
   border-radius: 7px;
+  -webkit-box-shadow: 0 0 5px black;
+          box-shadow: 0 0 5px black;
 }
 
 section {
   text-align: center;
   color: #cee3e9;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 #dividerContainer {
@@ -95,4 +96,8 @@ section {
 #diceContainer:hover {
   -webkit-box-shadow: 0 0 10px #52ffa8, 0 0 12px #30f883, 0 0 14px #19fa77, 0 0 16px #18f73d;
           box-shadow: 0 0 10px #52ffa8, 0 0 12px #30f883, 0 0 14px #19fa77, 0 0 16px #18f73d;
+}
+
+.qu {
+  font-size: 35px;
 }

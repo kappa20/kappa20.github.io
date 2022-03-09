@@ -16,7 +16,7 @@
   
   <main>
     <header >Advice #<span id="quoteId"></span></header>
-    <section id="quote"></section>
+    <section ><span class="qu">&ldquo;</span><span id="quote"></span><span class="qu">&#8221;</spancla></section>
     <div id="dividerContainer">
       <img src="./images/pattern-divider-mobile.svg" alt="patternDivider">
     </div>
@@ -32,7 +32,7 @@
     const quoteId = document.getElementById("quoteId");
     function newQuote(){
       getdata().then(result => {
-        quote.innerText = `"${result.quote}"`;
+        quote.innerText = `${result.quote}`;
         quoteId.innerText = result.id;
       }).cathc(err => console.log(err))
     }

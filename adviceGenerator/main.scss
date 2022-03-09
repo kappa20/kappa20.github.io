@@ -30,7 +30,6 @@ header {
   color: $NeonGreen;
 }
 main {
-  border: 1px solid black;
   background-color: $GrayishBlue;
   position: relative;
   display: flex;
@@ -44,11 +43,12 @@ main {
   max-width: 450px;
   /*   width: 90%; */
   border-radius: 7px;
+  box-shadow: 0 0 5px black;
 }
 section {
   text-align: center;
   color: $LightCyan;
-  font-size: 20px;
+  font-size: 25px;
 }
 
 #dividerContainer {
@@ -72,4 +72,8 @@ section {
 #diceContainer:hover {
   box-shadow: 0 0 10px $NeonGreen, 0 0 12px hsl(145, 93%, 58%),
     0 0 14px hsl(145, 96%, 54%), 0 0 16px hsl(130, 93%, 53%);
+}
+
+.qu {
+  font-size: 35px;
 }
