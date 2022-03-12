@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Payment</title>
+    <style>
+        body{
+            display: grid;
+            place-items: center;
+            font-family: 'Roboto', sans-serif;
+            background-color: rgb(226, 186, 8);
+        }
+        form{
+            display: grid;
+            place-items: center;
+            border:2px solid black;
+            border-radius: 7px;
+            padding: 10px;
+            width: max-content;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            
+        }
+    
+        input,select{
+            padding: 7px;
+            border-radius: 7px;
+            border: none;
+
+            transition:border 250ms ease-in;
+        }
+        input{
+            border:1px solid balck;
+        }
+        table{
+            display: grid;
+            place-items: center;
+            margin: 0 auto;
+        }
+        
+        label[for="carte"]{
+            height: 30px;
+        }
+        
+       
+        .right{
+            text-align: right;
+        }
+        button[type="submit"],button[type='reset']{
+            padding:7px 20px;
+            border:none;
+            border-radius: 7px;
+            font-size: 18px;
+            box-shadow: 0 0 3px black;
+            cursor: pointer;
+            font-weight: 700;
+            color: white;
+            
+        }
+        button[type="submit"]{
+            margin-right: 10px;
+            background-color: rgb(6, 245, 153);
+        }
+        button[type="reset"]{
+            background-color: rgb(241, 4, 64);
+        }
+        img{
+            width: 100%;
+            height: 100%;
+        }
+        .radioButtons{
+            display: flex;
+            height: 30px;
+            align-items: center;
+        }
+        #tableCarte{
+            display: none;
+        }
+        #error{
+            padding: 0.2rem 3rem;
+            border-radius: 7px;
+            font-weight: bold;
+            border:none;
+            background-color: #ffffff;
+            transform-origin: top;
+            transform: scale(1,0);
+            transition: transform 250ms ease-in;
+        }
+        
+      
+    </style>
+</head>
+<body>
+    <form class="container" onsubmit="event.preventDefault()">
+       
+        <table class="bigTable">
+            <h2 style="color:blue;text-align: center;">Information de payment</h2> 
+            <tr>
+                <td class="right"><label  for="fullName">Nom et préom du client:</label></td>
+                <td><input type="text"  id="fullName"></td>
+            </tr>
+            <tr>
+                <td class="right"><label for="Adresse">Adresse:</label></td>
+                <td><input type="text"  id="Adresse"></td>
+            </tr>
+            <tr>
+                <td class="right"><label for="telNbr">Numéro de téléphone:(+212)</label></td>
+                <td><input type="text" maxlength="10"  id="telNbr"></td>
+            </tr>
+        </table>
+        <div id="choixPayment">
+            <label for="">Type de payment:</label>
+            <div class="radioButtons">
+                <input type="radio" name="paymethod"  id="paypal"  checked>
+                <label for="paypal">
+                    <img src="./src/paypal.png" style="height: 70px;"  alt="paypal">
+                </label> 
+                <input type="radio" name="paymethod"  id="carte">
+                <label for="carte" >
+                    <img src="./src/carte1.png"  alt="carte">
+                </label>
+                
+            </div>
+        </div>
+            <table id="tablePaypal">
+                <tr>
+                    <td class="right"><label for="email">Entrer votre e-mail:</label></td>
+                    <td><input type="text"  id="email"></td>
+                </tr>
+                <tr>
+                    <td class="right"><label for="pwd">Mot de passe:</label></td>
+                    <td><input type="password" id="pwd"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center">NB:N'oubliez d'autoriser la transaction.</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center"><button type="submit" onclick="checkPaypal()">Valider</button><button onclick="removeError()" type="reset">Effacer</button></td>
+                </tr>
+            </table>
+            
+            <table id="tableCarte">
+                <tr>
+                    <td class="right"><label for="typeCarte">Sélectionnez le type de carte</label></td>
+                    <td><select  id="typeCarte">
+                        <option value="Null" checked>Null</option>
+                        <option value="visa">Visa</option>
+                        <option value="masterCard">Master Card</option>
+                        <option value="cmi">CMI</option>
+                        <option value="discover">Discover</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="right"><label for="numeroCarte">Numéro de la carte:</label></td>
+                    <td><input type="text" maxlength="16" min="0" id="numeroCarte"></td>
+                </tr>
+                <tr>
+                    <td class="right"><label for="expirationDate">Expiration fin</label></td>
+                    <td>
+                        <input type="number" placeholder="mois" maxlength="3" style='width:45px' min="1" max="12" maxlength="4" id="mois">
+                        <input type="number" placeholder="année" style='width:45px' min="2000" max="2030" id="annee">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="right"><label for="code">Code de vérification:</label></td>
+                    <td><input type="text" min="0" size="4" id="code"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center"><button type="submit" onclick="checkCarte()">Valider</button><button onclick="removeError()" type="reset">Effacer</button></td>
+                </tr>
+            </table>
+        
+        <div id="error"></div>
+    </form>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            display: grid;
+            place-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ventee Pizza</h1>
+    <form onsubmit="event.preventDefault()">
+    <table style="width:300px">
+        <tr>
+            <td><label for="nomclient">Nom du client</label></td>
+            <td><input type="text" id="nomclient" placeholder="Nom..." ></td>
+        </tr>
+        <tr>
+            <td>
+                <label for="adresse">Adresse</label>
+            </td>
+            <td>
+                <input type="text" value="aaaa" style="float:left;width:15%" readonly>
+                <input type="text" id="adresse"placeholder="addresse..." style="float:left;width:60%" >
+            </td>
+        </tr>
+    </table>
+    <h2 style="text-align: center;">Produits à acheter</h2>
+    <table border="1">
+        <tr>
+            <th>Nom du produint</th>
+            <th>Prix unitaire en DH</th>
+            <th>Quantité</th>
+        </tr>
+        <tr>
+            <td>Pizza 4 fromages</td>
+            <td>80</td>
+            <td><input type="number" min="0" id="P4Fnbr" value="0"></td>
+        </tr>
+        <tr>
+            <td>Pizza Herbo</td>
+            <td>75</td>
+            <td><input type="number" min="0" id="PHnbr" value="0"></td>
+        </tr>
+        <tr>
+            <td>Pizza Viande hachée</td>
+            <td>100</td>
+            <td><input type="number" min="0" id="PVHnbr" value="0"></td>
+        </tr>
+        <tr>
+            <td>Pizza fruits de mer</td>
+            <td>120</td>
+            <td><input type="number" min="0" id="PFMnbr" value="0"></td>
+        </tr>
+    </table>
+    <h3>Paiement par:</h3>
+    <input type="radio" name="paymethod"  id="cartebancaire" checked><label for="cartebancaire"> Carte bancaire</label>
+    <input type="radio" name="paymethod" id="cheque"><label for="cheque">chèque</label><br>
+    <label for="numeroCarte">Numéro de la carte bancaire:</label>
+    <input type="text" id="numeroCarte" ><br>
+    <button type="submit" id="btn">Envoyer</button><span id="error"></span><br>
+    <label for="total">Merci de votre visite, le montant total de votre commande est: </label>
+    <input type="text" id="total">
+</form>
+<script>
+    const pizzaFromage = 80;
+    const pizzaHerbo = 75;
+    const pizzaViande = 100;
+    const pizzaFruit = 120;
+    const P4Fnbr = document.getElementById("P4Fnbr");
+    const PHnbr = document.getElementById("PHnbr");
+    const PVHnbr = document.getElementById("PVHnbr");
+    const PFMnbr = document.getElementById("PFMnbr");
+    const nomclient = document.getElementById("nomclient");
+    const adresse = document.getElementById("adresse");
+    const cartebancaire = document.getElementById("cartebancaire");
+    const cheque = document.getElementById("cheque");
+    const numeroCarte = document.getElementById("numeroCarte");
+    const total = document.getElementById("total");
+    const btn = document.getElementById("btn");
+    const form = document.querySelector("form")
+    const error = document.getElementById("error")
+    
+    cheque.onclick = function(){
+        error.innerText = "";
+        if(cheque.checked === true){
+            numeroCarte.disabled = true;
+            numeroCarte.value="";
+        }
+    }
+    cartebancaire.onclick = function(){
+        error.innerText = "";
+        if(cartebancaire.checked === true){
+            numeroCarte.disabled = false;
+            
+        }
+    }
+    btn.onclick = function(){
+        error.innerText = "";
+        somme = Number(P4Fnbr.value) +  Number(PHnbr.value) + Number(PVHnbr.value) + Number(PFMnbr.value);
+        if(nomclient.value===""){
+            error.style.color="red";
+            error.innerText = "Saisir Votre nom";
+        }
+        else if(!/^[a-zA-Z]+\s*?[a-zA-Z]*$/.test(nomclient.value)){
+            error.style.color="red";
+            error.innerText = "Nom invalide";
+        }
+        else if(adresse.value === "" && cheque.checked === false){
+            error.style.color="red";
+            error.innerText = "Saisir Votre addresse";
+        }
+        else if( Number(P4Fnbr.value) < 0 || Number(PHnbr.value) < 0 ||  Number(PVHnbr.value) < 0 || Number(PFMnbr.value) < 0)
+        {
+            error.style.color="red"
+            error.innerText = "Saisir une valeur positive";
+        }
+        else if(somme <=0){
+            error.style.color="red"
+            error.innerText = "Saisir au moins une pizza";
+        }
+        else if(numeroCarte.value ==="" && cheque.checked === false){
+            error.style.color="red"
+            error.innerText = "Saisir le numero de la carte bancaire";
+        }
+        else if( isNaN(numeroCarte.value)){
+            error.style.color="red"
+            error.innerText = "Le numero de carte est invalide";
+        }
+        
+        else{
+            error.style.color = "green";
+            error.innerText = "merci pour votre commande";
+        }
+    }
+    
+    P4Fnbr.oninput=function(){
+        var payement = Number(P4Fnbr.value)*pizzaFromage + Number(PHnbr.value)*pizzaHerbo +Number(PVHnbr.value)*pizzaViande+Number(PFMnbr.value)*pizzaFruit;
+        total.value = `${payement}DH`;
+    }
+    PHnbr.oninput=function(){
+        var payement = Number(P4Fnbr.value)*pizzaFromage + Number(PHnbr.value)*pizzaHerbo +Number(PVHnbr.value)*pizzaViande+Number(PFMnbr.value)*pizzaFruit;
+        total.value = `${payement}DH`;
+    }
+    PVHnbr.oninput=function(){
+        var payement = Number(P4Fnbr.value)*pizzaFromage + Number(PHnbr.value)*pizzaHerbo +Number(PVHnbr.value)*pizzaViande+Number(PFMnbr.value)*pizzaFruit;
+        total.value = `${payement}DH`;
+    }
+    PFMnbr.oninput=function(){
+        var payement = Number(P4Fnbr.value)*pizzaFromage + Number(PHnbr.value)*pizzaHerbo +Number(PVHnbr.value)*pizzaViande+Number(PFMnbr.value)*pizzaFruit;
+        total.value = `${payement}DH`;
+    }
+    
+</script>
+</body>
+</html>
