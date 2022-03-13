@@ -10,8 +10,8 @@
 body {
   font-family: "Roboto", sans-serif;
   width: 100%;
-  height: 100vh;
-  max-width: 600px;
+  min-height: 100vh;
+  max-width: 650px;
   display: flex;
   justify-content: space-around;
   box-shadow: 0 2px 4px rgb(126, 123, 123);
@@ -175,5 +175,12 @@ iframe {
   #trailer > iframe {
     width: 100%;
     height: 400px;
+  }
+  #cast > div {
+    width: 100px;
+    height: 100px;
+  }
+  #genre > span {
+    font-size: 25px;
   }
 }
