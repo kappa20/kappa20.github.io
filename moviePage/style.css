@@ -10,6 +10,26 @@
 
 body {
   font-family: "Roboto", sans-serif;
+  width: 100%;
+  height: 100vh;
+  max-width: 600px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-shadow: 0 2px 4px #7e7b7b;
+          box-shadow: 0 2px 4px #7e7b7b;
+  border-radius: 10px;
+  row-gap: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 0 auto;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
 }
 
 a {
@@ -142,10 +162,17 @@ header {
   background-color: #000;
   color: white;
   border-radius: 10px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 }
 
 #overview > h3 {
   text-align: center;
+  padding: 10px 0;
   font-size: 18px;
 }
 
@@ -173,10 +200,18 @@ header {
 
 #trailer {
   padding: 5px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 iframe {
-  width: 100%;
   border: none;
   outline: none;
 }
@@ -200,4 +235,13 @@ iframe {
 #cast > div > img {
   width: 100%;
   height: 100%;
+}
+
+@media only screen and (min-width: 500px) {
+  #overview > h3 {
+    font-size: 25px;
+  }
+  #overview > p {
+    font-size: 18px;
+  }
 }
