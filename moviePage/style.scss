@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 14;
+  font-weight: 700;
+  display: inline-block;
+}
+header {
+  padding: 12px 18px;
+  display: grid;
+  grid-template-rows: 60px;
+  grid-template-columns: auto auto;
+  align-items: center;
+}
+.logoContainer > a {
+  height: 100%;
+  width: 100%;
+}
+.logoContainer > a > img {
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgb(126, 123, 123);
+}
+
+.logoContainer {
+  width: 109px;
+  height: 37px;
+  justify-self: center;
+}
+.linksContainer {
+  display: flex;
+  justify-content: end;
+  column-gap: 15px;
+  height: max-content;
+  justify-self: center;
+}
+.linksContainer > a {
+  text-shadow: 0 1px 2px rgb(77, 77, 77);
+  position: relative;
+}
+.linksContainer > a::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #000;
+  transform: scale(0, 1);
+  transform-origin: left;
+  transition: transform 250ms ease-in-out;
+}
+.linksContainer > a:hover::before {
+  transform: scale(1, 1);
+}
+
+#titleContainer {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#title {
+  padding: 7px;
+  box-shadow: 0 2px 4px rgb(126, 123, 123);
+  border-radius: 10px;
+  font-size: 18px;
+  max-width: 70vw;
+  text-align: center;
+  word-wrap: break-word;
+  font-weight: 700;
+}
+#movieInfo {
+  margin-top: 20px;
+  padding: 0 10px;
+  margin: 20 auto 0;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.1fr 1.5fr;
+  grid-template-rows: 1fr;
+}
+
+#poster > img {
+  border-radius: 10px;
+}
+#overview {
+  padding: 7px;
+  background-color: #000;
+  color: white;
+  border-radius: 10px;
+}
+#overview > h3 {
+  text-align: center;
+  font-size: 18px;
+}
+#overview > p {
+  font-size: 11px;
+}
+
+#genre {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#genre > span {
+  border-radius: 10px;
+  text-transform: capitalize;
+  font-family: 700;
+  padding: 2px 7px;
+  box-shadow: 0 2px 4px rgb(126, 123, 123);
+}
+#trailer {
+  padding: 5px;
+}
+iframe {
+  width: 100%;
+
+  border: none;
+  outline: none;
+}
+
+#cast {
+  display: flex;
+  justify-content: space-around;
+}
+
+#cast > div {
+  display: inline-block;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+
+  overflow: hidden;
+}
+#cast > div > img {
+  width: 100%;
+  height: 100%;
+}
