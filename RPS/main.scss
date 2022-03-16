@@ -12,18 +12,27 @@ body {
 
 #GameContainer {
   width: 85%;
-  max-width: 700px;
+  
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: max-content auto;
   justify-content: space-between;
-  padding: 5vh 0;
+  align-items: center;
+  padding: 5vh 0 0 0;
 }
+/* #GameContainer > div {
+  border:1px solid purple;
+} */
 
 /* Score Container */
 
 #scoreContainer {
-  padding: 10px;
+  justify-self:center ;
+  width: 90vw;
+  max-width: 700px;
+  padding: 15px;
   border: 2px solid $HeaderOutline;
   border-radius: 10px;
   display: grid;
@@ -97,12 +106,53 @@ body {
 }
 
 /* Round */
-
-/* user Pick */
-#round {
-  display: flex;
-  justify-content: space-between;
+/* #round {
+  border: 2px solid red;
 }
+#round > div {
+  border: 1px solid black;
+} */
+/* user Pick */
+/* #playerPick {
+  grid-area: player;
+}
+#aiPick {
+  grid-area: ai;
+}
+#again {
+  grid-area: again;
+}
+#rules {
+  grid-area: rules;
+} */
+#round {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  justify-content: stretch;
+  row-gap: 30px;
+}
+#again{
+  grid-column: 1/3;
+  grid-row: 2/3;
+}
+#rules{
+  grid-column: 1/3;
+  grid-row: 2/3;
+}
+#playerPick{
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+#aiPick{
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+#rules{
+  grid-column: 1/3;
+  grid-row: 3/4;
+}
+
 #round > div {
   display: flex;
   flex-direction: column;
@@ -161,8 +211,8 @@ body {
   background-color: rgba(7, 7, 7, 0.432);
 }
 
-.AI{
-  transition:opacity 1s ease-in 1s;
+.AI {
+  transition: opacity 1s ease-in 1s;
 }
 #again {
   display: grid;
@@ -187,6 +237,13 @@ body {
 }
 .hideImg > div > img {
   opacity: 0;
+}
+
+.twoColumns{
+  grid-template-columns: 1fr 1fr;
+}
+.threeCol{
+  grid-template-columns: 1fr 1fr;
 }
 
 #picksContainer {
@@ -230,4 +287,71 @@ body {
 
 .hide {
   display: none;
+}
+
+@media only screen and (min-width: 700px) {
+  #scoreContainer {
+    padding: 15px 30px;
+    grid-template-columns: 110px 120px;
+    grid-auto-rows: 120px;
+  }
+  #scoreTitle {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  #scoreNumber {
+    font-size: 70px;
+    line-height: 60px;
+  }
+  .small {
+    transform: scale(1.4);
+  }
+  .small2 {
+    width: initial;
+  }
+  .ScissorPos {
+    top: -70px;
+    right: 90px;
+  }
+  .SpockPos {
+    top: 15%;
+    left: -50px;
+  }
+  .PaperPos {
+    top: 15%;
+    right: -50px;
+  }
+  .USER ,.AI{
+    padding: 20px;
+  }
+  .USER > div,
+  .AI > div {
+  border-radius: 50%;
+  padding: 24px;
+}
+  .AI > div > img,.USER > div > img{
+    width:100px;
+    height: 100px;
+  }
+  #round {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-rows: auto auto;
+  }
+  #playerPick{
+    grid-column: 1/2;
+  }
+  #again{
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+  #aiPick{
+    grid-column: 3/4;
+  }
+  #rules{
+    position:absolute;
+    bottom: 20px;
+    right:20px;
+  }
+  
 }

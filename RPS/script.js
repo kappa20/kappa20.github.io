@@ -25,9 +25,7 @@ picks.forEach(element => {
         userPick.id = this.id;
         pickImg.src = this.title;
         picksContainer.style.display ="none";
-        round.style.display = "flex";
-        again.style.display ="grid";
-        again.style.visibility ="hidden";
+        round.style.display = "grid";
         againBtn.disabled = true;
         setTimeout(function(){
             var nbr = Math.floor(Math.random()*5)
@@ -38,8 +36,7 @@ picks.forEach(element => {
             aiPick.classList.remove("noeffect");
             aiPick.classList.remove("hideImg");
             aiPick.classList.add("effect");
-            
-            again.style.visibility ="visible";
+            again.style.display = "grid";
             againBtn.disabled = false;
             
             
@@ -60,6 +57,7 @@ picks.forEach(element => {
                 score--;
                 scoreNumber.innerText = `${score}`
             }
+            again.style.transform = "scale(1)";
         },500)
 
         

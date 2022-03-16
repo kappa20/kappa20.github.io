@@ -59,7 +59,7 @@
 
     <div id="round"  style="display: none;">
         <!-- User Pick -->
-        <div>
+        <div id="playerPick">
             <div id=""  class="effect USER">
               <div>
                 <img title="use" src="./images/icon-lizard.svg" alt="scissors">
@@ -69,7 +69,7 @@
             <span>YOU PICKED</span>
         </div>
         <!-- AI Pick -->
-        <div >
+        <div id="aiPick">
           <div   class="noeffect hideImg AI">
             <div>
               <img id="aiImg"   src="./images/icon-scissors.svg" alt="scissors">
@@ -78,15 +78,16 @@
           </div>
           <span>THE HOUSE PICKED</span>
         </div>
+        <div id="again"  style="display: none;">
+          <span id="gameResult">YOU WIN</span>
+          <button>PLAY AGAIN</button>
+        </div>
+        <div id="rules">
+          <button id="rulesBtn">RULES</button>
+        </div>  
     </div>
 
-      <div id="again"  style="display: none;">
-        <span id="gameResult">YOU WIN</span>
-        <button>PLAY AGAIN</button>
-      </div>
-      <div id="rules">
-        <button id="rulesBtn">RULES</button>
-      </div> 
+      
   </div>
 
   <!-- rules Page -->
