@@ -509,12 +509,30 @@ body {
   }
   #rules {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 50px;
+    right: 50px;
+  }
+  #round > div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
   }
 }
 
 .shadowEffect {
   -webkit-box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2), 0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
           box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2), 0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
+}
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+}
+
+.attribution a {
+  color: #3e52a3;
 }
