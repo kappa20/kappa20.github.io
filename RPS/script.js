@@ -21,7 +21,8 @@ var aiImg = document.getElementById("aiImg");
 var gameResult = document.getElementById("gameResult")
 picks.forEach(element => {
     element.addEventListener("click",function(){
-        
+
+        aiPick.classList.remove("shadowEffect");
         userPick.id = this.id;
         pickImg.src = this.title;
         picksContainer.style.display ="none";
@@ -58,6 +59,7 @@ picks.forEach(element => {
                 scoreNumber.innerText = `${score}`
             }
             again.style.transform = "scale(1)";
+            aiPick.classList.add("shadowEffect");
         },500)
 
         

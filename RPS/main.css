@@ -337,7 +337,7 @@ body {
 
 #again > span {
   color: white;
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
   display: inline;
 }
@@ -419,6 +419,21 @@ body {
   display: none;
 }
 
+.USER, .AI {
+  padding: 20px;
+}
+
+.USER > div,
+.AI > div {
+  border-radius: 50%;
+  padding: 24px;
+}
+
+.AI > div > img, .USER > div > img {
+  width: 100px;
+  height: 100px;
+}
+
 @media only screen and (min-width: 700px) {
   #scoreContainer {
     padding: 15px 30px;
@@ -454,22 +469,23 @@ body {
     right: -50px;
   }
   .USER, .AI {
-    padding: 20px;
+    padding: 3vw;
   }
   .USER > div,
   .AI > div {
     border-radius: 50%;
-    padding: 24px;
+    padding: 6vw;
   }
   .AI > div > img, .USER > div > img {
-    width: 100px;
-    height: 100px;
+    width: 8vw;
+    height: 8vw;
   }
   #round {
     display: -ms-grid;
     display: grid;
-    -ms-grid-columns: 2fr 1fr 2fr;
-        grid-template-columns: 2fr 1fr 2fr;
+    -ms-grid-columns: 2fr max-content 2fr;
+        grid-template-columns: 2fr -webkit-max-content 2fr;
+        grid-template-columns: 2fr max-content 2fr;
     -ms-grid-rows: auto auto;
         grid-template-rows: auto auto;
   }
@@ -496,4 +512,9 @@ body {
     bottom: 20px;
     right: 20px;
   }
+}
+
+.shadowEffect {
+  -webkit-box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2), 0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
+          box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2), 0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
 }
