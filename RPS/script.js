@@ -16,7 +16,7 @@ var randomList = [["Rock","./images/icon-rock.svg"],
 ,["Scissors","./images/icon-scissors.svg"],
 ["Spock","./images/icon-spock.svg"],
 ["Lizard","./images/icon-lizard.svg"]]
-var score = 0
+var score = 12
 var aiImg = document.getElementById("aiImg");
 var gameResult = document.getElementById("gameResult")
 picks.forEach(element => {
