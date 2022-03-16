@@ -1,0 +1,331 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/* Text */
+/* Background */
+/* Fonts */
+body {
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  background-image: radial-gradient(#1f3756, #141539);
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
+
+#GameContainer {
+  width: 85%;
+  max-width: 700px;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 5vh 0;
+}
+
+/* Score Container */
+#scoreContainer {
+  padding: 10px;
+  border: 2px solid #606e85;
+  border-radius: 10px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 55px 85px;
+      grid-template-columns: 55px 85px;
+  grid-auto-rows: 80px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#logoContainer {
+  display: -ms-grid;
+  display: grid;
+  place-items: center;
+}
+
+#logoContainer > img {
+  width: 100%;
+}
+
+#score {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 2px black;
+          box-shadow: 0 0 2px black;
+}
+
+#scoreTitle {
+  color: #2a46c0;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+#scoreNumber {
+  font-size: 35px;
+  font-weight: 700;
+  color: #3b4363;
+}
+
+/* pentagone choice  */
+/* rules */
+#rules {
+  text-align: center;
+}
+
+#rules > button {
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  border-radius: 5px;
+  padding: 13px 35px;
+  cursor: pointer;
+}
+
+#rulesAlert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: white;
+  -webkit-transition: -webkit-transform 250ms ease-in-out;
+  transition: -webkit-transform 250ms ease-in-out;
+  transition: transform 250ms ease-in-out;
+  transition: transform 250ms ease-in-out, -webkit-transform 250ms ease-in-out;
+  color: #3b4363;
+}
+
+.hideRules {
+  -webkit-transform: translateY(-100%);
+          transform: translateY(-100%);
+}
+
+#closeIcon {
+  cursor: pointer;
+}
+
+/* Round */
+/* user Pick */
+#round {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#round > div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  row-gap: 20px;
+}
+
+#round > div > span {
+  color: white;
+  font-weight: 700;
+}
+
+.effect > div,
+.noeffect > div {
+  border-radius: 50%;
+  padding: 24px;
+}
+
+.effect > div > img,
+.noeffect > div > img {
+  width: 44px;
+  height: 44px;
+}
+
+.effect {
+  padding: 15px;
+  border-radius: 50%;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  -webkit-box-shadow: inset 0 -5px 1px #00000056;
+          box-shadow: inset 0 -5px 1px #00000056;
+}
+
+.noeffect {
+  padding: 15px;
+  border-radius: 50%;
+}
+
+.effect > div {
+  background-color: white;
+  -webkit-box-shadow: inset 0 5px 1px #00000056;
+          box-shadow: inset 0 5px 1px #00000056;
+}
+
+#Scissors {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ec9e0e), to(#eca922));
+  background-image: linear-gradient(#ec9e0e, #eca922);
+}
+
+#Rock {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#dc2e4e), to(#dd405d));
+  background-image: linear-gradient(#dc2e4e, #dd405d);
+}
+
+#Paper {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#4865f4), to(#5671f5));
+  background-image: linear-gradient(#4865f4, #5671f5);
+}
+
+#Lizard {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#834fe3), to(#8c5de5));
+  background-image: linear-gradient(#834fe3, #8c5de5);
+}
+
+#Spock {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#40b9ce), to(#52bed1));
+  background-image: linear-gradient(#40b9ce, #52bed1);
+}
+
+.noeffect > div {
+  background-color: rgba(7, 7, 7, 0.432);
+}
+
+.AI {
+  -webkit-transition: opacity 1s ease-in 1s;
+  transition: opacity 1s ease-in 1s;
+}
+
+#again {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+  place-items: center;
+  row-gap: 20px;
+}
+
+#again > span {
+  color: white;
+  font-size: 50px;
+  text-align: center;
+  display: inline;
+}
+
+#again > button {
+  display: inline-block;
+  font-size: 30px;
+  border: none;
+  border-radius: 7px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.hideImg > div > img {
+  opacity: 0;
+}
+
+#picksContainer {
+  position: relative;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  margin: auto;
+}
+
+#picksContainer > div {
+  position: absolute;
+}
+
+.ScissorPos {
+  top: -50px;
+  right: 37px;
+}
+
+.LizardPos {
+  bottom: -50px;
+  left: -20px;
+}
+
+.RockPos {
+  bottom: -50px;
+  right: -20px;
+}
+
+.PaperPos {
+  top: 5%;
+  right: -50px;
+}
+
+.SpockPos {
+  top: 5%;
+  left: -50px;
+}
+
+.small {
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  cursor: pointer;
+}
+
+.small2 {
+  width: 200px;
+}
+
+.hide {
+  display: none;
+}

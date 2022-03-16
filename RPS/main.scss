@@ -1,0 +1,233 @@
+@import "resets";
+@import "variables";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+body {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  background-image: $RadialGradient;
+  height: 100vh;
+  font-family: $fam;
+}
+
+#GameContainer {
+  width: 85%;
+  max-width: 700px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5vh 0;
+}
+
+/* Score Container */
+
+#scoreContainer {
+  padding: 10px;
+  border: 2px solid $HeaderOutline;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 55px 85px;
+  grid-auto-rows: 80px;
+  justify-content: space-between;
+}
+#logoContainer {
+  display: grid;
+  place-items: center;
+}
+#logoContainer > img {
+  width: 100%;
+}
+#score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 2px black;
+}
+#scoreTitle {
+  color: $ScoreText;
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+#scoreNumber {
+  font-size: 35px;
+  font-weight: 700;
+
+  color: $DarkText;
+}
+
+/* pentagone choice  */
+
+/* rules */
+#rules {
+  text-align: center;
+}
+#rules > button {
+  border: 1px solid white;
+  background-color: transparent;
+  color: white;
+  border-radius: 5px;
+  padding: 13px 35px;
+  cursor: pointer;
+}
+#rulesAlert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: white;
+  transition: transform 250ms ease-in-out;
+  color: $DarkText;
+}
+.hideRules {
+  transform: translateY(-100%);
+}
+
+#closeIcon {
+  cursor: pointer;
+}
+
+/* Round */
+
+/* user Pick */
+#round {
+  display: flex;
+  justify-content: space-between;
+}
+#round > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+}
+#round > div > span {
+  color: white;
+  font-weight: 700;
+}
+
+.effect > div,
+.noeffect > div {
+  border-radius: 50%;
+  padding: 24px;
+}
+.effect > div > img,
+.noeffect > div > img {
+  width: 44px;
+  height: 44px;
+}
+.effect {
+  padding: 15px;
+  border-radius: 50%;
+  width: max-content;
+  box-shadow: inset 0 -5px 1px #00000056;
+}
+.noeffect {
+  padding: 15px;
+  border-radius: 50%;
+}
+.effect > div {
+  background-color: rgb(255, 255, 255);
+  box-shadow: inset 0 5px 1px #00000056;
+}
+
+#Scissors {
+  background-image: $ScissorsGradient;
+}
+
+#Rock {
+  background-image: $RockGradient;
+}
+#Paper {
+  background-image: $PaperGradient;
+}
+#Lizard {
+  background-image: $LizardGradient;
+}
+#Spock {
+  background-image: $Cyan;
+}
+
+.noeffect > div {
+  background-color: rgba(7, 7, 7, 0.432);
+}
+
+.AI{
+  transition:opacity 1s ease-in 1s;
+}
+#again {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  row-gap: 20px;
+}
+#again > span {
+  color: white;
+
+  font-size: 50px;
+  text-align: center;
+  display: inline;
+}
+#again > button {
+  display: inline-block;
+  font-size: 30px;
+  border: none;
+  border-radius: 7px;
+  padding: 10px;
+  cursor: pointer;
+}
+.hideImg > div > img {
+  opacity: 0;
+}
+
+#picksContainer {
+  position: relative;
+  width: max-content;
+  height: max-content;
+  margin: auto;
+}
+#picksContainer > div {
+  position: absolute;
+}
+.ScissorPos {
+  top: -50px;
+  right: 37px;
+}
+.LizardPos {
+  bottom: -50px;
+  left: -20px;
+}
+.RockPos {
+  bottom: -50px;
+  right: -20px;
+}
+.PaperPos {
+  top: 5%;
+  right: -50px;
+}
+
+.SpockPos {
+  top: 5%;
+  left: -50px;
+}
+
+.small {
+  transform: scale(0.5);
+  cursor: pointer;
+}
+.small2 {
+  width: 200px;
+}
+
+.hide {
+  display: none;
+}

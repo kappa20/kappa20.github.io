@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="main.css">
+  
+  <title>Frontend Mentor | Rock, Paper, Scissors</title>
+
+</head>
+<body>
+
+  <div id="GameContainer">
+      <div id="scoreContainer">
+        <div id="logoContainer">
+          <img src="./images/logo-bonus.svg" alt="">
+        </div>
+        <div id="score">
+              <span id="scoreTitle">SCORE</span>
+              <span id="scoreNumber">0</span>
+        </div>
+      </div>
+      <div id="picksContainer">
+          <img class="small2" src="./images/bg-pentagon.png" >
+        <div id="Lizard" title="./images/icon-lizard.svg"  class="effect small LizardPos">
+          <div>
+            <img  src="./images/icon-lizard.svg" alt="scissors">
+          </div>
+          
+        </div>
+        <div id="Scissors" title="./images/icon-scissors.svg" class="effect ScissorPos small">
+          <div>
+            <img src="./images/icon-scissors.svg" alt="scissors">
+          </div>
+          
+        </div>
+        <div id="Rock" title="./images/icon-rock.svg" class="effect RockPos small">
+          <div>
+            <img src="./images/icon-rock.svg" alt="scissors">
+          </div>
+          
+        </div>
+        <div id="Paper" title="./images/icon-paper.svg" class="effect PaperPos small">
+          <div>
+            <img src="./images/icon-paper.svg" alt="scissors">
+          </div>
+          
+        </div>
+        <div id="Spock" title="./images/icon-spock.svg" class="effect SpockPos small">
+          <div>
+            <img src="./images/icon-spock.svg" alt="scissors">
+          </div>
+          
+        </div>
+      </div>
+      
+
+    <div id="round"  style="display: none;">
+        <!-- User Pick -->
+        <div>
+            <div id=""  class="effect USER">
+              <div>
+                <img title="use" src="./images/icon-lizard.svg" alt="scissors">
+              </div>
+              
+            </div>
+            <span>YOU PICKED</span>
+        </div>
+        <!-- AI Pick -->
+        <div >
+          <div   class="noeffect hideImg AI">
+            <div>
+              <img id="aiImg"   src="./images/icon-scissors.svg" alt="scissors">
+            </div>
+            
+          </div>
+          <span>THE HOUSE PICKED</span>
+        </div>
+    </div>
+
+      <div id="again"  style="display: none;">
+        <span id="gameResult">YOU WIN</span>
+        <button>PLAY AGAIN</button>
+      </div>
+      <div id="rules">
+        <button id="rulesBtn">RULES</button>
+      </div> 
+  </div>
+
+  <!-- rules Page -->
+  <div id="rulesAlert" class="hideRules">
+        <h1>RULES</h1>
+        <img src="./images/image-rules-bonus.svg">
+        <img id="closeIcon" src="./images/icon-close.svg">
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+<!--  .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); } -->
+<!-- <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div> -->
