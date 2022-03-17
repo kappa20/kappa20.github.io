@@ -309,7 +309,7 @@ body {
   right: 50px;
 }
 
-@media only screen and (min-width: 700px) {
+/* @media only screen and (min-width: 700px) {
   #scoreContainer {
     padding: 15px 30px;
     grid-template-columns: 110px 120px;
@@ -379,7 +379,7 @@ body {
     display: flex;
     flex-direction: column-reverse;
   }
-}
+} */
 
 .shadowEffect {
   box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2),
@@ -400,7 +400,7 @@ body {
 }
  */
 
-@media only screen and(max-width:320px) {
+/* @media only screen and(max-width:320px) {
   .USER,
   .AI {
     padding: 15px;
@@ -416,3 +416,4 @@ body {
     height: 70px;
   }
 }
+ */

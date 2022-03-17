@@ -443,11 +443,10 @@ body {
   right: 50px;
 }
 
-@media only screen and (min-width: 700px) {
+/* @media only screen and (min-width: 700px) {
   #scoreContainer {
     padding: 15px 30px;
-    -ms-grid-columns: 110px 120px;
-        grid-template-columns: 110px 120px;
+    grid-template-columns: 110px 120px;
     grid-auto-rows: 120px;
   }
   #scoreTitle {
@@ -459,8 +458,7 @@ body {
     line-height: 60px;
   }
   .small {
-    -webkit-transform: scale(1.4);
-            transform: scale(1.4);
+    transform: scale(1.4);
   }
   .small2 {
     width: initial;
@@ -492,30 +490,18 @@ body {
     height: 100px;
   }
   #round {
-    display: -ms-grid;
     display: grid;
-    -ms-grid-columns: 2fr max-content 2fr;
-        grid-template-columns: 2fr -webkit-max-content 2fr;
-        grid-template-columns: 2fr max-content 2fr;
-    -ms-grid-rows: auto auto;
-        grid-template-rows: auto auto;
+    grid-template-columns: 2fr max-content 2fr;
+    grid-template-rows: auto auto;
   }
   #playerPick {
-    -ms-grid-column: 1;
-    -ms-grid-column-span: 1;
     grid-column: 1/2;
   }
   #again {
-    -ms-grid-column: 2;
-    -ms-grid-column-span: 1;
     grid-column: 2/3;
-    -ms-grid-row: 1;
-    -ms-grid-row-span: 1;
     grid-row: 1/2;
   }
   #aiPick {
-    -ms-grid-column: 3;
-    -ms-grid-column-span: 1;
     grid-column: 3/4;
   }
   #rules {
@@ -524,16 +510,10 @@ body {
     right: 50px;
   }
   #round > div {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: reverse;
-        -ms-flex-direction: column-reverse;
-            flex-direction: column-reverse;
+    flex-direction: column-reverse;
   }
-}
-
+} */
 .shadowEffect {
   -webkit-box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2), 0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
           box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2), 0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
@@ -554,7 +534,7 @@ body {
   right: 50px;
 }
  */
-@media only screen and (max-width: 320px) {
+/* @media only screen and(max-width:320px) {
   .USER,
   .AI {
     padding: 15px;
@@ -570,3 +550,4 @@ body {
     height: 70px;
   }
 }
+ */
