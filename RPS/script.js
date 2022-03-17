@@ -21,8 +21,13 @@ var aiImg = document.getElementById("aiImg");
 var gameResult = document.getElementById("gameResult")
 picks.forEach(element => {
     element.addEventListener("click",function(){
-
-        aiPick.classList.remove("shadowEffect");
+        if(aiPick.classList.contains("shadowEffect")){
+            aiPick.classList.remove("shadowEffect");
+        }
+        if(userPick.classList.contains("shadowEffect")){
+            userPick.classList.remove("shadowEffect");
+        }
+        
         userPick.id = this.id;
         pickImg.src = this.title;
         picksContainer.style.display ="none";
@@ -49,6 +54,7 @@ picks.forEach(element => {
                 gameResult.innerText = "YOU WIN";
                 score++;
                 scoreNumber.innerText = `${score}`
+                userPick.classList.add("shadowEffect");
             }
             else if(userWin(userPick.getAttribute("id"),aiPick.getAttribute("id")) === "draw"){
                 gameResult.innerText = "DRAW";
@@ -57,9 +63,10 @@ picks.forEach(element => {
                 gameResult.innerText = "YOU LOST";
                 score--;
                 scoreNumber.innerText = `${score}`
+                aiPick.classList.add("shadowEffect");
             }
             again.style.transform = "scale(1)";
-            aiPick.classList.add("shadowEffect");
+            
         },500)
 
         
