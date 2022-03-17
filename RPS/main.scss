@@ -12,7 +12,7 @@ body {
 
 #GameContainer {
   width: 85%;
-  
+
   height: 100vh;
   justify-content: center;
   display: grid;
@@ -29,7 +29,7 @@ body {
 /* Score Container */
 
 #scoreContainer {
-  justify-self:center ;
+  justify-self: center;
   width: 90vw;
   max-width: 700px;
   padding: 15px;
@@ -132,23 +132,23 @@ body {
   justify-content: stretch;
   row-gap: 30px;
 }
-#again{
+#again {
   grid-column: 1/3;
   grid-row: 2/3;
 }
-#rules{
+#rules {
   grid-column: 1/3;
   grid-row: 2/3;
 }
-#playerPick{
+#playerPick {
   grid-column: 1/2;
   grid-row: 1/2;
 }
-#aiPick{
+#aiPick {
   grid-column: 2/3;
   grid-row: 1/2;
 }
-#rules{
+#rules {
   grid-column: 1/3;
   grid-row: 3/4;
 }
@@ -239,10 +239,10 @@ body {
   opacity: 0;
 }
 
-.twoColumns{
+.twoColumns {
   grid-template-columns: 1fr 1fr;
 }
-.threeCol{
+.threeCol {
   grid-template-columns: 1fr 1fr;
 }
 
@@ -288,17 +288,19 @@ body {
 .hide {
   display: none;
 }
-.USER ,.AI{
+.USER,
+.AI {
   padding: 20px;
 }
 .USER > div,
 .AI > div {
-border-radius: 50%;
-padding: 24px;
+  border-radius: 50%;
+  padding: 24px;
 }
-.AI > div > img,.USER > div > img{
-  width:100px;
-  height: 100px;
+.AI > div > img,
+.USER > div > img {
+  width: 80px;
+  height: 80px;
 }
 
 @media only screen and (min-width: 700px) {
@@ -333,49 +335,54 @@ padding: 24px;
     top: 15%;
     right: -50px;
   }
-  .USER ,.AI{
-    padding: 3vw;
+  .USER,
+  .AI {
+    padding: 2vw;
   }
   .USER > div,
   .AI > div {
-  border-radius: 50%;
-  padding: 6vw;
-}
-  .AI > div > img,.USER > div > img{
-    width:8vw;
-    height: 8vw;
+    border-radius: 50%;
+    padding: 40px;
+  }
+  .AI > div > img,
+  .USER > div > img {
+    width: 100px;
+    height: 100px;
   }
   #round {
     display: grid;
     grid-template-columns: 2fr max-content 2fr;
     grid-template-rows: auto auto;
   }
-  #playerPick{
+  #playerPick {
     grid-column: 1/2;
   }
-  #again{
+  #again {
     grid-column: 2/3;
     grid-row: 1/2;
   }
-  #aiPick{
+  #aiPick {
     grid-column: 3/4;
   }
-  #rules{
-    position:absolute;
+  #rules {
+    position: absolute;
     bottom: 50px;
-    right:50px;
+    right: 50px;
   }
-  #round > div{
+  #round > div {
     display: flex;
     flex-direction: column-reverse;
   }
-  
 }
 
-.shadowEffect{
+.shadowEffect {
   box-shadow: 0 0 0px 6vw rgba(150, 150, 150, 0.2),
-  0 0 0px 12vw rgba(100, 100, 100, 0.15),
-  0 0 0 18vw rgba(5, 50, 50, 0.1);
+    0 0 0px 12vw rgba(100, 100, 100, 0.15), 0 0 0 18vw rgba(5, 50, 50, 0.1);
 }
-.attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
+.attribution {
+  font-size: 11px;
+  text-align: center;
+}
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}

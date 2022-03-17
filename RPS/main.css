@@ -419,7 +419,8 @@ body {
   display: none;
 }
 
-.USER, .AI {
+.USER,
+.AI {
   padding: 20px;
 }
 
@@ -429,9 +430,10 @@ body {
   padding: 24px;
 }
 
-.AI > div > img, .USER > div > img {
-  width: 100px;
-  height: 100px;
+.AI > div > img,
+.USER > div > img {
+  width: 80px;
+  height: 80px;
 }
 
 @media only screen and (min-width: 700px) {
@@ -468,17 +470,19 @@ body {
     top: 15%;
     right: -50px;
   }
-  .USER, .AI {
-    padding: 3vw;
+  .USER,
+  .AI {
+    padding: 2vw;
   }
   .USER > div,
   .AI > div {
     border-radius: 50%;
-    padding: 6vw;
+    padding: 40px;
   }
-  .AI > div > img, .USER > div > img {
-    width: 8vw;
-    height: 8vw;
+  .AI > div > img,
+  .USER > div > img {
+    width: 100px;
+    height: 100px;
   }
   #round {
     display: -ms-grid;
