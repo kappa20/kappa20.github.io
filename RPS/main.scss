@@ -75,7 +75,8 @@ body {
 #rules {
   text-align: center;
 }
-#rules > button {
+#rules > button,
+#homerules > button {
   border: 1px solid white;
   background-color: transparent;
   color: white;
@@ -302,6 +303,11 @@ body {
   width: 80px;
   height: 80px;
 }
+#rules {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
 
 @media only screen and (min-width: 700px) {
   #scoreContainer {
@@ -337,7 +343,7 @@ body {
   }
   .USER,
   .AI {
-    padding: 2vw;
+    padding: 24px;
   }
   .USER > div,
   .AI > div {
@@ -385,4 +391,28 @@ body {
 }
 .attribution a {
   color: hsl(228, 45%, 44%);
+}
+
+/* #homerules {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+ */
+
+@media only screen and(max-width:320px) {
+  .USER,
+  .AI {
+    padding: 15px;
+  }
+  .USER > div,
+  .AI > div {
+    border-radius: 50%;
+    padding: 15px;
+  }
+  .AI > div > img,
+  .USER > div > img {
+    width: 70px;
+    height: 70px;
+  }
 }
