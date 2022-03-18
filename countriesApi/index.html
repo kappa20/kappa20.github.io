@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>Countries API</title>
+</head>
+<body class="lightMode">
+    
+    <header>
+        <div id="brand" ><b>Where in the world</b></div>
+        <div id="mode">
+            <i id="modeIcon" class="bi bi-moon" style="font-size: 20px;"></i>
+            <span id="modeText">Dark Mode</span>
+        </div>
+    </header>
+    <section id="searchFilter">
+        <div id="search">
+            <i class="bi bi-search"></i>
+            <input type="text" id="searchInput" placeholder="Search for a country...">
+        </div>
+        <div id="filter">
+            <div id="filterTitle">
+                <span id="filterText">Filter by Region</span>
+                <svg id="dropdownIcon" class="goUpIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                  </svg>
+                <div id="fiterDropDown">
+                    <p class="hob" onclick="countriesByRegion()">Africa</p>
+                    <p class="hob" onclick="countriesByRegion()">America</p>
+                    <p class="hob" onclick="countriesByRegion()">Asia</p>
+                    <p class="hob" onclick="countriesByRegion()">Europe</p>
+                    <p class="hob" onclick="countriesByRegion()">Oceania</p>
+                </div> 
+            </div>
+        </div>
+    </section>
+    <!-- country Card  -->
+    <section id="countriesContainer">
+        
+    </section>
+    <script>
+        /* Elements Definition */
+        var AfricaArray =[]
+        var modeIcon = document.getElementById("modeIcon");
+        var modeText = document.getElementById("modeText");
+        var filterText = document.getElementById("filterText")
+        var mybody = document.body;    
+        var dropdownIcon = document.getElementById("dropdownIcon")
+        var fiterDropDown = document.getElementById("fiterDropDown")
+        var bigContainer = document.getElementById("countriesContainer")
+        var searchInput = document.getElementById("searchInput")
+        var searchIcon = document.querySelector("#search>i");
+        var all = document.querySelector("*")
+        searchIcon.addEventListener("click",function(){
+            getCardByName(searchInput.value).
+            then((res) =>{
+                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital)
+            }).catch(err => alert("Invalid Country Name"))
+        })
+        searchInput.addEventListener('keydown', function(event){
+            if(event.key === "Enter"){
+                getCardByName(this.value).
+            then((res) =>{
+                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital)
+            }).catch(err => alert("Invalid Country Name"))
+            }
+            
+        })
+                /* var name = event.key;
+                var code = event.code;
+                   
+            alert(`Key pressed ${name} \r\n Key code value: ${code}`); */
+
+        dropdownIcon.addEventListener("click",dropDownToggle)
+        function dropDownToggle(){
+            if(dropdownIcon.classList.contains("goUpIcon")){
+                    dropdownIcon.classList.add("goDownIcon")
+                    dropdownIcon.classList.remove("goUpIcon")
+                    fiterDropDown.style.display="block";
+                }
+                else if(dropdownIcon.classList.contains("goDownIcon")){
+                    dropdownIcon.classList.remove("goDownIcon")
+                    dropdownIcon.classList.add("goUpIcon")
+                    fiterDropDown.style.display="none";
+                }
+        }
+
+        /* Toggle Dark Mode */
+       
+        modeIcon.addEventListener("click",modeToggle);
+        modeText.addEventListener("click",modeToggle);
+        
+        function modeToggle(){
+            modeIcon.classList.toggle("bi-moon-fill");
+            modeIcon.classList.toggle("bi-moon");
+            mybody.classList.toggle("lightMode");
+            mybody.classList.toggle("darkMode");
+        }
+
+       /*  window.onload=function(){
+            dropdownIcon.classList.add("goDownIcon")
+        } */
+        /*Toggle Color Mode By TOggling Classes */
+
+        function renderOneCard(flagUrl,countryName,population,region,capital){
+            population = formatPopulation(population)
+            var oneCountry = `<main class="card">
+            <div class="imgContainer">
+                <img src="${flagUrl}" alt="${countryName}" loading="lazy" style="width:100%;height: auto;">
+            </div>
+            <article class="countryInfo">
+                <h3 class="countryTitle">${countryName}</h3>
+                <p class="Population"><b>Population: </b>${population}</p>
+                <p class="Region"><b>Region: </b>${region}</p>
+                <p class="Capital"><b>Capital: </b>${capital}</p>
+            </article>
+        </main>`
+        return oneCountry
+        }
+        /* function renderDefaultCards(number){
+
+        } */
+        async function getCardByName(countryName){
+            var response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`)
+            var data = await response.json();
+            var data2 = data[0]
+            return{
+                flagUrl:data2["flags"].png,
+                countryName:data2.name.common,
+                population:data2.population,
+                region:data2.region,
+                capital:data2["capital"][0]
+
+            }
+            
+        }
+        async function getRegionCards(region){
+            var result = [];
+            var response = await fetch(`https://restcountries.com/v3.1/region/${region}`)
+            var data = await response.json();
+            
+            for(var i = 0 ; i < data.length ; i++){
+                result.push({
+                    "flagUrl":data[i]["flags"].png,
+                    "countryName":data[i].name.common,
+                    "population":data[i].population,
+                    "region":data[i].region,
+                    "capital":data[i]["capital"][0]
+
+                })
+            }
+
+            return result
+        }
+        
+      function renderCardByRegion(region){
+          var display =""
+          getRegionCards(region).
+            then((res)=>{
+                for(var i = 0 ; i < res.length ; i++){
+                    display += renderOneCard(res[i]["flagUrl"],res[i]["countryName"],res[i]["population"],res[i]["region"],res[i]["capital"])
+                }
+                return display
+            }).
+            then(card => bigContainer.innerHTML=card).
+            catch(err => alert("Something Went Wrong !!!"))
+            
+      }
+      function resetCountries(){
+        bigContainer.innerHTML = ""
+      }
+      function countriesByRegion(){
+            dropDownToggle()
+          var region = event.target.innerHTML
+          filterText.innerText = region
+            renderCardByRegion(region)
+      }
+
+      function formatPopulation(population){  
+          var strpopulation = `${population}`  
+          var lista = strpopulation.split("").reverse()
+          var result = []
+          for(var i = 0 ; i < lista.length ; i++){
+            result.push(`${lista[i]}`)
+            if((i+1) % 3 === 0 && i!= lista.length -1){
+                result.push(",")
+            }
+          }
+          return result.reverse().join("")
+      }
+      window.onload = renderCardByRegion("africa")
+      </script>
+</body>
+</html>
+<!-- <main class="card">
+            <div class="imgContainer">
+                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
+            </div>
+            <article class="countryInfo">
+                <h3 class="countryTitle">Brazil</h3>
+                <p class="Population"><b>Population: </b>206,135,893</p>
+                <p class="Region"><b>Population: </b>Americas</p>
+                <p class="Capital"><b>Capital: </b>Brasilia</p>
+            </article>
+        </main>
+        <main class="card">
+            <div class="imgContainer">
+                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
+            </div>
+            <article class="countryInfo">
+                <h3 class="countryTitle">Brazil</h3>
+                <p class="Population"><b>Population: </b>206,135,893</p>
+                <p class="Region"><b>Population: </b>Americas</p>
+                <p class="Capital"><b>Capital: </b>Brasilia</p>
+            </article>
+        </main>
+        <main class="card">
+            <div class="imgContainer">
+                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
+            </div>
+            <article class="countryInfo">
+                <h3 class="countryTitle">Brazil</h3>
+                <p class="Population"><b>Population: </b>206,135,893</p>
+                <p class="Region"><b>Population: </b>Americas</p>
+                <p class="Capital"><b>Capital: </b>Brasilia</p>
+            </article>
+        </main>
+        <main class="card">
+            <div class="imgContainer">
+                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
+            </div>
+            <article class="countryInfo">
+                <h3 class="countryTitle">Brazil</h3>
+                <p class="Population"><b>Population: </b>206,135,893</p>
+                <p class="Region"><b>Population: </b>Americas</p>
+                <p class="Capital"><b>Capital: </b>Brasilia</p>
+            </article>
+        </main> -->

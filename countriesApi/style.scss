@@ -1,0 +1,186 @@
+@import "resets";
+@import "variables";
+
+body {
+  font-family: $fam;
+}
+
+header {
+ /*  border: 1px solid black; */
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  padding: 2rem 1rem;
+  align-items: center;
+  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
+  /* justify-content: space-between; */
+}
+header > div {
+  font-size: 14 px;
+  font-weight: 700;
+}
+#mode {
+  justify-self: end;
+}
+#brand{
+    justify-self: start;
+}
+
+#modeIcon,#modeText{
+  cursor: pointer;
+}
+
+.lightMode{
+  color:rgb(0, 0, 0);
+  background-color: #fff;
+}
+.darkMode{
+  color:#fff;
+  background-color: rgb(0, 0, 0);
+}
+
+
+#searchFilter{
+  /* border:1px solid black; */
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap:5vh ;
+  justify-content: start;
+  align-content: space-between;
+  padding: 6vw 3vw;
+}
+#search,#filter{
+  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
+  padding: 5px 10px;
+  border-radius: 0.2rem;
+}
+#search > i{
+  cursor: pointer;
+}
+#search{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#searchInput{
+  margin-left:10px ;
+  border:none;
+  outline: none;
+  width: 100%;
+  padding: 10px 15px
+  /* box-shadow: 0 0 5px #333; */
+}
+/* Search Btn Css */
+#filterTitle{
+  display: flex;
+  justify-content: space-between;
+ /*  border:1px solid black; */
+}
+
+#filter{
+ width:max-content;
+ position: relative;
+}
+#filterText{
+  margin-right:55px;
+  
+}
+#dropdownIcon{
+  cursor:pointer;
+  
+}
+#fiterDropDown{
+  display: none;
+  position:absolute;
+  z-index: 900;
+  /* padding: 10px 5px; */
+  background-color: white;
+  left:0;
+  bottom:-170px;
+  width:100%;
+  border-radius: 7px;
+  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
+  overflow: hidden;
+}
+.hob{
+  padding-left: 10px;
+  padding-top: 10px;
+
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+.hob:hover{
+  background-color: rgba(240, 240, 240, 0.534);
+}
+.goUpIcon{
+  animation: iconGoUp 250ms ease-in forwards;
+}
+.goDownIcon{
+  animation: iconGoDown 250ms ease-in forwards;
+}
+@keyframes iconGoUp{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(180deg);
+  }
+}
+@keyframes iconGoDown{
+  0%{
+    transform: rotate(180deg);
+  }
+  100%{
+    transform: rotate(0deg);
+  }
+}
+#filterInput{
+  border:none;
+  outline:none;
+}
+/* Countries Container */
+#countriesContainer{
+  display: grid;
+  padding: 20px;
+  grid-template-columns:80%;
+  justify-content: center;
+  gap:80px;
+
+}
+.card{
+ /*  min-width: 250px; */
+ display: grid;
+ grid-template-rows: 1fr;
+  overflow: hidden;
+  border-radius: 7px;
+  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
+}
+.countryInfo{
+  padding: 0 15px;
+  font-size: 14px;
+}
+/* .coutryTitle{
+  padding: 15px 0;
+} */
+@media only screen and (min-width:700px){
+  #countriesContainer{
+    grid-template-columns: repeat(2,35%);
+    justify-content: space-around;
+    .countryInfo{
+      font-size: initial;
+    }
+  
+  }
+}
+@media only screen and (min-width:1100px){
+  #countriesContainer{
+    grid-template-columns: repeat(3,23.33%);
+    justify-content: space-around;
+  
+  }
+}
+@media only screen and (min-width:1400px){
+  #countriesContainer{
+    grid-template-columns: repeat(4,17.5%);
+    justify-content: space-around;
+  }
+}
