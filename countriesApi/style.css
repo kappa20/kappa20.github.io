@@ -19,8 +19,6 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
-          box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
   /* justify-content: space-between; */
 }
 
@@ -43,16 +41,6 @@ header > div {
   cursor: pointer;
 }
 
-.lightMode {
-  color: black;
-  background-color: #fff;
-}
-
-.darkMode {
-  color: #fff;
-  background-color: black;
-}
-
 #searchFilter {
   /* border:1px solid black; */
   display: -ms-grid;
@@ -69,8 +57,6 @@ header > div {
 }
 
 #search, #filter {
-  -webkit-box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
-          box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
   padding: 5px 10px;
   border-radius: 0.2rem;
 }
@@ -97,6 +83,8 @@ header > div {
   outline: none;
   width: 100%;
   padding: 10px 15px;
+  border-radius: 7px;
+  /* box-shadow: 0 0 5px #333; */
 }
 
 /* Search Btn Css */
@@ -130,20 +118,16 @@ header > div {
   position: absolute;
   z-index: 900;
   /* padding: 10px 5px; */
-  background-color: white;
   left: 0;
   bottom: -170px;
   width: 100%;
   border-radius: 7px;
-  -webkit-box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
-          box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
   overflow: hidden;
 }
 
 .hob {
   padding-left: 10px;
   padding-top: 10px;
-  background-color: white;
   cursor: pointer;
 }
 
@@ -223,7 +207,7 @@ header > div {
   gap: 80px;
 }
 
-.card {
+.cardibi {
   /*  min-width: 250px; */
   display: -ms-grid;
   display: grid;
@@ -231,8 +215,6 @@ header > div {
       grid-template-rows: 1fr;
   overflow: hidden;
   border-radius: 7px;
-  -webkit-box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
-          box-shadow: 0 1px 4px rgba(51, 51, 51, 0.63);
 }
 
 .countryInfo {
@@ -271,4 +253,34 @@ header > div {
     -ms-flex-pack: distribute;
         justify-content: space-around;
   }
+}
+
+.lightMode {
+  color: #202D36;
+  background-color: #FFFFFF;
+}
+
+.darkMode {
+  color: #fff;
+  background-color: #202D36;
+}
+
+.cardsDark {
+  color: #fff;
+  background-color: #2B3743;
+}
+
+.cardsWhite {
+  color: #2B3743;
+  background-color: #fff;
+}
+
+.shadowDark {
+  -webkit-box-shadow: 0 0px 4px rgba(255, 255, 255, 0.233);
+          box-shadow: 0 0px 4px rgba(255, 255, 255, 0.233);
+}
+
+.shadowWhite {
+  -webkit-box-shadow: 0 0px 4px rgba(51, 51, 51, 0.63);
+          box-shadow: 0 0px 4px rgba(51, 51, 51, 0.63);
 }

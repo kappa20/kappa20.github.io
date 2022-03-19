@@ -11,7 +11,7 @@ header {
   grid-template-columns: repeat(2, 50%);
   padding: 2rem 1rem;
   align-items: center;
-  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
+  
   /* justify-content: space-between; */
 }
 header > div {
@@ -29,14 +29,6 @@ header > div {
   cursor: pointer;
 }
 
-.lightMode{
-  color:rgb(0, 0, 0);
-  background-color: #fff;
-}
-.darkMode{
-  color:#fff;
-  background-color: rgb(0, 0, 0);
-}
 
 
 #searchFilter{
@@ -49,7 +41,6 @@ header > div {
   padding: 6vw 3vw;
 }
 #search,#filter{
-  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
   padding: 5px 10px;
   border-radius: 0.2rem;
 }
@@ -66,7 +57,8 @@ header > div {
   border:none;
   outline: none;
   width: 100%;
-  padding: 10px 15px
+  padding: 10px 15px;
+  border-radius:7px;
   /* box-shadow: 0 0 5px #333; */
 }
 /* Search Btn Css */
@@ -93,19 +85,17 @@ header > div {
   position:absolute;
   z-index: 900;
   /* padding: 10px 5px; */
-  background-color: white;
   left:0;
   bottom:-170px;
   width:100%;
   border-radius: 7px;
-  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
+ 
   overflow: hidden;
 }
 .hob{
   padding-left: 10px;
   padding-top: 10px;
 
-  background-color: rgb(255, 255, 255);
   cursor: pointer;
 }
 .hob:hover{
@@ -146,13 +136,12 @@ header > div {
   gap:80px;
 
 }
-.card{
+.cardibi{
  /*  min-width: 250px; */
  display: grid;
  grid-template-rows: 1fr;
   overflow: hidden;
   border-radius: 7px;
-  box-shadow:  0 1px 4px rgba(51, 51, 51, 0.63);
 }
 .countryInfo{
   padding: 0 15px;
@@ -183,4 +172,32 @@ header > div {
     grid-template-columns: repeat(4,17.5%);
     justify-content: space-around;
   }
+}
+
+
+.lightMode{
+  color:#202D36;
+  background-color: #FFFFFF;
+  
+}
+.darkMode{
+  color:#fff;
+  background-color: #202D36;
+  
+}
+.cardsDark{
+  color:#fff;
+  background-color: #2B3743;
+  
+}
+.cardsWhite{
+  color:#2B3743;
+  background-color: #fff;
+  
+}
+.shadowDark{
+  box-shadow:  0 0px 4px rgba(255, 255, 255, 0.233);
+}
+.shadowWhite{
+  box-shadow:  0 0px 4px rgba(51, 51, 51, 0.63);
 }

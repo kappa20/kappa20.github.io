@@ -14,25 +14,25 @@
 </head>
 <body class="lightMode">
     
-    <header>
+    <header class="cardsWhite shadowWhite">
         <div id="brand" ><b>Where in the world</b></div>
         <div id="mode">
             <i id="modeIcon" class="bi bi-moon" style="font-size: 20px;"></i>
             <span id="modeText">Dark Mode</span>
         </div>
     </header>
-    <section id="searchFilter">
-        <div id="search">
+    <div id="searchFilter" >
+        <div id="search" class="cardsWhite shadowWhite">
             <i class="bi bi-search"></i>
             <input type="text" id="searchInput" placeholder="Search for a country...">
         </div>
-        <div id="filter">
-            <div id="filterTitle">
-                <span id="filterText">Filter by Region</span>
+        <div id="filter" class="cardsWhite shadowWhite" >
+            <div id="filterTitle" >
+                <span id="filterText" >Filter by Region</span>
                 <svg id="dropdownIcon" class="goUpIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                     <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                   </svg>
-                <div id="fiterDropDown">
+                <div id="fiterDropDown" class="filterDrop shadowWhite cardsWhite">
                     <p class="hob" onclick="countriesByRegion()">Africa</p>
                     <p class="hob" onclick="countriesByRegion()">America</p>
                     <p class="hob" onclick="countriesByRegion()">Asia</p>
@@ -41,36 +41,51 @@
                 </div> 
             </div>
         </div>
-    </section>
+    </div>
     <!-- country Card  -->
-    <section id="countriesContainer">
+    <div id="countriesContainer">
         
-    </section>
+    </div>
     <script>
         /* Elements Definition */
-        var AfricaArray =[]
+        var cArr ={
+            asia:[],
+            africa:[],
+            america:[],
+            europe:[],
+            oceania:[]
+        }
+        var curSCard =[]
+        var currentMode = "light"
+        var currentRegion = "Africa"
+        
         var modeIcon = document.getElementById("modeIcon");
         var modeText = document.getElementById("modeText");
-        var filterText = document.getElementById("filterText")
+        var filter = document.getElementById("filter")
         var mybody = document.body;    
         var dropdownIcon = document.getElementById("dropdownIcon")
         var fiterDropDown = document.getElementById("fiterDropDown")
         var bigContainer = document.getElementById("countriesContainer")
         var searchInput = document.getElementById("searchInput")
         var searchIcon = document.querySelector("#search>i");
-        var all = document.querySelector("*")
+        var bigContainerChild = document.querySelectorAll("main")
+        
+        /* var filterDrop =document.querySelectorAll(".filterDrop") */
         searchIcon.addEventListener("click",function(){
             getCardByName(searchInput.value).
             then((res) =>{
-                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital)
+                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital,currentMode)
+                
             }).catch(err => alert("Invalid Country Name"))
         })
         searchInput.addEventListener('keydown', function(event){
             if(event.key === "Enter"){
                 getCardByName(this.value).
             then((res) =>{
-                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital)
+                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital,currentMode)
+                
             }).catch(err => alert("Invalid Country Name"))
+            
             }
             
         })
@@ -98,32 +113,46 @@
         modeIcon.addEventListener("click",modeToggle);
         modeText.addEventListener("click",modeToggle);
         
-        function modeToggle(){
-            modeIcon.classList.toggle("bi-moon-fill");
-            modeIcon.classList.toggle("bi-moon");
-            mybody.classList.toggle("lightMode");
-            mybody.classList.toggle("darkMode");
-        }
+        
 
        /*  window.onload=function(){
             dropdownIcon.classList.add("goDownIcon")
         } */
         /*Toggle Color Mode By TOggling Classes */
 
-        function renderOneCard(flagUrl,countryName,population,region,capital){
+        function renderOneCard(flagUrl,countryName,population,region,capital,mode){
             population = formatPopulation(population)
-            var oneCountry = `<main class="card">
+            if(mode.toLowerCase() === "light"){
+                var oneCountry = `<main class="cardibi shadowWhite cardsWhite">
             <div class="imgContainer">
                 <img src="${flagUrl}" alt="${countryName}" loading="lazy" style="width:100%;height: auto;">
             </div>
-            <article class="countryInfo">
+            <article class="countryInfo" class="shadowWhite cardsWhite">
                 <h3 class="countryTitle">${countryName}</h3>
                 <p class="Population"><b>Population: </b>${population}</p>
                 <p class="Region"><b>Region: </b>${region}</p>
                 <p class="Capital"><b>Capital: </b>${capital}</p>
             </article>
         </main>`
-        return oneCountry
+            return oneCountry
+            }
+            if(mode.toLowerCase() === "dark"){
+                var oneCountry = `<main class="cardibi shadowDark cardsDark">
+            <div class="imgContainer">
+                <img src="${flagUrl}" alt="${countryName}" loading="lazy" style="width:100%;height: auto;">
+            </div>
+            <article class="countryInfo" class="shadowWhite cardsWhite">
+                <h3 class="countryTitle">${countryName}</h3>
+                <p class="Population"><b>Population: </b>${population}</p>
+                <p class="Region"><b>Region: </b>${region}</p>
+                <p class="Capital"><b>Capital: </b>${capital}</p>
+            </article>
+        </main>`
+            return oneCountry
+            }
+            
+            
+        
         }
         /* function renderDefaultCards(number){
 
@@ -132,7 +161,7 @@
             var response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`)
             var data = await response.json();
             var data2 = data[0]
-            return{
+            curSCard[0] = {
                 flagUrl:data2["flags"].png,
                 countryName:data2.name.common,
                 population:data2.population,
@@ -140,48 +169,65 @@
                 capital:data2["capital"][0]
 
             }
+            return curSCard[0]
             
         }
         async function getRegionCards(region){
             var result = [];
             var response = await fetch(`https://restcountries.com/v3.1/region/${region}`)
             var data = await response.json();
-            
+            console.log(region)
+            console.log(data)
             for(var i = 0 ; i < data.length ; i++){
                 result.push({
                     "flagUrl":data[i]["flags"].png,
                     "countryName":data[i].name.common,
                     "population":data[i].population,
                     "region":data[i].region,
-                    "capital":data[i]["capital"][0]
+                    "capital":data[i].capital
 
                 })
             }
-
+            
+            cArr[`${region}`] = result
+            console.log(cArr[`${region}`])
             return result
         }
         
-      function renderCardByRegion(region){
+      function renderCardByRegion(region,mode){
+          var reg = region.toLowerCase()
           var display =""
-          getRegionCards(region).
+          if(cArr[reg].length === 0){
+            getRegionCards(reg).
             then((res)=>{
                 for(var i = 0 ; i < res.length ; i++){
-                    display += renderOneCard(res[i]["flagUrl"],res[i]["countryName"],res[i]["population"],res[i]["region"],res[i]["capital"])
+                    display += renderOneCard(res[i]["flagUrl"],res[i]["countryName"],res[i]["population"],res[i]["region"],res[i]["capital"],mode)
                 }
                 return display
             }).
             then(card => bigContainer.innerHTML=card).
-            catch(err => alert("Something Went Wrong !!!"))
+            catch(err => console.error(err))
+          }
+          else{
+            for(var i = 0 ; i < cArr[reg].length ; i++){
+                    display += renderOneCard(cArr[reg][i]["flagUrl"],cArr[reg][i]["countryName"],cArr[reg][i]["population"],cArr[reg][i]["region"],cArr[reg][i]["capital"],mode)
+                }
+                bigContainer.innerHTML=display
+          }
+          
             
       }
       function resetCountries(){
         bigContainer.innerHTML = ""
       }
       function countriesByRegion(){
+            curSCard = []
             dropDownToggle()
           var region = event.target.innerHTML
+          currentRegion = region
           filterText.innerText = region
-            renderCardByRegion(region)
+            renderCardByRegion(currentRegion,currentMode)
+
       }
 
       function formatPopulation(population){  
@@ -196,51 +242,44 @@
           }
           return result.reverse().join("")
       }
-      window.onload = renderCardByRegion("africa")
+      var filterText = document.getElementById("filterText")
+      var header= document.querySelector("header")
+      var searchFilter = document.querySelectorAll("#searchFilter > div")
+      var cards = document.querySelectorAll(".cards")
+      function modeToggle(){
+          if(currentMode === "light"){
+              currentMode = "dark" 
+          }else{
+                currentMode = "light"
+          }
+          
+          
+            modeIcon.classList.toggle("bi-moon-fill");
+            modeIcon.classList.toggle("bi-moon");
+            mybody.classList.toggle("lightMode")
+            mybody.classList.toggle("darkMode")
+            switchMode(header)
+            searchFilter.forEach(element =>{
+                switchMode(element)
+            })
+            /* cards.forEach(element =>{
+                switchMode(element)
+
+            }) */
+            var cards = document.querySelectorAll(".cardibi")
+            for(var i = 0; i < cards.length ;i++){
+                switchMode(cards[i])
+            }
+            switchMode(fiterDropDown)    
+        }
+        function switchMode(element){
+                 element.classList.toggle("cardsWhite")
+                element.classList.toggle("shadowWhite")
+                element.classList.toggle("cardsDark")
+                element.classList.toggle("shadowDark")
+        }
+      /* window.onload = getRegionCards("Africa") */
+      window.onload= renderCardByRegion("Africa","light")
       </script>
 </body>
 </html>
-<!-- <main class="card">
-            <div class="imgContainer">
-                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
-            </div>
-            <article class="countryInfo">
-                <h3 class="countryTitle">Brazil</h3>
-                <p class="Population"><b>Population: </b>206,135,893</p>
-                <p class="Region"><b>Population: </b>Americas</p>
-                <p class="Capital"><b>Capital: </b>Brasilia</p>
-            </article>
-        </main>
-        <main class="card">
-            <div class="imgContainer">
-                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
-            </div>
-            <article class="countryInfo">
-                <h3 class="countryTitle">Brazil</h3>
-                <p class="Population"><b>Population: </b>206,135,893</p>
-                <p class="Region"><b>Population: </b>Americas</p>
-                <p class="Capital"><b>Capital: </b>Brasilia</p>
-            </article>
-        </main>
-        <main class="card">
-            <div class="imgContainer">
-                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
-            </div>
-            <article class="countryInfo">
-                <h3 class="countryTitle">Brazil</h3>
-                <p class="Population"><b>Population: </b>206,135,893</p>
-                <p class="Region"><b>Population: </b>Americas</p>
-                <p class="Capital"><b>Capital: </b>Brasilia</p>
-            </article>
-        </main>
-        <main class="card">
-            <div class="imgContainer">
-                <img src="./flag.png" alt="brazil" style="width:100%;height: auto;">
-            </div>
-            <article class="countryInfo">
-                <h3 class="countryTitle">Brazil</h3>
-                <p class="Population"><b>Population: </b>206,135,893</p>
-                <p class="Region"><b>Population: </b>Americas</p>
-                <p class="Capital"><b>Capital: </b>Brasilia</p>
-            </article>
-        </main> -->
