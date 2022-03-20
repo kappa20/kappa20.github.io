@@ -21,7 +21,7 @@
             <span id="modeText">Dark Mode</span>
         </div>
     </header>
-    <div id="searchFilter" >
+    <div id="searchFilter">
         <div id="search" class="cardsWhite shadowWhite">
             <i class="bi bi-search"></i>
             <input type="text" id="searchInput" placeholder="Search for a country...">
@@ -42,244 +42,20 @@
             </div>
         </div>
     </div>
-    <!-- country Card  -->
-    <div id="countriesContainer">
+    <!-- countres Cards  -->
+    <div id="countriesContainer" >
         
     </div>
-    <script>
-        /* Elements Definition */
-        var cArr ={
-            asia:[],
-            africa:[],
-            america:[],
-            europe:[],
-            oceania:[]
-        }
-        var curSCard =[]
-        var currentMode = "light"
-        var currentRegion = "Africa"
-        
-        var modeIcon = document.getElementById("modeIcon");
-        var modeText = document.getElementById("modeText");
-        var filter = document.getElementById("filter")
-        var mybody = document.body;    
-        var dropdownIcon = document.getElementById("dropdownIcon")
-        var fiterDropDown = document.getElementById("fiterDropDown")
-        var bigContainer = document.getElementById("countriesContainer")
-        var searchInput = document.getElementById("searchInput")
-        var searchIcon = document.querySelector("#search>i");
-        var bigContainerChild = document.querySelectorAll("main")
-        
-        /* var filterDrop =document.querySelectorAll(".filterDrop") */
-        searchIcon.addEventListener("click",function(){
-            getCardByName(searchInput.value).
-            then((res) =>{
-                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital,currentMode)
-                
-            }).catch(err => alert("Invalid Country Name"))
-        })
-        searchInput.addEventListener('keydown', function(event){
-            if(event.key === "Enter"){
-                getCardByName(this.value).
-            then((res) =>{
-                bigContainer.innerHTML = renderOneCard(res.flagUrl,res.countryName,res.population,res.region,res.capital,currentMode)
-                
-            }).catch(err => alert("Invalid Country Name"))
+    <div id="oneCountryDeatils" style="display:none">
+        <div class="backContainer">
+            <button  class="backBtn cardsWhite shadowWhite" onclick="goHome()"><span>&#8592;</span><b>Back</b></button>
+        </div>
+        <div class="bigCardInfo" id="tox">
             
-            }
-            
-        })
-                /* var name = event.key;
-                var code = event.code;
-                   
-            alert(`Key pressed ${name} \r\n Key code value: ${code}`); */
-
-        dropdownIcon.addEventListener("click",dropDownToggle)
-        function dropDownToggle(){
-            if(dropdownIcon.classList.contains("goUpIcon")){
-                    dropdownIcon.classList.add("goDownIcon")
-                    dropdownIcon.classList.remove("goUpIcon")
-                    fiterDropDown.style.display="block";
-                }
-                else if(dropdownIcon.classList.contains("goDownIcon")){
-                    dropdownIcon.classList.remove("goDownIcon")
-                    dropdownIcon.classList.add("goUpIcon")
-                    fiterDropDown.style.display="none";
-                }
-        }
-
-        /* Toggle Dark Mode */
-       
-        modeIcon.addEventListener("click",modeToggle);
-        modeText.addEventListener("click",modeToggle);
-        
-        
-
-       /*  window.onload=function(){
-            dropdownIcon.classList.add("goDownIcon")
-        } */
-        /*Toggle Color Mode By TOggling Classes */
-
-        function renderOneCard(flagUrl,countryName,population,region,capital,mode){
-            population = formatPopulation(population)
-            if(mode.toLowerCase() === "light"){
-                var oneCountry = `<main class="cardibi shadowWhite cardsWhite">
-            <div class="imgContainer">
-                <img src="${flagUrl}" alt="${countryName}" loading="lazy" style="width:100%;height: auto;">
-            </div>
-            <article class="countryInfo" class="shadowWhite cardsWhite">
-                <h3 class="countryTitle">${countryName}</h3>
-                <p class="Population"><b>Population: </b>${population}</p>
-                <p class="Region"><b>Region: </b>${region}</p>
-                <p class="Capital"><b>Capital: </b>${capital}</p>
-            </article>
-        </main>`
-            return oneCountry
-            }
-            if(mode.toLowerCase() === "dark"){
-                var oneCountry = `<main class="cardibi shadowDark cardsDark">
-            <div class="imgContainer">
-                <img src="${flagUrl}" alt="${countryName}" loading="lazy" style="width:100%;height: auto;">
-            </div>
-            <article class="countryInfo" class="shadowWhite cardsWhite">
-                <h3 class="countryTitle">${countryName}</h3>
-                <p class="Population"><b>Population: </b>${population}</p>
-                <p class="Region"><b>Region: </b>${region}</p>
-                <p class="Capital"><b>Capital: </b>${capital}</p>
-            </article>
-        </main>`
-            return oneCountry
-            }
-            
-            
-        
-        }
-        /* function renderDefaultCards(number){
-
-        } */
-        async function getCardByName(countryName){
-            var response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`)
-            var data = await response.json();
-            var data2 = data[0]
-            curSCard[0] = {
-                flagUrl:data2["flags"].png,
-                countryName:data2.name.common,
-                population:data2.population,
-                region:data2.region,
-                capital:data2["capital"][0]
-
-            }
-            return curSCard[0]
-            
-        }
-        async function getRegionCards(region){
-            var result = [];
-            var response = await fetch(`https://restcountries.com/v3.1/region/${region}`)
-            var data = await response.json();
-            console.log(region)
-            console.log(data)
-            for(var i = 0 ; i < data.length ; i++){
-                result.push({
-                    "flagUrl":data[i]["flags"].png,
-                    "countryName":data[i].name.common,
-                    "population":data[i].population,
-                    "region":data[i].region,
-                    "capital":data[i].capital
-
-                })
-            }
-            
-            cArr[`${region}`] = result
-            console.log(cArr[`${region}`])
-            return result
-        }
-        
-      function renderCardByRegion(region,mode){
-          var reg = region.toLowerCase()
-          var display =""
-          if(cArr[reg].length === 0){
-            getRegionCards(reg).
-            then((res)=>{
-                for(var i = 0 ; i < res.length ; i++){
-                    display += renderOneCard(res[i]["flagUrl"],res[i]["countryName"],res[i]["population"],res[i]["region"],res[i]["capital"],mode)
-                }
-                return display
-            }).
-            then(card => bigContainer.innerHTML=card).
-            catch(err => console.error(err))
-          }
-          else{
-            for(var i = 0 ; i < cArr[reg].length ; i++){
-                    display += renderOneCard(cArr[reg][i]["flagUrl"],cArr[reg][i]["countryName"],cArr[reg][i]["population"],cArr[reg][i]["region"],cArr[reg][i]["capital"],mode)
-                }
-                bigContainer.innerHTML=display
-          }
-          
-            
-      }
-      function resetCountries(){
-        bigContainer.innerHTML = ""
-      }
-      function countriesByRegion(){
-            curSCard = []
-            dropDownToggle()
-          var region = event.target.innerHTML
-          currentRegion = region
-          filterText.innerText = region
-            renderCardByRegion(currentRegion,currentMode)
-
-      }
-
-      function formatPopulation(population){  
-          var strpopulation = `${population}`  
-          var lista = strpopulation.split("").reverse()
-          var result = []
-          for(var i = 0 ; i < lista.length ; i++){
-            result.push(`${lista[i]}`)
-            if((i+1) % 3 === 0 && i!= lista.length -1){
-                result.push(",")
-            }
-          }
-          return result.reverse().join("")
-      }
-      var filterText = document.getElementById("filterText")
-      var header= document.querySelector("header")
-      var searchFilter = document.querySelectorAll("#searchFilter > div")
-      var cards = document.querySelectorAll(".cards")
-      function modeToggle(){
-          if(currentMode === "light"){
-              currentMode = "dark" 
-          }else{
-                currentMode = "light"
-          }
-          
-          
-            modeIcon.classList.toggle("bi-moon-fill");
-            modeIcon.classList.toggle("bi-moon");
-            mybody.classList.toggle("lightMode")
-            mybody.classList.toggle("darkMode")
-            switchMode(header)
-            searchFilter.forEach(element =>{
-                switchMode(element)
-            })
-            /* cards.forEach(element =>{
-                switchMode(element)
-
-            }) */
-            var cards = document.querySelectorAll(".cardibi")
-            for(var i = 0; i < cards.length ;i++){
-                switchMode(cards[i])
-            }
-            switchMode(fiterDropDown)    
-        }
-        function switchMode(element){
-                 element.classList.toggle("cardsWhite")
-                element.classList.toggle("shadowWhite")
-                element.classList.toggle("cardsDark")
-                element.classList.toggle("shadowDark")
-        }
-      /* window.onload = getRegionCards("Africa") */
-      window.onload= renderCardByRegion("Africa","light")
+        </div>
+    </div>
+    <script src="./script.js">
+      
       </script>
 </body>
 </html>

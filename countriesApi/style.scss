@@ -25,6 +25,10 @@ header > div {
     justify-self: start;
 }
 
+/* .borderBtn{
+  background-color: red;
+  border:5px solid black;
+} */
 #modeIcon,#modeText{
   cursor: pointer;
 }
@@ -40,7 +44,7 @@ header > div {
   align-content: space-between;
   padding: 6vw 3vw;
 }
-#search,#filter{
+#search,#filter,.backBtn{
   padding: 5px 10px;
   border-radius: 0.2rem;
 }
@@ -138,6 +142,7 @@ header > div {
 }
 .cardibi{
  /*  min-width: 250px; */
+ cursor: pointer;
  display: grid;
  grid-template-rows: 1fr;
   overflow: hidden;
@@ -164,8 +169,15 @@ header > div {
   #countriesContainer{
     grid-template-columns: repeat(3,23.33%);
     justify-content: space-around;
+    
   
   }
+  #searchFilter{
+    grid-template-columns: 50% auto;
+    justify-content: space-between;
+  }
+ 
+ 
 }
 @media only screen and (min-width:1400px){
   #countriesContainer{
@@ -200,4 +212,92 @@ header > div {
 }
 .shadowWhite{
   box-shadow:  0 0px 4px rgba(51, 51, 51, 0.63);
+}
+.backContainer{
+  padding: 30px 3vw;
+  background-color: transparent;
+}
+.backBtn{
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 0.2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  border:none;
+}
+.backBtn > span{
+  font-size: 25px;
+  background-color: transparent;
+}
+.bigCardInfo{
+  max-width: max-content;
+  border-radius: 7px;
+  background-color: transparent;
+}
+.bigCardInfo >  img{
+  width: 100%;
+  max-width: 559px;
+  height: auto;
+  grid-area: image;
+  justify-self: center;
+  margin-bottom: 20px;
+  border-radius: 7px;
+}
+.info > h1{
+  grid-area: title;
+}
+.left{
+  grid-area: left;
+}
+.right{
+  grid-area: right;
+}
+.bord{
+  grid-area: border;
+}
+.info{
+
+  /* padding: 2vh; */
+  grid-area: info;
+  display: grid;
+  grid-template-areas: "title" "left" "right" "border";
+}
+.info > *{
+  margin-bottom: 20px;
+}
+.bigCardInfo{
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: grid;
+  grid-template-areas: 
+  "image"
+  "info";
+  border:1px solid grid;
+
+}
+
+.bord > button{
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 0.2rem;
+  border:none;
+  margin-right: 0.3rem;
+}
+.bord > h4{
+  margin-bottom: 0.5rem;
+}
+@media screen and (min-width:1100px){
+  .bigCardInfo{
+    min-width: 75%;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-areas: 
+    "image info";
+
+  }
+  .info{
+    padding:3%;
+    grid-template-areas: "title title" "left right" "left right" "border border";
+  }
 }
