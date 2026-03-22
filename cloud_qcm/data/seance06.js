@@ -128,6 +128,41 @@ const SEANCE_6 = {
       options: ["Il n'y a aucune différence", "Le Cloud Hybride mélange cloud public ET privé (on-premise), le Multicloud utilise plusieurs fournisseurs de cloud public", "Le Multicloud combine public et privé, le Hybride utilise plusieurs fournisseurs", "Le Cloud Hybride est réservé aux grandes entreprises, le Multicloud aux startups"],
       correct: [1],
       explanation: "Cloud Hybride = combinaison de cloud privé (on-premise ou hébergé) + cloud public, reliés par de l'orchestration. Multicloud = utilisation de plusieurs fournisseurs de cloud public (AWS + GCP + Azure…). Distinction importante à l'examen."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le 'Vendor Lock-in' dans le contexte du Cloud ?",
+      options: ["Un contrat de sécurité signé entre client et fournisseur Cloud", "La dépendance vis-à-vis des technologies propriétaires d'un fournisseur, rendant la migration difficile", "Un mécanisme de chiffrement des données dans le cloud", "Un système de verrouillage physique des serveurs datacenter"],
+      correct: [1],
+      explanation: "Le Vendor Lock-in désigne la dépendance forte envers un fournisseur Cloud spécifique due à l'utilisation de ses technologies propriétaires. Il rend difficile la migration vers un autre fournisseur. C'est l'une des raisons qui poussent les entreprises vers le Multicloud."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les raisons principales d'adopter une stratégie Multicloud ? (plusieurs réponses)",
+      options: ["Éviter le Vendor Lock-in", "Optimiser les coûts en utilisant les meilleures offres de chaque fournisseur", "Avoir un seul point de défaillance pour simplifier la gestion", "Tirer parti des forces spécifiques de chaque fournisseur (AWS pour stockage, GCP pour IA…)"],
+      correct: [0, 1, 3],
+      explanation: "Les raisons d'adopter le Multicloud : éviter le Vendor Lock-in, optimiser les coûts, et profiter des forces de chaque fournisseur. Avoir un seul point de défaillance est un inconvénient, pas un avantage."
+    },
+    {
+      type: "single",
+      text: "Quelle est la principale limitation du Cloud Public par rapport au Cloud Privé ?",
+      options: ["Le Cloud Public ne supporte pas les applications modernes", "Le Cloud Public est trop coûteux pour les petites entreprises", "Le client n'a pas de contrôle total sur l'infrastructure et la localisation des données", "Le Cloud Public ne dispose pas d'une haute disponibilité"],
+      correct: [2],
+      explanation: "La principale limitation du Cloud Public est le manque de contrôle : le client ne sait pas précisément où ses données sont hébergées, ni sur quelle infrastructure physique. C'est pourquoi les entreprises avec des données sensibles préfèrent souvent le Cloud Privé ou Hybride."
+    },
+    {
+      type: "single",
+      text: "Quel type de Cloud Computing est typiquement utilisé par les hôpitaux ou les agences gouvernementales partageant des ressources ?",
+      options: ["Cloud Public", "Cloud Privé on-premise", "Cloud Hybride", "Community Cloud"],
+      correct: [3],
+      explanation: "Le Community Cloud est conçu pour des organisations partageant des besoins, contraintes ou réglementations communs (ex: HIPAA pour la santé, réglementations gouvernementales). Il permet de mutualiser les coûts tout en maintenant un niveau de sécurité et de conformité élevé."
+    },
+    {
+      type: "multi",
+      text: "Lesquels sont des exemples de services PaaS (Platform as a Service) ? (plusieurs réponses)",
+      options: ["Heroku", "Google App Engine", "AWS EC2", "Azure App Service", "Gmail"],
+      correct: [0, 1, 3],
+      explanation: "Heroku, Google App Engine et Azure App Service sont des PaaS (le développeur déploie son application sans gérer l'infrastructure). AWS EC2 est IaaS (infrastructure). Gmail est SaaS (application complète)."
     }
   ],
   flashcards: [
@@ -140,6 +175,10 @@ const SEANCE_6 = {
     { term: "Multicloud", def: "Utilisation de services de plusieurs fournisseurs de cloud public au sein d'une même organisation pour éviter le Vendor Lock-in, optimiser les coûts et utiliser les forces de chaque fournisseur. Ex : AWS pour stockage, Azure pour analyse, GCP pour IA." },
     { term: "Community Cloud", def: "Infrastructure cloud partagée entre plusieurs organisations ayant des besoins, contraintes ou réglementations communs (ex: secteur santé HIPAA, gouvernement, finance). Mutualisation des coûts avec un niveau de contrôle plus élevé que le cloud public." },
     { term: "OpenStack", def: "Solution open source pour déployer un Cloud Privé. Fournit un ensemble de services pour gérer serveurs, stockage, réseau en mode IaaS. Utilisé par les entreprises, universités et opérateurs télécoms. Gratuit mais nécessite expertise technique." },
-    { term: "Vendor Lock-in", def: "Dépendance vis-à-vis des technologies propriétaires d'un fournisseur cloud, rendant difficile la migration vers un autre fournisseur. Motivent le recours au Multicloud et à l'utilisation d'outils open source (Kubernetes, Terraform, OpenStack)." }
+    { term: "Vendor Lock-in", def: "Dépendance vis-à-vis des technologies propriétaires d'un fournisseur cloud, rendant difficile la migration vers un autre fournisseur. Motivent le recours au Multicloud et à l'utilisation d'outils open source (Kubernetes, Terraform, OpenStack)." },
+    { term: "AWS (Amazon Web Services)", def: "Leader mondial du Cloud Public. Services phares : EC2 (IaaS, serveurs virtuels), S3 (stockage objet), Lambda (FaaS, serverless), RDS (base de données managée), EKS (Kubernetes managé). Modèle pay-as-you-go. Lancé en 2006." },
+    { term: "Microsoft Azure", def: "2e fournisseur Cloud mondial. Intégration forte avec l'écosystème Microsoft (Windows, Active Directory, Office 365). Services : Azure VMs, Azure Kubernetes Service (AKS), Azure DevOps, Azure Functions. Particulièrement adopté par les entreprises." },
+    { term: "Google Cloud Platform (GCP)", def: "3e fournisseur Cloud mondial. Reconnu pour ses outils d'IA/ML (Vertex AI, AutoML), big data (BigQuery), et conteneurs (GKE, créateur de Kubernetes). Services : Compute Engine, Cloud Storage, Cloud Run." },
+    { term: "Cloud Privé Hébergé", def: "Type de Cloud Privé : infrastructure dédiée à l'entreprise mais hébergée chez un prestataire tiers. L'entreprise conserve le contrôle logiciel mais délègue la gestion physique. Compromis entre cloud privé on-premise (coûteux) et cloud public (peu de contrôle)." }
   ]
 };

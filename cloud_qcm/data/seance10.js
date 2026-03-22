@@ -169,6 +169,78 @@ const SEANCE_10 = {
       ],
       correct: [1],
       explanation: "L'architecture Jenkins comprend deux composants : le Jenkins Master (ou Controller) qui orchestre les tâches et gère l'interface web, et les Jenkins Agents (Nodes) qui exécutent les tâches (jobs) assignées par le master."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre CI (Intégration Continue) et CD (Déploiement Continu) ?",
+      options: [
+        "CI et CD sont identiques, seul le nom diffère",
+        "CI automatise le build et les tests jusqu'à la production d'un artefact, CD automatise le déploiement de cet artefact en environnement de staging ou production",
+        "CI se fait manuellement, CD est automatisé",
+        "CD s'occupe du code source, CI gère l'infrastructure"
+      ],
+      correct: [1],
+      explanation: "CI (Intégration Continue) : automatise le build, les tests et l'analyse qualité → produit un artefact. CD (Déploiement Continu / Livraison Continue) : automatise le déploiement de l'artefact en staging ou production. CI vient avant CD dans le pipeline."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'un Nexus Repository ou Artifactory dans le pipeline CI/CD ?",
+      options: [
+        "Un outil de monitoring des applications en production",
+        "Un gestionnaire de dépôts d'artefacts qui stocke et distribue les artefacts construits par le pipeline CI",
+        "Un outil de gestion du code source",
+        "Un scanner de sécurité pour les images Docker"
+      ],
+      correct: [1],
+      explanation: "Nexus Repository (Sonatype) et JFrog Artifactory sont des gestionnaires de dépôts d'artefacts. Ils stockent les artefacts produits par le pipeline CI (JAR, images Docker, packages npm...) et les rendent disponibles pour le déploiement. Ils servent aussi de proxy pour les dépendances externes."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le 'Pipeline as Code' dans le contexte CI/CD ?",
+      options: [
+        "Écrire du code directement dans le pipeline CI sans versionner",
+        "Décrire le pipeline CI/CD dans un fichier versionné (Jenkinsfile, .gitlab-ci.yml) commité dans le dépôt Git avec le code de l'application",
+        "Générer automatiquement du code source via le pipeline",
+        "Un langage de programmation dédié à Jenkins"
+      ],
+      correct: [1],
+      explanation: "Le 'Pipeline as Code' consiste à décrire le pipeline CI/CD dans un fichier texte versionné avec le code source (ex: Jenkinsfile pour Jenkins, .gitlab-ci.yml pour GitLab CI). Avantages : versionnement, revue de code, reproductibilité, traçabilité des modifications du pipeline."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le taux de couverture de code (code coverage) dans les tests CI ?",
+      options: [
+        "Le pourcentage de développeurs qui ont revu le code",
+        "Le pourcentage des lignes ou branches de code source exécutées lors des tests automatisés",
+        "La proportion du code déployé en production par rapport au code total",
+        "Le nombre de tests unitaires divisé par le nombre de fonctions"
+      ],
+      correct: [1],
+      explanation: "Le taux de couverture mesure la proportion du code exécutée lors des tests. Un taux de 80% signifie que 80% des lignes sont couvertes par au moins un test. Un Quality Gate typique exige > 80% de couverture. Mesuré par des outils comme JaCoCo (Java), Istanbul (JS), Coverage.py."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les types d'analyse inclus dans la phase 'Analyse Qualité' d'un pipeline CI ? (plusieurs réponses)",
+      options: [
+        "SAST — analyse statique de sécurité du code source",
+        "SCA — analyse de la composition logicielle (dépendances tierces)",
+        "Détection de secrets (mots de passe, clés API dans le code)",
+        "Tests de charge et de performance en production"
+      ],
+      correct: [0, 1, 2],
+      explanation: "La phase d'analyse qualité CI inclut : SAST (vulnérabilités dans votre code), SCA (vulnérabilités dans les dépendances), Secret Detection (mots de passe exposés). Les tests de charge sont plutôt réalisés en staging/pré-production, pas dans la phase CI standard."
+    },
+    {
+      type: "single",
+      text: "Que se passe-t-il lorsqu'un Quality Gate échoue dans un pipeline CI ?",
+      options: [
+        "Le pipeline continue malgré l'échec et avertit uniquement par email",
+        "Le pipeline est bloqué, aucun artefact n'est produit et le déploiement est empêché",
+        "Le code est automatiquement corrigé par l'outil d'analyse",
+        "Le pipeline redémarre automatiquement jusqu'à 3 fois"
+      ],
+      correct: [1],
+      explanation: "Quand un Quality Gate échoue (ex: couverture < 80%, vulnérabilité critique détectée), le pipeline est bloqué immédiatement. Aucun artefact n'est produit et le déploiement est empêché. Le développeur doit corriger le problème et recommiter."
     }
   ],
   flashcards: [
@@ -182,6 +254,11 @@ const SEANCE_10 = {
     { term: "Artefact CI", def: "Livrable final du pipeline CI : code compilé + ressources + dépendances packagés. Formes : JAR/WAR (Java), EXE (Windows), image Docker, RPM/DEB (Linux packages), bundle zip. Stocké dans un Artifact Repository (Nexus, Artifactory)." },
     { term: "Jenkins (Master + Agents)", def: "Outil CI/CD open source écrit en Java. Architecture : Jenkins Master (Controller) — orchestre, interface web, planifie les jobs ; Jenkins Agents (Nodes) — exécutent les tâches (build, test, déploiement) assignées par le Master." },
     { term: "SonarQube", def: "Plateforme d'analyse continue de la qualité du code. Détecte : bugs, code smells (odeurs de code), vulnérabilités, duplications, couverture de tests insuffisante. Définit des Quality Gates pour bloquer le pipeline CI si les seuils ne sont pas atteints." },
-    { term: "4 niveaux de tests CI", def: "1) Tests Unitaires (chaque fonction/méthode isolément) ; 2) Tests d'Intégration (interaction entre modules) ; 3) Tests Fonctionnels (respect des besoins métier) ; 4) Tests de Régression (vérifier que les nouveaux commits ne cassent pas l'existant)." }
+    { term: "4 niveaux de tests CI", def: "1) Tests Unitaires (chaque fonction/méthode isolément) ; 2) Tests d'Intégration (interaction entre modules) ; 3) Tests Fonctionnels (respect des besoins métier) ; 4) Tests de Régression (vérifier que les nouveaux commits ne cassent pas l'existant)." },
+    { term: "CI vs CD", def: "CI (Intégration Continue) : commit → build automatique → tests → analyse qualité → artefact. CD (Continuous Delivery) : déploiement automatique en staging + validation manuelle avant prod. Continuous Deployment : déploiement automatique complet jusqu'en prod sans intervention humaine." },
+    { term: "Pipeline as Code (Jenkinsfile / .gitlab-ci.yml)", def: "Description du pipeline CI/CD dans un fichier versionné avec le code source. Jenkinsfile : pipeline Jenkins en syntaxe Groovy DSL. .gitlab-ci.yml : pipeline GitLab CI en YAML. Avantages : versionnable, reviewable, reproductible, auditable." },
+    { term: "Nexus / Artifactory (Artifact Repository)", def: "Gestionnaire de dépôts d'artefacts. Stocke les livrables du pipeline CI (JAR, WAR, images Docker, npm packages...). Sert aussi de proxy cache pour les dépendances externes (Maven Central, npm registry). Nexus = Sonatype, Artifactory = JFrog." },
+    { term: "Code Coverage (Couverture de code)", def: "% du code source exécuté lors des tests automatisés. Quality Gate typique : > 80%. Outils : JaCoCo (Java), Istanbul/NYC (JavaScript), Coverage.py (Python). Un faible taux signale des zones non testées = risque de bugs non détectés." },
+    { term: "GitLab CI", def: "Système CI/CD intégré nativement à GitLab. Pipeline défini dans .gitlab-ci.yml (YAML). Concepts : stages (séquence), jobs (tâches parallèles dans un stage), runners (agents d'exécution). Avantage : tout-en-un (VCS + CI/CD + registre Docker + sécurité)." }
   ]
 };

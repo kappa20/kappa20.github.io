@@ -107,6 +107,48 @@ const SEANCE_3 = {
       options: ["Un serveur physique dédié à une seule application", "Une machine virtuelle préconfigurée incluant un OS et des applications préinstallées, distribuée sous forme d'archive unique prête à l'emploi", "Un hyperviseur de type 2 portable", "Un format de fichier pour sauvegarder les disques physiques"],
       correct: [1],
       explanation: "Une appliance virtuelle (OVA - Open Virtual Appliance) est une machine virtuelle préconfigurée avec OS et applications préinstallées. C'est une solution prête à l'emploi distribuée sous forme d'un seul fichier archive."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le SDN (Software-Defined Networking) ?",
+      options: ["Un protocole réseau pour les connexions Wi-Fi industrielles", "Une approche où le plan de contrôle (décisions de routage) est séparé du plan de données (transmission des paquets) et géré de façon centralisée par logiciel", "Un type de switch physique haute performance", "Un standard de câblage pour les datacenters"],
+      correct: [1],
+      explanation: "Le SDN sépare le plan de contrôle (qui décide du routage) du plan de données (qui transmet les paquets). Le réseau devient programmable et géré centralement par un contrôleur logiciel. Cela permet une gestion flexible et automatisée du réseau."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que la NFV (Network Function Virtualization) ?",
+      options: ["Un protocole de chiffrement des données en transit", "La virtualisation des fonctions réseau physiques (pare-feu, routeurs, load balancers) sous forme de logiciels s'exécutant sur du matériel standard", "Un système de fichiers distribué pour les réseaux", "Un nouveau standard Wi-Fi 6E"],
+      correct: [1],
+      explanation: "La NFV consiste à virtualiser des équipements réseau traditionnellement matériels (pare-feu, routeurs, load balancers) en les exécutant comme des logiciels sur du matériel x86 standard. Réduit les coûts, augmente la flexibilité."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence principale entre SAN et NAS ?",
+      options: ["SAN est moins performant mais moins coûteux que NAS", "SAN fournit un accès en mode bloc via un réseau dédié haute performance, NAS fournit un accès en mode fichier via un réseau IP standard", "NAS utilise le protocole Fibre Channel, SAN utilise SMB/NFS", "SAN et NAS sont identiques, seule la marque diffère"],
+      correct: [1],
+      explanation: "SAN (Storage Area Network) : réseau dédié haute performance, accès en mode bloc (comme un disque local), protocoles Fibre Channel ou iSCSI. NAS (Network Attached Storage) : serveur de fichiers sur réseau IP standard, accès en mode fichier via NFS (Linux) ou SMB/CIFS (Windows)."
+    },
+    {
+      type: "multi",
+      text: "Quels protocoles sont utilisés par un SAN (Storage Area Network) ? (plusieurs réponses)",
+      options: ["Fibre Channel (FC)", "iSCSI (SCSI sur TCP/IP)", "NFS (Network File System)", "SMB/CIFS (Windows File Sharing)"],
+      correct: [0, 1],
+      explanation: "Un SAN utilise des protocoles d'accès en mode bloc : Fibre Channel (FC) pour les réseaux dédiés très performants, et iSCSI (SCSI encapsulé dans TCP/IP) pour les SAN sur réseaux Ethernet. NFS et SMB/CIFS sont des protocoles de mode fichier utilisés par NAS."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le 'thin provisioning' (provisionnement fin) dans la virtualisation de stockage ?",
+      options: ["Allouer immédiatement tout l'espace disque demandé à une VM", "Allouer dynamiquement l'espace disque réellement consommé, au lieu de réserver tout l'espace dès le départ", "Compresser toutes les données stockées dans les volumes logiques", "Répartir les données sur plusieurs disques pour la redondance"],
+      correct: [1],
+      explanation: "Le thin provisioning alloue l'espace disque de façon dynamique : la VM déclare avoir besoin de 100 Go mais n'utilise que l'espace réellement consommé. Opposite : thick provisioning, qui réserve tout l'espace dès la création. Le thin optimise l'utilisation du stockage."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages du SDN par rapport aux réseaux traditionnels ? (plusieurs réponses)",
+      options: ["Réseau programmable et configurable par logiciel", "Gestion centralisée de l'ensemble du réseau", "Automatisation des configurations réseau", "Élimination complète du matériel réseau physique"],
+      correct: [0, 1, 2],
+      explanation: "Le SDN permet : la programmabilité du réseau, une gestion centralisée (vue globale du réseau), et l'automatisation des configurations. Il ne supprime pas le matériel physique : le plan de données reste matériel, seul le plan de contrôle est logiciel."
     }
   ],
   flashcards: [
@@ -121,6 +163,10 @@ const SEANCE_3 = {
     { term: "VPN (Virtual Private Network)", def: "Canal de communication sécurisé et chiffré entre sites géographiquement distants via Internet. Crée un réseau privé virtuel au-dessus d'un réseau public. Utilisé pour connecter des filiales, du télétravail, ou des clouds hybrides." },
     { term: "SDN (Software-Defined Networking)", def: "Approche de réseau virtualisé où le plan de contrôle (décisions de routage) est séparé du plan de données (transmission des paquets). Le réseau est programmable et géré de manière centralisée via un contrôleur logiciel." },
     { term: "NFV (Network Function Virtualization)", def: "Virtualisation des équipements réseau (pare-feu, routeurs, load balancers) sous forme de fonctions logicielles exécutées sur du matériel standard (serveurs x86). Remplace les appliances physiques dédiées." },
-    { term: "OVF vs OVA", def: "OVF (Open Virtualization Format) : format standard multi-fichiers (descripteur XML + images disque VHD/VMDK + manifeste). OVA : archive unique (.tar) regroupant tous les fichiers OVF. OVA = distribution clé-en-main d'une appliance virtuelle." }
+    { term: "OVF vs OVA", def: "OVF (Open Virtualization Format) : format standard multi-fichiers (descripteur XML + images disque VHD/VMDK + manifeste). OVA : archive unique (.tar) regroupant tous les fichiers OVF. OVA = distribution clé-en-main d'une appliance virtuelle." },
+    { term: "Thin Provisioning vs Thick Provisioning", def: "Thin : l'espace disque est alloué dynamiquement selon la consommation réelle → optimise l'utilisation du stockage. Thick : tout l'espace est réservé immédiatement à la création → plus simple mais gaspille de l'espace. Choix selon politique de performance/densité." },
+    { term: "SDN vs NFV", def: "SDN (Software-Defined Networking) : sépare plan de contrôle et plan de données → réseau programmable. NFV (Network Function Virtualization) : virtualise les équipements réseau physiques (firewall, routeur) en logiciels. Complémentaires : SDN gère le flux, NFV virtualise les fonctions." },
+    { term: "VLAN par niveaux (1, 2, 3)", def: "Niveau 1 (port-based) : basé sur le port du switch, rigide. Niveau 2 (MAC address-based) : basé sur l'adresse MAC, souple mais requiert configuration. Niveau 3 (IP/protocole) : basé sur l'adresse IP ou le protocole applicatif, le plus flexible." },
+    { term: "iSCSI", def: "Protocole SAN qui encapsule les commandes SCSI (accès disque en mode bloc) dans des paquets TCP/IP. Permet de créer un SAN à moindre coût sur un réseau Ethernet standard. Alternative moins coûteuse au Fibre Channel." }
   ]
 };

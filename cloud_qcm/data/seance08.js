@@ -114,6 +114,41 @@ const SEANCE_8 = {
       options: ["DevOps est une alternative à l'Agilité qui la remplace complètement", "DevOps étend le cycle Agile jusqu'à l'utilisateur final (Release → Deploy → Operate → Monitor)", "L'Agilité et DevOps sont deux méthodes indépendantes et incompatibles", "DevOps se concentre uniquement sur la phase de planification Agile"],
       correct: [1],
       explanation: "DevOps n'est pas une alternative à l'Agilité, mais son extension au cycle de vie opérationnel. L'Agilité s'arrêtait à la livraison du code, DevOps étend ce cycle jusqu'à l'utilisateur final : Release → Deploy → Operate → Monitor."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les rôles principaux dans un framework Scrum ? (plusieurs réponses)",
+      options: ["Product Owner", "Scrum Master", "Chef de projet traditionnel", "L'équipe de développement (Dev Team)"],
+      correct: [0, 1, 3],
+      explanation: "Scrum définit 3 rôles : le Product Owner (priorise le backlog et représente le client), le Scrum Master (facilite et supprime les obstacles) et l'Équipe de développement (crée l'incrément). Le chef de projet traditionnel n'existe pas dans Scrum."
+    },
+    {
+      type: "single",
+      text: "Que sont les métriques DORA dans le contexte DevOps ?",
+      options: ["Un ensemble d'outils de monitoring open source", "4 métriques clés mesurant la performance des équipes DevOps (fréquence de déploiement, délai de livraison, taux d'échec, temps de restauration)", "Un framework de gestion de projet alternatif à Scrum", "Un protocole de sécurité pour les pipelines CI/CD"],
+      correct: [1],
+      explanation: "Les métriques DORA (DevOps Research and Assessment) mesurent 4 indicateurs clés de performance : Deployment Frequency (fréquence des déploiements), Lead Time for Changes (délai de livraison), Change Failure Rate (taux d'échec) et Time to Restore Service (temps de restauration)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le 'Shift Left' dans la philosophie DevOps ?",
+      options: ["Déplacer les serveurs vers une région géographique à l'ouest", "Intégrer les tests et la sécurité le plus tôt possible dans le cycle de développement", "Réduire le nombre de déploiements pour minimiser les risques", "Déplacer les opérations vers l'équipe de développement"],
+      correct: [1],
+      explanation: "Le 'Shift Left' consiste à intégrer les tests, la qualité et la sécurité le plus tôt possible dans le cycle de développement (vers la gauche dans la timeline). L'objectif est de détecter et corriger les bugs au plus tôt, quand ils sont moins coûteux à corriger."
+    },
+    {
+      type: "multi",
+      text: "Quelles phases font partie de la boucle DEV dans le cycle DevOps ? (plusieurs réponses)",
+      options: ["Plan", "Build", "Test", "Deploy", "Monitor"],
+      correct: [0, 1, 2],
+      explanation: "La boucle DEV comprend : Plan (planification des fonctionnalités), Build (développement et compilation), Test (tests automatisés). La boucle OPS comprend : Release, Deploy, Operate, Monitor."
+    },
+    {
+      type: "single",
+      text: "Quel est le principal problème résolu par DevOps dans les organisations traditionnelles ?",
+      options: ["Le manque d'outils de développement modernes", "La séparation (silos) entre les équipes Dev et Ops entraînant des conflits et ralentissements", "L'absence de tests automatisés dans les projets logiciels", "Le coût trop élevé des serveurs physiques"],
+      correct: [1],
+      explanation: "DevOps résout principalement le problème des silos : dans les organisations traditionnelles, les équipes Dev (qui veulent déployer fréquemment) et Ops (qui veulent la stabilité) ont des objectifs conflictuels. DevOps casse ces silos via la collaboration, l'automatisation et une culture commune."
     }
   ],
   flashcards: [
@@ -128,6 +163,10 @@ const SEANCE_8 = {
     { term: "YAGNI (You Ain't Gonna Need It)", def: "Principe Lean/XP : ne jamais développer une fonctionnalité 'au cas où' on en aurait besoin dans le futur. Écrire du code inutile est un gaspillage (Muda). Ne développe que ce qui est nécessaire maintenant." },
     { term: "JIT (Just-In-Time) DevOps", def: "Principe Lean appliqué au DevOps : les environnements sont créés et le code déployé au moment exact où le besoin apparaît (Infrastructure as Code). Ne prépare pas des serveurs des mois à l'avance. Inspiré du système Toyota." },
     { term: "Cycle DevOps (6 étapes)", def: "Boucle DEV : Plan → Build → Test. Boucle OPS : Release → Deploy → Operate → Monitor → Feedback → (retour à Plan). 3 parties prenantes : Dev, Ops, QA. Objectif : 'Continuous Everything' — tout est automatisé." },
-    { term: "Continuous Everything", def: "Automatisation de toutes les phases du cycle DevOps : CI (build + tests auto à chaque commit), CD (déploiement auto), Continuous Testing, Continuous Monitoring (logs, métriques, alertes), Continuous Feedback (retour vers les devs)." }
+    { term: "Continuous Everything", def: "Automatisation de toutes les phases du cycle DevOps : CI (build + tests auto à chaque commit), CD (déploiement auto), Continuous Testing, Continuous Monitoring (logs, métriques, alertes), Continuous Feedback (retour vers les devs)." },
+    { term: "Métriques DORA", def: "4 métriques de performance DevOps : Deployment Frequency (fréquence des déploiements, les élites déploient plusieurs fois/jour), Lead Time for Changes (délai code→prod), Change Failure Rate (% de déploiements causant un incident), Time to Restore Service (temps de rétablissement)." },
+    { term: "Shift Left", def: "Principe DevOps : intégrer tests, sécurité et qualité le plus tôt possible dans le cycle de développement. 'Gauche' = début du pipeline. Objectif : détecter les bugs au stade le moins coûteux. Ex : tests unitaires dès le code, SAST (analyse sécurité) dès le commit." },
+    { term: "Scrum (rôles & cérémonies)", def: "Framework Agile. 3 rôles : Product Owner (backlog, priorisation), Scrum Master (facilitation), Dev Team (création). 4 cérémonies : Sprint Planning, Daily Scrum (15 min/jour), Sprint Review (démo), Rétrospective (amélioration continue). Sprint = 1-4 semaines." },
+    { term: "Silos Dev/Ops (problème)", def: "Problème des organisations traditionnelles : Dev (veut déployer vite, nouvelles fonctionnalités) vs Ops (veut la stabilité, éviter les changements). Résultat : conflits, lenteur, 'mur de la confusion'. DevOps casse ces silos par la collaboration et l'automatisation." }
   ]
 };

@@ -100,6 +100,48 @@ const SEANCE_5 = {
       options: ["Un conteneur nécessite un hyperviseur, une VM non", "Un conteneur partage le noyau de l'OS hôte et isole les processus, une VM émule un ordinateur complet avec son propre OS invité", "Un conteneur est plus lent qu'une VM", "Une VM est plus légère qu'un conteneur"],
       correct: [1],
       explanation: "Un conteneur partage le noyau de l'OS hôte et ne virtualise que l'espace utilisateur (processus, système de fichiers, réseau). Une VM émule un ordinateur complet avec son propre OS invité via un hyperviseur. Les conteneurs sont plus légers, plus rapides au démarrage, mais moins isolés."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre une image Docker et un conteneur Docker ?",
+      options: ["Une image est un conteneur en cours d'exécution, un conteneur est une image arrêtée", "Une image est un modèle immuable (template) définissant l'environnement, un conteneur est une instance en cours d'exécution créée depuis une image", "Une image contient les données de l'application, un conteneur contient le code source", "Il n'y a aucune différence conceptuelle"],
+      correct: [1],
+      explanation: "Une image Docker est un modèle statique et immuable (layers empilés) qui définit l'environnement de l'application. Un conteneur est une instance en cours d'exécution créée depuis une image. On peut créer plusieurs conteneurs à partir d'une même image."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que Docker Hub ?",
+      options: ["Un outil de monitoring des conteneurs Docker", "Un registre public de distribution d'images Docker permettant de partager et télécharger des images", "Le système de réseau interne de Docker", "Un hyperviseur spécialisé pour Docker"],
+      correct: [1],
+      explanation: "Docker Hub est le registre public officiel pour les images Docker. Il permet de pousser (push) et télécharger (pull) des images. On y trouve les images officielles (Ubuntu, Nginx, MySQL...) ainsi que des images de la communauté."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'un Dockerfile ?",
+      options: ["Un fichier de configuration réseau pour les conteneurs", "Un fichier texte contenant les instructions pour construire automatiquement une image Docker (FROM, RUN, COPY, CMD...)", "Un journal des événements d'un conteneur en cours d'exécution", "Un fichier de composition de plusieurs conteneurs"],
+      correct: [1],
+      explanation: "Un Dockerfile est un fichier texte contenant une série d'instructions pour construire automatiquement une image Docker : FROM (image de base), RUN (commandes à exécuter), COPY (copier des fichiers), EXPOSE (ports), CMD (commande par défaut)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que Docker Compose ?",
+      options: ["Un outil pour composer des musiques avec Docker", "Un outil permettant de définir et d'exécuter des applications multi-conteneurs via un fichier YAML (docker-compose.yml)", "Un registre d'images Docker privé", "Un hyperviseur de type 2 basé sur Docker"],
+      correct: [1],
+      explanation: "Docker Compose permet de définir et gérer des applications composées de plusieurs conteneurs dans un fichier docker-compose.yml. Un seul fichier décrit tous les services, réseaux et volumes. Une commande (docker-compose up) lance toute l'application."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages des conteneurs par rapport aux machines virtuelles ? (plusieurs réponses)",
+      options: ["Démarrage plus rapide (secondes vs minutes)", "Empreinte mémoire plus légère (pas d'OS invité complet)", "Portabilité identique sur n'importe quel OS hôte", "Isolation plus forte (noyau séparé)"],
+      correct: [0, 1],
+      explanation: "Les conteneurs démarrent en secondes (vs minutes pour les VMs) et sont plus légers (pas d'OS invité). En revanche, leur portabilité dépend du noyau hôte (Linux requis), et leur isolation est plus faible (partage du noyau). Les VMs offrent une meilleure isolation et compatibilité OS."
+    },
+    {
+      type: "single",
+      text: "Dans Docker, qu'est-ce qu'un volume ?",
+      options: ["La quantité de RAM allouée à un conteneur", "Un mécanisme de stockage persistant permettant de conserver les données même après la suppression d'un conteneur", "Un réseau virtuel entre conteneurs", "Le fichier de configuration de lancement d'un conteneur"],
+      correct: [1],
+      explanation: "Un volume Docker est un mécanisme de stockage persistant géré par Docker. Les données d'un volume survivent à la suppression du conteneur. Utile pour les bases de données, les fichiers de log et toute donnée devant persister entre les redémarrages."
     }
   ],
   flashcards: [
@@ -112,6 +154,11 @@ const SEANCE_5 = {
     { term: "Docker", def: "Plateforme de conteneurisation la plus populaire (Approche Processus). Utilise namespaces + cgroups + chroot. Un conteneur Docker = une application + ses dépendances dans une image portable. Images stockées dans Docker Hub ou un registre privé." },
     { term: "OpenVZ / VPS", def: "Solution de virtualisation open source (Approche Système). Appelle ses conteneurs 'Virtual Private Servers' (VPS). Utilise namespaces + cgroups + chroots. Fonctionne avec un noyau Linux modifié 'OpenVZ'. Aucune surcharge d'émulation." },
     { term: "LXC (Linux Containers)", def: "Technologie de conteneurisation système (Approche Système) qui s'appuie nativement sur ce qui existe dans Linux (namespaces + cgroups), contrairement à OpenVZ qui utilise un noyau modifié. Plus proche d'une VM légère que Docker." },
-    { term: "Conteneur Système vs Conteneur Processus", def: "Système (OpenVZ, LXC) : simule un OS complet (init, services, multi-processus), comme une VM très légère. Processus (Docker) : isole un seul processus principal (une application), plus léger, conçu pour les microservices." }
+    { term: "Conteneur Système vs Conteneur Processus", def: "Système (OpenVZ, LXC) : simule un OS complet (init, services, multi-processus), comme une VM très légère. Processus (Docker) : isole un seul processus principal (une application), plus léger, conçu pour les microservices." },
+    { term: "Image Docker vs Conteneur Docker", def: "Image : modèle immuable et partageable construit par couches (layers). Conteneur : instance en cours d'exécution créée depuis une image. Analogie : Image = classe, Conteneur = instance d'objet. Une même image peut générer N conteneurs." },
+    { term: "Dockerfile", def: "Fichier texte de construction automatique d'image Docker. Instructions principales : FROM (image de base), RUN (exécuter commandes au build), COPY (copier fichiers), EXPOSE (déclarer port), ENV (variable d'env), CMD (commande au démarrage du conteneur)." },
+    { term: "Docker Compose", def: "Outil de gestion d'applications multi-conteneurs. Fichier docker-compose.yml décrit : services (conteneurs), réseaux et volumes. Commandes clés : docker-compose up (lancer tout), docker-compose down (arrêter), docker-compose ps (état des services)." },
+    { term: "Volume Docker", def: "Stockage persistant géré par Docker, survivant à la suppression du conteneur. Types : Volume nommé (géré par Docker, recommandé), Bind Mount (répertoire hôte monté dans le conteneur). Essentiel pour les bases de données et fichiers persistants." },
+    { term: "Docker Hub / Registre d'images", def: "Registre public officiel Docker. Contient des images officielles (ubuntu, nginx, mysql, python...) et de la communauté. Commandes : docker pull (télécharger), docker push (pousser), docker search (chercher). Alternative privée : Harbor, Nexus, ECR (AWS)." }
   ]
 };

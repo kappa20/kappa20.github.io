@@ -333,7 +333,10 @@
   </div>
 
   <div class="quiz-nav">
-    <button class="btn btn-outline" onclick="quitQuiz()">Abandonner</button>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-outline" onclick="quitQuiz()">Abandonner</button>
+      <button class="btn btn-outline" id="btn-prev" onclick="prevQuestion()" style="display:none">← Précédent</button>
+    </div>
     <div style="display:flex;gap:10px">
       <button class="btn btn-accent" id="btn-validate" onclick="validateAnswer()">Valider</button>
       <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()" style="display:none">Suivant →</button>

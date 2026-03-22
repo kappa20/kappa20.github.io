@@ -203,6 +203,78 @@ const SEANCE_12 = {
       ],
       correct: [1],
       explanation: "Un Role dans Ansible est une structure organisée et réutilisable. Il regroupe l'ensemble des éléments nécessaires (playbooks, variables, templates, handlers) pour accomplir une fonction spécifique, facilitant la réutilisation."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence principale entre Ansible et Terraform ?",
+      options: [
+        "Terraform est pour les applications web, Ansible pour les bases de données",
+        "Ansible est principalement un outil de gestion de configuration (CM), Terraform est un outil de provisionnement d'infrastructure déclaratif (IaC)",
+        "Terraform nécessite des agents sur les machines, Ansible non",
+        "Il n'y a aucune différence fonctionnelle"
+      ],
+      correct: [1],
+      explanation: "Ansible est orienté gestion de configuration et orchestration : installe des logiciels, configure des services, déploie du code. Terraform est orienté provisionnement d'infrastructure (IaC déclaratif) : crée/modifie/détruit des ressources Cloud (VMs, réseaux, BDD). Ils sont souvent utilisés ensemble."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'Ansible Galaxy ?",
+      options: [
+        "Une interface graphique pour créer des playbooks Ansible",
+        "Un dépôt public de roles et collections Ansible partagés par la communauté, téléchargeables via 'ansible-galaxy install'",
+        "Un outil de monitoring des nœuds gérés par Ansible",
+        "Une version d'Ansible dédiée aux environnements cloud"
+      ],
+      correct: [1],
+      explanation: "Ansible Galaxy est le hub officiel de la communauté pour partager et découvrir des Roles et Collections Ansible. On peut télécharger un Role existant (ex: installer Nginx, configurer MySQL) avec la commande 'ansible-galaxy install nomRole' plutôt que de tout réécrire."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'Ansible Vault ?",
+      options: [
+        "Un coffre-fort physique pour les serveurs Ansible",
+        "Un mécanisme de chiffrement des données sensibles (mots de passe, clés API) dans les fichiers Ansible",
+        "Un système de sauvegarde des playbooks",
+        "Une fonctionnalité de rollback automatique des déploiements"
+      ],
+      correct: [1],
+      explanation: "Ansible Vault permet de chiffrer des fichiers ou des variables sensibles (mots de passe, clés API, certificats) dans les playbooks et inventaires. Le chiffrement est AES256. On peut exécuter un playbook avec un fichier chiffré via --vault-password-file ou --ask-vault-pass."
+    },
+    {
+      type: "single",
+      text: "Que permet l'option '--check' (dry-run) dans Ansible ?",
+      options: [
+        "Vérifier la syntaxe YAML du playbook uniquement",
+        "Simuler l'exécution du playbook sans effectuer aucune modification réelle sur les machines cibles",
+        "Vérifier la connectivité SSH vers tous les hôtes de l'inventaire",
+        "Générer un rapport d'audit de l'infrastructure"
+      ],
+      correct: [1],
+      explanation: "Le mode --check (dry-run) exécute le playbook en mode simulation : Ansible prédit les changements qu'il effectuerait sans réellement les appliquer. Utile pour vérifier l'impact d'un playbook avant de l'exécuter sur un environnement de production."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages de l'IaC (Infrastructure as Code) par rapport à la gestion manuelle ? (plusieurs réponses)",
+      options: [
+        "Reproductibilité : même configuration déployable en dev, staging et prod",
+        "Versionnement : historique des changements d'infrastructure dans Git",
+        "Automatisation : déploiement rapide sans erreurs humaines",
+        "Coût nul : l'infrastructure devient gratuite avec l'IaC"
+      ],
+      correct: [0, 1, 2],
+      explanation: "L'IaC offre : reproductibilité (même playbook → même résultat sur tous les environnements), versionnement (l'infrastructure est dans Git avec son historique), et automatisation (élimine les erreurs manuelles, accélère les déploiements). L'IaC ne rend pas l'infrastructure gratuite."
+    },
+    {
+      type: "single",
+      text: "Dans un Playbook Ansible, qu'est-ce qu'un 'Play' ?",
+      options: [
+        "Une tâche unitaire exécutée sur un seul hôte",
+        "Un bloc associant un groupe d'hôtes cibles à une liste de tâches à exécuter sur eux",
+        "Un fichier de variables importé dans le playbook",
+        "Un module d'automatisation d'une action spécifique"
+      ],
+      correct: [1],
+      explanation: "Un Play est la structure fondamentale d'un Playbook Ansible : il associe une liste d'hôtes cibles (from inventory) à une séquence de tâches à exécuter. Un Playbook peut contenir plusieurs Plays, chacun ciblant des hôtes différents avec des tâches différentes."
     }
   ],
   flashcards: [
@@ -217,6 +289,11 @@ const SEANCE_12 = {
     { term: "Variables système (facts) vs Variables utilisateurs", def: "Facts (système) : collectées automatiquement par gather_facts, ex: ansible_hostname, ansible_os_family. Variables utilisateurs : définies manuellement dans le playbook (vars:) ou un fichier externe (vars/main.yaml) pour personnaliser l'exécution." },
     { term: "Jinja2 (Ansible)", def: "Moteur de templates Python utilisé pour créer des fichiers de configuration dynamiques. Les variables sont injectées avec {{ variable }}. Exemple : template Nginx avec le port configuré dynamiquement. Fichiers templates : extension .j2." },
     { term: "Handler (Ansible)", def: "Tâche spéciale déclenchée UNIQUEMENT quand une autre tâche signale un changement via notify. Exemple classique : redémarrer Apache (notify: Restart Apache) seulement si le fichier de config a été modifié. Évite les redémarrages inutiles = optimisation." },
-    { term: "Role Ansible", def: "Structure organisée et réutilisable regroupant playbooks, tasks, variables, templates, handlers et fichiers pour une fonction spécifique (ex: déployer Nginx, configurer MySQL, installer Docker). Facilite la réutilisation entre projets et le partage via Ansible Galaxy." }
+    { term: "Role Ansible", def: "Structure organisée et réutilisable regroupant playbooks, tasks, variables, templates, handlers et fichiers pour une fonction spécifique (ex: déployer Nginx, configurer MySQL, installer Docker). Facilite la réutilisation entre projets et le partage via Ansible Galaxy." },
+    { term: "Ansible vs Terraform", def: "Ansible : gestion de configuration (CM) — installe logiciels, configure services, déploie code. Procédural (comment faire). Terraform : provisionnement IaC déclaratif (HashiCorp) — crée/modifie/détruit ressources Cloud (VMs, réseaux, BDD). Déclaratif (quoi créer). Utilisés ensemble : Terraform crée l'infra, Ansible la configure." },
+    { term: "Ansible Vault", def: "Mécanisme de chiffrement AES256 des données sensibles dans Ansible. Permet de commiter des mots de passe, clés API, certificats chiffrés dans Git sans les exposer. Commandes : ansible-vault encrypt/decrypt/edit. Exécution : --ask-vault-pass ou --vault-password-file." },
+    { term: "Ansible Galaxy", def: "Hub communautaire officiel de Roles et Collections Ansible réutilisables. ansible-galaxy install geerlingguy.nginx installe le role Nginx de Jeff Geerling. Évite de réinventer la roue. galaxy.ansible.com = dépôt public. Collections = regroupement de roles + modules + plugins." },
+    { term: "Ansible --check (Dry-run)", def: "Mode de simulation : Ansible prédit les changements sans les appliquer réellement. Essentiel avant d'exécuter un playbook en production. Combiné avec --diff : affiche les modifications ligne par ligne dans les fichiers de config. ansible-playbook site.yml --check --diff." },
+    { term: "Play vs Task vs Module (Ansible)", def: "Playbook : fichier YAML principal. Play : bloc hôtes + tâches. Task : action unitaire (ex: 'Installer Nginx'). Module : outil exécutant la Task (apt, service, copy...). Hiérarchie : Playbook > Plays > Tasks > Modules. Handlers : tâches spéciales déclenchées par notify." }
   ]
 };

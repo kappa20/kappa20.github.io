@@ -162,6 +162,48 @@ const SEANCE_9 = {
       options: ["git clone", "git commit", "git init", "git push"],
       correct: [2],
       explanation: "La commande 'git init' initialise un nouveau dépôt Git local. Elle crée un fichier caché '.git' qui contient tous les fichiers nécessaires au dépôt (HEAD, config, hooks, objects, refs...)."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre 'git pull' et 'git fetch' ?",
+      options: ["git pull et git fetch sont des synonymes", "git fetch télécharge les modifications du distant sans les fusionner, git pull télécharge ET fusionne automatiquement dans la branche courante", "git pull télécharge seulement les nouveaux fichiers, git fetch télécharge tout", "git fetch est uniquement pour les branches distantes, git pull pour les branches locales"],
+      correct: [1],
+      explanation: "git fetch récupère les modifications du dépôt distant mais ne les intègre pas dans la branche locale — vous pouvez les inspecter avant. git pull = git fetch + git merge : il récupère ET fusionne automatiquement. git fetch est plus sûr pour vérifier avant d'intégrer."
+    },
+    {
+      type: "single",
+      text: "À quoi sert 'git stash' ?",
+      options: ["Supprimer définitivement des fichiers du dépôt", "Mettre temporairement de côté des modifications non committées pour nettoyer le working tree, puis les réappliquer plus tard", "Fusionner deux branches sans créer de commit de merge", "Revenir au dernier commit en annulant toutes les modifications locales"],
+      correct: [1],
+      explanation: "git stash sauvegarde temporairement les modifications en cours (non committées) dans une pile, rendant le working tree propre. Utile pour changer de branche sans committer un travail inachevé. git stash pop récupère les modifications mises de côté."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre GitHub et GitLab ?",
+      options: ["GitHub est open source, GitLab est propriétaire", "GitHub est une plateforme d'hébergement Git (Microsoft), GitLab est une plateforme Git complète avec CI/CD intégré (open source, auto-hébergeable)", "GitLab n'utilise pas Git comme système de gestion de versions", "GitHub et GitLab sont identiques dans leurs fonctionnalités"],
+      correct: [1],
+      explanation: "GitHub (Microsoft) est la principale plateforme d'hébergement de dépôts Git, centrée sur la collaboration et l'open source. GitLab propose en plus un CI/CD intégré natif, une gestion de projet complète, et peut être auto-hébergé sur ses propres serveurs."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les commandes Git essentielles pour le flux de travail quotidien ? (plusieurs réponses)",
+      options: ["git add (indexer les modifications)", "git commit -m 'message' (sauvegarder une version)", "git push (envoyer au dépôt distant)", "git status (voir l'état du working tree)"],
+      correct: [0, 1, 2, 3],
+      explanation: "Le flux Git quotidien : git status (voir les fichiers modifiés), git add (indexer les changements dans la staging area), git commit -m (créer un instantané versionné), git push (envoyer les commits vers le dépôt distant)."
+    },
+    {
+      type: "single",
+      text: "Dans Git Flow, quelle branche sert d'intégration pour toutes les nouvelles fonctionnalités ?",
+      options: ["Master / Main", "Develop", "Release", "Hotfix"],
+      correct: [1],
+      explanation: "La branche Develop est la branche d'intégration principale dans Git Flow. Toutes les branches Feature sont créées depuis Develop et y sont fusionnées après développement. La branche Master/Main ne contient que le code stable prêt pour la production."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le rebase dans Git ?",
+      options: ["Renommer la branche principale", "Réécrire l'historique d'une branche en déplaçant ses commits à la pointe d'une autre branche, créant un historique linéaire", "Annuler le dernier commit", "Fusionner deux branches en créant un commit de merge"],
+      correct: [1],
+      explanation: "git rebase déplace les commits d'une branche à la pointe d'une autre, créant un historique linéaire (sans commit de merge). Différence avec merge : merge crée un commit de fusion et conserve la divergence ; rebase réécrit l'historique pour le linéariser."
     }
   ],
   flashcards: [
@@ -174,6 +216,11 @@ const SEANCE_9 = {
     { term: "Branche Hotfix (Git Flow)", def: "Branche créée directement depuis Master pour corriger rapidement un bug critique en production. Une fois terminée, fusionnée dans Master (nouvelle release) ET réinjectée dans Develop pour ne pas perdre le correctif." },
     { term: "Repository local vs distant", def: "Local : sur la machine du développeur, copie complète avec tout l'historique. Distant : sur un serveur/plateforme (GitHub, GitLab, Bitbucket), référence partagée pour la collaboration. git push envoie les commits locaux vers le distant." },
     { term: "Merge vs Conflit (Git)", def: "Merge : opération qui intègre les modifications d'une branche dans une autre. Conflit de merge : deux développeurs ont modifié les mêmes lignes — Git ne peut pas fusionner automatiquement, le développeur doit résoudre manuellement." },
-    { term: "Développement Continu (DevOps)", def: "1ère étape du cycle DevOps. Inclut la planification (tickets, sprints) et le codage. Utilise un VCS (Git) pour collaborer. Chaque commit déclenche automatiquement le pipeline CI : build → tests → analyse qualité → artefact." }
+    { term: "Développement Continu (DevOps)", def: "1ère étape du cycle DevOps. Inclut la planification (tickets, sprints) et le codage. Utilise un VCS (Git) pour collaborer. Chaque commit déclenche automatiquement le pipeline CI : build → tests → analyse qualité → artefact." },
+    { term: "git fetch vs git pull", def: "git fetch : télécharge les modifications du distant dans le dépôt local SANS les fusionner — permet d'inspecter avant d'intégrer. git pull = git fetch + git merge : intègre automatiquement. Bonne pratique : git fetch + inspection → git merge (contrôlé)." },
+    { term: "git stash", def: "Mise en attente temporaire des modifications non committées. Utile pour changer de branche proprement. git stash (sauvegarder), git stash list (voir la liste), git stash pop (réappliquer et supprimer), git stash apply (réappliquer sans supprimer)." },
+    { term: "GitHub vs GitLab", def: "GitHub (Microsoft) : plateforme leader d'hébergement Git, forte communauté open source, GitHub Actions (CI/CD). GitLab : plateforme DevOps complète avec CI/CD natif (GitLab CI), gestion de projet, registre Docker intégré, auto-hébergeable. GitLab = DevOps all-in-one." },
+    { term: "git rebase vs git merge", def: "Merge : crée un commit de fusion, préserve l'historique exact (avec divergences). Rebase : déplace les commits sur la pointe de la branche cible → historique linéaire propre. Règle : ne jamais rebaser des branches publiques partagées (réécriture de l'historique)." },
+    { term: "Staging Area (Index Git)", def: "Zone intermédiaire entre le working tree et le dépôt Git. git add ajoute les fichiers dans la staging area. git commit crée un commit avec UNIQUEMENT ce qui est dans la staging area. Permet de préparer un commit sélectif sans committer toutes les modifications." }
   ]
 };

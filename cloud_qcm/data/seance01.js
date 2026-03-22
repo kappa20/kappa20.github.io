@@ -121,6 +121,41 @@ const SEANCE_1 = {
       options: ["La limitation volontaire de la bande passante par le fournisseur", "Le paiement à l'usage : le client ne paie que les ressources réellement consommées, avec une facturation transparente", "Un audit mensuel de l'utilisation des ressources", "Un abonnement forfaitaire indépendant de la consommation"],
       correct: [1],
       explanation: "Le Service Mesuré signifie que l'utilisation des ressources est surveillée, contrôlée et rapportée de manière transparente, permettant une facturation à l'usage (pay-per-use). Le client paie uniquement ce qu'il consomme, comme pour l'eau ou l'électricité."
+    },
+    {
+      type: "single",
+      text: "Quel modèle de service Cloud correspond à la mise à disposition d'une infrastructure virtualisée (serveurs, stockage, réseau) ?",
+      options: ["SaaS (Software as a Service)", "PaaS (Platform as a Service)", "IaaS (Infrastructure as a Service)", "FaaS (Function as a Service)"],
+      correct: [2],
+      explanation: "IaaS (Infrastructure as a Service) est le modèle où le fournisseur met à disposition une infrastructure virtualisée. Le client gère lui-même l'OS, le middleware et les applications. Exemples : AWS EC2, Azure VMs, Google Compute Engine."
+    },
+    {
+      type: "single",
+      text: "Dans le modèle SaaS, qu'est-ce que le client gère directement ?",
+      options: ["Le système d'exploitation et les serveurs", "Les bases de données et le middleware", "Rien : il utilise simplement l'application via un navigateur", "Le réseau et le stockage physique"],
+      correct: [2],
+      explanation: "Dans le modèle SaaS (Software as a Service), le client n'a rien à gérer : il accède à l'application complète via un navigateur. Le fournisseur gère tout (infrastructure, OS, middleware, application). Exemples : Gmail, Salesforce, Dropbox."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les 3 modèles de service Cloud définis par le NIST ? (plusieurs réponses)",
+      options: ["IaaS (Infrastructure as a Service)", "PaaS (Platform as a Service)", "SaaS (Software as a Service)", "NaaS (Network as a Service)"],
+      correct: [0, 1, 2],
+      explanation: "Le NIST définit 3 modèles de service Cloud : IaaS (infrastructure), PaaS (plateforme de développement) et SaaS (logiciel). NaaS (Network as a Service) n'est pas dans la définition NIST standard."
+    },
+    {
+      type: "single",
+      text: "Quelle analogie illustre le mieux le modèle économique du Cloud Computing ?",
+      options: ["Acheter une voiture et la posséder définitivement", "Louer une voiture uniquement quand on en a besoin et payer selon l'usage", "Fabriquer sa propre voiture pour réduire les coûts", "Partager une voiture avec ses voisins en faisant un planning annuel"],
+      correct: [1],
+      explanation: "Le Cloud Computing suit le modèle OPEX (dépenses opérationnelles) : on paie à l'usage, comme la location d'une voiture. Contrairement au CAPEX (dépenses d'investissement) où l'on achète son propre matériel. Cela réduit les coûts initiaux et offre de la flexibilité."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages économiques du Cloud Computing pour une entreprise ? (plusieurs réponses)",
+      options: ["Réduction des coûts d'infrastructure initiale (CAPEX)", "Passage d'un modèle CAPEX à un modèle OPEX", "Élimination complète des coûts informatiques", "Meilleure prédictibilité des dépenses IT"],
+      correct: [0, 1, 3],
+      explanation: "Le Cloud réduit les coûts CAPEX (plus besoin d'acheter du matériel), passe à un modèle OPEX (paiement à l'usage), et améliore la prédictibilité des dépenses. Il n'élimine pas les coûts : il les transforme et les optimise."
     }
   ],
   flashcards: [
@@ -133,6 +168,11 @@ const SEANCE_1 = {
     { term: "Pay-as-you-go (Service Mesuré)", def: "Modèle de facturation Cloud : le client paie uniquement les ressources réellement consommées (heures de calcul, Go de stockage, requêtes…), sans coût fixe ni engagement minimum. Analogue à la facturation de l'électricité." },
     { term: "Grid Computing vs Cloud Computing", def: "Grid : calcul haute performance (HPC) pour la recherche scientifique, protocoles spécifiques, intégration lourde, pas pour le grand public. Cloud : abstraction des ressources, élasticité, self-service, accessible à tous via Internet." },
     { term: "SOA (Architecture Orientée Service)", def: "Méthode de développement logiciel qui décompose une application en services réutilisables, faiblement couplés et interconnectés. Base conceptuelle du Cloud (microservices, API). Favorise flexibilité et réduction des coûts d'intégration." },
-    { term: "NIST", def: "National Institute of Standards and Technology (USA). Organisme qui a établi la définition de référence du Cloud Computing avec ses 5 caractéristiques, 3 modèles de service (IaaS/PaaS/SaaS) et 4 modèles de déploiement (public/privé/hybride/communautaire)." }
+    { term: "NIST", def: "National Institute of Standards and Technology (USA). Organisme qui a établi la définition de référence du Cloud Computing avec ses 5 caractéristiques, 3 modèles de service (IaaS/PaaS/SaaS) et 4 modèles de déploiement (public/privé/hybride/communautaire)." },
+    { term: "IaaS (Infrastructure as a Service)", def: "Modèle Cloud le plus bas niveau : le fournisseur offre l'infrastructure virtualisée (serveurs, stockage, réseau). Le client gère OS, middleware, applications. Avantage : contrôle maximal. Exemples : AWS EC2, Azure VMs, Google Compute Engine, OVH." },
+    { term: "PaaS (Platform as a Service)", def: "Niveau intermédiaire : le fournisseur offre une plateforme de développement (OS + runtime + middleware). Le client déploie ses applications sans gérer l'infrastructure. Idéal pour les développeurs. Exemples : Heroku, Google App Engine, Azure App Service." },
+    { term: "SaaS (Software as a Service)", def: "Niveau le plus haut : le fournisseur offre une application complète via navigateur. Le client ne gère rien. Idéal pour les utilisateurs finaux. Exemples : Gmail, Office 365, Salesforce, Dropbox, Zoom, YouTube." },
+    { term: "CAPEX vs OPEX (Cloud)", def: "CAPEX (Capital Expenditure) : achat de matériel physique, coût initial élevé, investissement long terme. OPEX (Operational Expenditure) : paiement à l'usage Cloud, coût variable, pas d'investissement initial. Le Cloud transforme le CAPEX en OPEX." },
+    { term: "Resource Pooling (mutualisation)", def: "5e caractéristique NIST : les ressources du fournisseur sont mutualisées pour servir plusieurs clients simultanément (multi-tenant). Le client n'a pas de contrôle sur l'emplacement exact des ressources. Modèle indispensable pour la rentabilité du Cloud Public." }
   ]
 };

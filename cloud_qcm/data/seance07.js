@@ -100,6 +100,41 @@ const SEANCE_7 = {
       options: ["Pour réduire la consommation de carburant", "Pour traiter localement les données des capteurs et caméras afin de prendre des décisions rapides nécessaires à la sécurité", "Pour transmettre en temps réel toutes les données au cloud central", "Pour se connecter aux réseaux Wi-Fi publics"],
       correct: [1],
       explanation: "Les voitures autonomes utilisent l'Edge Computing pour traiter localement les données des capteurs et caméras, permettant une prise de décision rapide et sécurisée sans dépendre d'une connexion cloud avec latence."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre Fog Computing et Edge Computing ?",
+      options: ["Le Fog Computing traite les données au niveau des capteurs, l'Edge Computing dans le cloud central", "Le Fog Computing est une couche intermédiaire entre les appareils et le cloud (via routeurs/gateways), l'Edge Computing traite directement sur ou près des appareils", "Le Fog Computing est une technologie obsolète remplacée par l'Edge Computing", "Il n'y a aucune différence conceptuelle"],
+      correct: [1],
+      explanation: "L'Edge Computing traite les données sur les appareils eux-mêmes ou à très proximité. Le Fog Computing est une couche intermédiaire : des nœuds (routeurs, gateways) pré-traitent et filtrent les données entre les appareils Edge et le cloud central."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le Mobile Cloud Computing ?",
+      options: ["L'utilisation de smartphones pour héberger des serveurs cloud", "Un paradigme qui délègue les traitements intensifs du terminal mobile vers des ressources cloud, pour pallier les limitations de batterie, CPU et mémoire", "Un réseau mobile 5G dédié aux datacenters", "Une application mobile pour gérer des ressources cloud"],
+      correct: [1],
+      explanation: "Le Mobile Cloud Computing étend le cloud aux appareils mobiles en déléguant les traitements intensifs vers des ressources distantes. Résout les contraintes des mobiles : autonomie limitée, puissance CPU/RAM insuffisante pour certains traitements (ex: IA, rendu 3D)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le PUE (Power Usage Effectiveness) dans le contexte du Green Cloud ?",
+      options: ["Un protocole de communication réseau économe en énergie", "Un indicateur mesurant l'efficacité énergétique d'un datacenter : rapport entre la consommation totale et la consommation des serveurs seuls (PUE idéal = 1,0)", "Un standard ISO pour les serveurs Cloud", "Un algorithme d'optimisation des ressources Cloud"],
+      correct: [1],
+      explanation: "Le PUE (Power Usage Effectiveness) = énergie totale du datacenter / énergie consommée par l'IT. Un PUE de 1,0 est idéal (100% de l'énergie va aux serveurs). Un datacenter classique a un PUE de 1,5-2,0. Les hyperscalers (Google, Microsoft) visent < 1,2."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les exemples d'IA-as-a-Service proposés par les grands fournisseurs Cloud ? (plusieurs réponses)",
+      options: ["AWS SageMaker (entraînement et déploiement de modèles ML)", "Google Vertex AI (anciennement AI Platform)", "Azure Machine Learning", "IBM Watson"],
+      correct: [0, 1, 2, 3],
+      explanation: "Les 4 grands fournisseurs proposent des services IA managés : AWS SageMaker, Google Vertex AI, Azure Machine Learning, et IBM Watson. Ces services démocratisent l'IA en fournissant GPU, données et pipelines d'entraînement clés en main."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les solutions pour réduire le Vendor Lock-in dans le Cloud ? (plusieurs réponses)",
+      options: ["Utiliser des outils open source (Kubernetes, Terraform)", "Adopter une stratégie Multicloud", "Utiliser des formats et APIs standardisés", "Signer un contrat uniquement avec un seul fournisseur pour bénéficier de remises"],
+      correct: [0, 1, 2],
+      explanation: "Pour réduire le Vendor Lock-in : utiliser des outils open source portables (Kubernetes, Terraform), adopter une stratégie multicloud, et préférer les APIs standardisées. S'engager exclusivement avec un fournisseur aggrave le lock-in."
     }
   ],
   flashcards: [
@@ -111,6 +146,10 @@ const SEANCE_7 = {
     { term: "Vendor Lock-in", def: "Dépendance envers les outils, API et technologies propriétaires d'un fournisseur Cloud spécifique. Migration difficile et coûteuse vers un autre fournisseur. Solution : adopter des standards ouverts (Kubernetes, Terraform), stratégie multicloud." },
     { term: "RGPD (Cloud Compliance)", def: "Règlement Général sur la Protection des Données (UE). Impose que les données personnelles des citoyens européens soient traitées et stockées en conformité (droit à l'oubli, consentement, localisation des données). Constraint majeur pour le Cloud Public." },
     { term: "HIPAA (Cloud Compliance)", def: "Health Insurance Portability and Accountability Act (USA). Réglementation imposant des exigences strictes sur la protection des données médicales (PHI). Les fournisseurs Cloud qui traitent des données de santé doivent être HIPAA-compliant." },
-    { term: "IA & Cloud Computing", def: "Le Cloud fournit la puissance de calcul (GPU, TPU) et les données massives nécessaires à l'entraînement des modèles d'IA/ML. Exemples : AWS SageMaker, Google Vertex AI, Azure Machine Learning, IBM Watson. IA-as-a-Service = démocratisation de l'IA." }
+    { term: "IA & Cloud Computing", def: "Le Cloud fournit la puissance de calcul (GPU, TPU) et les données massives nécessaires à l'entraînement des modèles d'IA/ML. Exemples : AWS SageMaker, Google Vertex AI, Azure Machine Learning, IBM Watson. IA-as-a-Service = démocratisation de l'IA." },
+    { term: "Fog Computing", def: "Couche de traitement intermédiaire entre les appareils IoT (Edge) et le Cloud. Les nœuds Fog (routeurs intelligents, gateways) pré-traitent et filtrent les données localement avant envoi au Cloud. Réduit la bande passante et la latence par rapport à un traitement cloud pur." },
+    { term: "Mobile Cloud Computing", def: "Paradigme déléguant les calculs intensifs d'un appareil mobile vers des ressources cloud distantes. Résout les contraintes : autonomie batterie, puissance CPU/RAM limitée. Applications : reconnaissance vocale (Siri, Google Assistant), rendu 3D à distance, IA mobile." },
+    { term: "PUE (Power Usage Effectiveness)", def: "Indicateur clé du Green Cloud : PUE = Énergie totale datacenter / Énergie consommée par les serveurs. PUE idéal = 1,0. Datacenters classiques : 1,5-2,0. Hyperscalers (Google, Facebook) : ~1,1. Amélioration via refroidissement naturel, énergies renouvelables." },
+    { term: "Challenges du Cloud Computing", def: "5 défis principaux : 1) Sécurité des données (confidentialité, intégrité), 2) Vendor Lock-in (dépendance propriétaire), 3) Performances (latence, bande passante), 4) Conformité réglementaire (RGPD, HIPAA, PCI-DSS), 5) Intégration avec les systèmes existants (legacy)." }
   ]
 };

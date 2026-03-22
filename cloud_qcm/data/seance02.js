@@ -156,6 +156,48 @@ const SEANCE_2 = {
       options: ["Elle supprime la nécessité d'un hyperviseur", "Elle permet de déplacer des VMs d'un hôte physique à un autre à chaud, améliorant les performances et la continuité de service", "Elle convertit des VMs en serveurs physiques", "Elle réduit la capacité de stockage nécessaire"],
       correct: [1],
       explanation: "La migration des VMs (ex: vMotion de VMware) permet de déplacer des machines virtuelles d'un hyperviseur à un autre à chaud (sans interruption de service), offrant de meilleures performances et une haute disponibilité."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'un snapshot (instantané) de machine virtuelle ?",
+      options: ["Une capture d'écran de l'interface de la VM", "Une sauvegarde complète de l'état d'une VM à un instant précis (mémoire, disque, configuration), permettant un retour arrière rapide", "Une copie du réseau virtuel associé à la VM", "Un fichier journal des actions effectuées sur la VM"],
+      correct: [1],
+      explanation: "Un snapshot est une sauvegarde de l'état complet d'une VM à un instant T (mémoire vive, état du disque, configuration). Il permet de revenir rapidement à un état précédent en cas de problème (par exemple avant une mise à jour risquée)."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre la migration à chaud (live migration) et la migration à froid d'une VM ?",
+      options: ["La migration à chaud est plus lente que la migration à froid", "La migration à chaud déplace la VM sans l'éteindre (sans interruption de service), la migration à froid nécessite d'arrêter la VM", "La migration à froid préserve les données mieux que la migration à chaud", "Il n'y a aucune différence fonctionnelle"],
+      correct: [1],
+      explanation: "La migration à chaud (vMotion) déplace une VM d'un hôte à un autre sans l'éteindre — aucune interruption de service. La migration à froid nécessite d'arrêter la VM avant de la déplacer. La première est préférable pour la haute disponibilité."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que la consolidation de serveurs par la virtualisation ?",
+      options: ["Regrouper plusieurs applications sur un seul serveur physique sans virtualisation", "Regrouper plusieurs serveurs physiques sous-employés en VMs sur un seul serveur physique plus puissant pour optimiser les ressources", "Fusionner des datacenters géographiquement distants", "Copier le contenu d'un serveur vers un autre"],
+      correct: [1],
+      explanation: "La consolidation de serveurs consiste à remplacer plusieurs serveurs physiques sous-employés par des VMs regroupées sur un ou quelques hôtes physiques puissants. Résultat : réduction des coûts (matériel, énergie, espace), meilleure utilisation des ressources."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages de la consolidation de serveurs grâce à la virtualisation ? (plusieurs réponses)",
+      options: ["Réduction du nombre de serveurs physiques", "Diminution de la consommation électrique", "Meilleure utilisation des ressources (CPU, RAM)", "Augmentation du nombre de licences logicielles nécessaires"],
+      correct: [0, 1, 2],
+      explanation: "La consolidation réduit le nombre de serveurs physiques, diminue la consommation électrique et de refroidissement, et améliore l'utilisation des ressources. Elle réduit (pas augmente) le nombre de licences nécessaires."
+    },
+    {
+      type: "single",
+      text: "Dans la virtualisation x86, pourquoi les anneaux 1 et 2 ont-ils été supprimés avec le passage au 64-bit ?",
+      options: ["Pour accélérer l'exécution des instructions", "Parce qu'ils n'étaient pas utilisés par les OS modernes qui n'utilisaient que Ring 0 (noyau) et Ring 3 (utilisateur)", "Pour réduire la taille des processeurs", "Pour améliorer la compatibilité réseau"],
+      correct: [1],
+      explanation: "En pratique, les OS modernes n'utilisaient que Ring 0 (mode noyau) et Ring 3 (mode utilisateur). Les anneaux 1 et 2, conçus pour les pilotes, n'étaient pas exploités. Le passage au 64-bit a simplifié l'architecture en ne conservant que ces deux niveaux."
+    },
+    {
+      type: "single",
+      text: "Quelle est la principale différence entre la virtualisation complète et la virtualisation assistée par le matériel (Intel VT-x/AMD-V) ?",
+      options: ["La virtualisation matérielle est plus ancienne que la virtualisation complète logicielle", "La virtualisation assistée par le matériel utilise des extensions CPU dédiées pour gérer les instructions privilégiées directement, éliminant le besoin de traduction logicielle complexe", "La virtualisation complète ne peut pas exécuter Windows, la matérielle le peut", "Elles sont identiques en termes de performance"],
+      correct: [1],
+      explanation: "La virtualisation assistée par le matériel (Intel VT-x, AMD-V) ajoute des extensions CPU qui permettent à l'hyperviseur de gérer directement les instructions privilégiées sans traduction logicielle. Cela améliore les performances et simplifie l'hyperviseur."
     }
   ],
   flashcards: [
@@ -173,6 +215,10 @@ const SEANCE_2 = {
     { term: "OVF (Open Virtualization Format)", def: "Format ouvert standard (DMTF / ISO-IEC) pour l'emballage et la distribution des systèmes virtuels entre plateformes IaaS. Contient : données disque (VHD/VMDK), métadonnées XML (CPU, RAM, réseau), signature d'intégrité." },
     { term: "OVA (Open Virtual Appliance)", def: "Archive unique regroupant tous les fichiers OVF (descripteur XML + images disque + manifeste). Machine virtuelle préconfigurée avec OS et applications préinstallées, prête à l'emploi. Différence OVF/OVA : plusieurs fichiers vs archive unique." },
     { term: "vMotion / Migration à chaud", def: "Technologie VMware permettant de déplacer une VM d'un hyperviseur ESXi à un autre sans interruption de service. Utilisée pour la haute disponibilité, la maintenance, l'équilibrage de charge entre hôtes physiques." },
-    { term: "Consolidation de serveurs", def: "Regroupement de plusieurs serveurs physiques sous-employés sur un seul hôte exécutant des VMs. Objectif : éliminer le 'Wasted Resource' (ressources gaspillées). Résultat : réduction du nombre de serveurs, de la surface au sol, de la consommation électrique." }
+    { term: "Consolidation de serveurs", def: "Regroupement de plusieurs serveurs physiques sous-employés sur un seul hôte exécutant des VMs. Objectif : éliminer le 'Wasted Resource' (ressources gaspillées). Résultat : réduction du nombre de serveurs, de la surface au sol, de la consommation électrique." },
+    { term: "Snapshot (Instantané de VM)", def: "Sauvegarde de l'état complet d'une VM à un instant T : mémoire vive, état du disque, configuration matérielle. Permet un retour arrière rapide (rollback) en cas de problème. Utile avant les mises à jour, migrations ou modifications risquées." },
+    { term: "Migration à chaud (Live Migration)", def: "Déplacement d'une VM d'un hôte physique à un autre SANS interruption de service. Exemple : VMware vMotion. La VM continue de fonctionner pendant le transfert. Essentiel pour la haute disponibilité et la maintenance matérielle sans downtime." },
+    { term: "Intel VT-x / AMD-V (Virtualisation matérielle)", def: "Extensions du processeur (Intel Virtualization Technology, AMD Virtualization) qui ajoutent un mode d'exécution spécial pour les hyperviseurs. Permettent de gérer les instructions privilégiées directement au niveau CPU, améliorant performances et sécurité." },
+    { term: "P2V (Physical to Virtual)", def: "Processus de conversion d'un serveur physique en machine virtuelle. Outils : VMware vCenter Converter, Disk2VHD (Microsoft). Permet de migrer des serveurs physiques existants vers une infrastructure virtualisée sans réinstallation." }
   ]
 };

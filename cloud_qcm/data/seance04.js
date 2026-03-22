@@ -72,6 +72,48 @@ const SEANCE_4 = {
       options: ["Un fichier ISO contenant un système d'exploitation complet", "Un package contenant l'application ET tout ce dont elle a besoin pour fonctionner, exécuté directement sur l'OS hôte", "Une archive chiffrée d'une VM complète", "Un conteneur Docker avec son propre noyau Linux"],
       correct: [1],
       explanation: "La virtualisation en espace utilisateur encapsule les applications dans un package autonome qui contient tout ce dont l'application a besoin pour fonctionner. Elle est exécutée directement sur le système d'exploitation hôte sans installation."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que la virtualisation de bureau (VDI — Virtual Desktop Infrastructure) ?",
+      options: ["L'installation de plusieurs applications sur un même poste de travail", "La virtualisation des postes de travail sur des serveurs distants, accessibles par les utilisateurs via un terminal léger ou un client", "La sauvegarde automatique des profils utilisateurs", "Un système de partage d'écran entre collègues"],
+      correct: [1],
+      explanation: "La VDI (Virtual Desktop Infrastructure) virtualise les postes de travail sur des serveurs centraux. Les utilisateurs accèdent à leur bureau virtuel depuis n'importe quel terminal léger. Avantages : gestion centralisée, sécurité renforcée, accès à distance."
+    },
+    {
+      type: "single",
+      text: "Comment est créé un package de virtualisation d'application en espace utilisateur ?",
+      options: ["En compilant le code source de l'application dans un format portable", "Par capture d'instantanés (snapshots) du système avant et après l'installation, puis comparaison des différences", "En copiant manuellement les fichiers de l'application", "En utilisant un hyperviseur de type 2 pour encapsuler l'application"],
+      correct: [1],
+      explanation: "Le package est créé par capture d'instantanés : on prend un snapshot du système avant l'installation, on installe l'application normalement, puis on prend un snapshot après. La différence entre les deux snapshots constitue le package autonome."
+    },
+    {
+      type: "multi",
+      text: "Quels avantages offre la virtualisation d'applications en espace utilisateur ? (plusieurs réponses)",
+      options: ["Aucun conflit avec d'autres applications (DLL isolées)", "Exécution sans droits d'administrateur sur la machine hôte", "Portabilité : l'application peut s'exécuter depuis une clé USB", "Mise à jour automatique des systèmes d'exploitation hôtes"],
+      correct: [0, 1, 2],
+      explanation: "La virtualisation en espace utilisateur offre : isolation des conflits DLL, possibilité d'exécuter sans droits admin, et portabilité (exécution depuis clé USB, partage réseau). Elle ne met pas à jour les OS hôtes."
+    },
+    {
+      type: "single",
+      text: "Quelle est la principale limite de la virtualisation d'applications via une VM ?",
+      options: ["Elle ne peut pas exécuter des applications Windows", "La VM est lourde en ressources : un OS complet est nécessaire pour chaque application virtualisée", "Elle ne supporte pas les applications web", "Elle nécessite une connexion Internet permanente"],
+      correct: [1],
+      explanation: "La virtualisation via VM est la méthode la plus isolante mais aussi la plus lourde : chaque application nécessite une VM complète avec son propre OS, ce qui consomme beaucoup de RAM, de CPU et d'espace disque."
+    },
+    {
+      type: "single",
+      text: "Dans le contexte de la virtualisation d'applications, qu'est-ce que le streaming d'applications ?",
+      options: ["Diffuser du contenu vidéo via une application virtualisée", "Transmettre les composants d'une application à la demande depuis un serveur vers le client, sans installation locale complète", "Synchroniser les données d'une application entre plusieurs VMs", "Exécuter une application directement depuis le cloud sans aucun client"],
+      correct: [1],
+      explanation: "Le streaming d'applications transmet les composants nécessaires à la demande depuis un serveur de distribution vers le poste client. Seule la partie de l'application réellement utilisée est transférée — Microsoft App-V utilise cette approche."
+    },
+    {
+      type: "multi",
+      text: "Quels problèmes résout la virtualisation d'applications par rapport à l'installation classique ? (plusieurs réponses)",
+      options: ["Conflits de DLL entre applications", "Impossibilité de migrer une application d'un poste à un autre", "Incompatibilités entre différentes versions d'une même application", "Lenteur du réseau local"],
+      correct: [0, 1, 2],
+      explanation: "La virtualisation d'applications résout : les conflits de DLL (chaque package est isolé), les difficultés de migration (package portable), et les incompatibilités de versions. La lenteur du réseau n'est pas un problème d'installation classique."
     }
   ],
   flashcards: [
@@ -81,6 +123,10 @@ const SEANCE_4 = {
     { term: "Package autonome", def: "Archive créée par capture d'instantanés du système (snapshot avant/après installation). Contient l'application + toutes ses dépendances (registre, DLL, fichiers de config). S'exécute sans installation, sans modifier le système hôte, sans conflit." },
     { term: "Conflits de DLL (DLL Hell)", def: "Problème classique d'installation : deux applications nécessitant des versions incompatibles de la même DLL (Dynamic Link Library). La virtualisation en espace utilisateur résout ce problème en encapsulant les dépendances dans un package isolé." },
     { term: "Modes de stockage : fichier, bloc, objet", def: "Mode fichier : accès hiérarchique (répertoires/fichiers) via NFS ou SMB. Mode bloc : accès bas niveau en blocs bruts via iSCSI ou Fibre Channel (comme un disque local). Mode objet : accès via API HTTP (clé-valeur), pour le stockage cloud à grande échelle (ex: S3)." },
-    { term: "Virtualisation d'applications Cloud", def: "Applications hébergées sur le Cloud et accessibles via un navigateur ou un client léger. Aucune installation locale requise. Le fournisseur gère l'infrastructure et les mises à jour. Exemples : Google Workspace, Office 365 en mode web, Salesforce." }
+    { term: "Virtualisation d'applications Cloud", def: "Applications hébergées sur le Cloud et accessibles via un navigateur ou un client léger. Aucune installation locale requise. Le fournisseur gère l'infrastructure et les mises à jour. Exemples : Google Workspace, Office 365 en mode web, Salesforce." },
+    { term: "VDI (Virtual Desktop Infrastructure)", def: "Virtualisation des postes de travail sur des serveurs centraux. L'utilisateur se connecte à son bureau virtuel depuis n'importe quel terminal léger. Gestion centralisée, sécurité renforcée, BYOD facilité. Exemples : Citrix Virtual Apps & Desktops, VMware Horizon." },
+    { term: "Streaming d'applications (App-V)", def: "Transmission à la demande des composants d'une application depuis un serveur vers le client, sans installation locale complète. Seule la partie utilisée est téléchargée. Exemple : Microsoft App-V. Optimise l'utilisation du réseau et simplifie la gestion." },
+    { term: "Snapshot de séquençage", def: "Mécanisme de création d'un package de virtualisation : snapshot avant installation → installation normale de l'application → snapshot après → la différence = le package autonome. Utilisé par ThinApp, App-V, Turbo Studio." },
+    { term: "Outils de virtualisation d'apps (espace utilisateur)", def: "VMware ThinApp : crée un exécutable autonome portable. Microsoft App-V : streaming + virtualisation. Turbo Studio : packages multi-platefomes. Cameyo : virtualisation cloud d'apps Windows. Tous évitent les conflits DLL et les installations." }
   ]
 };

@@ -180,6 +180,73 @@ const SEANCE_11 = {
       ],
       correct: [2],
       explanation: "Les labels sont des paires clé-valeur qu'on associe à un objet Kubernetes pour l'identifier facilement et faciliter sa sélection. Le Service utilise des labels pour trouver les Pods à desservir."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'un Deployment dans Kubernetes ?",
+      options: [
+        "Un script shell pour déployer des applications",
+        "Un objet Kubernetes qui gère les ReplicaSets et permet les mises à jour sans interruption (rolling update)",
+        "Un type de stockage persistant pour les pods",
+        "Un outil de surveillance des performances du cluster"
+      ],
+      correct: [1],
+      explanation: "Un Deployment est un objet Kubernetes qui gère les ReplicaSets et garantit l'état désiré de l'application. Il permet les rolling updates (mises à jour progressives sans interruption) et les rollbacks automatiques en cas d'échec."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre un ReplicaSet et un Deployment dans Kubernetes ?",
+      options: [
+        "Il n'y a aucune différence, ce sont des synonymes",
+        "Le ReplicaSet maintient un nombre fixe de répliques, le Deployment gère les ReplicaSets et ajoute les rolling updates",
+        "Le Deployment maintient les répliques, le ReplicaSet gère les mises à jour",
+        "Le ReplicaSet est pour les applications stateful, le Deployment pour les stateless"
+      ],
+      correct: [1],
+      explanation: "Le ReplicaSet maintient un nombre fixe de répliques de Pods en bonne santé. Le Deployment est un niveau au-dessus : il gère les ReplicaSets et ajoute les capacités de mise à jour progressive (rolling update) et de rollback. En pratique, on utilise toujours le Deployment."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le HPA (Horizontal Pod Autoscaler) dans Kubernetes ?",
+      options: [
+        "Un outil pour sauvegarder automatiquement les données des pods",
+        "Un composant qui augmente automatiquement le nombre de répliques de pods selon des métriques (CPU, mémoire)",
+        "Un système de mise à jour automatique de Kubernetes",
+        "Un registre central pour stocker les images Docker"
+      ],
+      correct: [1],
+      explanation: "Le HPA (Horizontal Pod Autoscaler) ajuste automatiquement le nombre de répliques d'un Deployment selon des métriques observées (CPU, mémoire, requêtes/seconde). C'est le scaling automatique horizontal dans Kubernetes."
+    },
+    {
+      type: "single",
+      text: "Quelle commande kubectl permet d'appliquer un fichier de configuration YAML à un cluster Kubernetes ?",
+      options: [
+        "kubectl run -f fichier.yaml",
+        "kubectl start fichier.yaml",
+        "kubectl apply -f fichier.yaml",
+        "kubectl deploy fichier.yaml"
+      ],
+      correct: [2],
+      explanation: "La commande 'kubectl apply -f fichier.yaml' est la commande standard pour créer ou mettre à jour des ressources Kubernetes depuis un fichier YAML. Elle est idempotente : si la ressource existe déjà, elle est mise à jour ; sinon, elle est créée."
+    },
+    {
+      type: "multi",
+      text: "Quels composants se trouvent sur un Worker Node Kubernetes ? (plusieurs réponses)",
+      options: ["Kubelet", "Kube-proxy", "cAdvisor", "API Server", "Etcd"],
+      correct: [0, 1, 2],
+      explanation: "Le Worker Node contient : Kubelet (agent qui gère les Pods), Kube-proxy (routage réseau et load balancing), cAdvisor (monitoring des ressources des conteneurs). L'API Server et Etcd appartiennent au Control Plane (Master Node)."
+    },
+    {
+      type: "single",
+      text: "Dans un Deployment Kubernetes, que se passe-t-il si l'on diminue le nombre de 'replicas' à 0 ?",
+      options: [
+        "Le Deployment est supprimé du cluster",
+        "Tous les Pods de ce Deployment sont arrêtés, mais le Deployment existe toujours",
+        "Une erreur est retournée car le minimum est 1 réplique",
+        "Les Pods sont suspendus (paused) et peuvent être repris"
+      ],
+      correct: [1],
+      explanation: "Mettre replicas à 0 arrête tous les Pods du Deployment (scale to zero) mais conserve le Deployment, ses labels et sa configuration. C'est utile pour économiser des ressources. On peut remettre les Pods en service en augmentant replicas à nouveau."
     }
   ],
   flashcards: [
@@ -194,6 +261,11 @@ const SEANCE_11 = {
     { term: "Service Kubernetes (ClusterIP / NodePort / LoadBalancer)", def: "Objet qui expose des Pods via une IP/DNS stable. ClusterIP : interne au cluster uniquement. NodePort : accessible depuis l'extérieur via IP_du_Node:Port. LoadBalancer : crée une IP publique via le Cloud (AWS ELB, GCP LB). Les Services sélectionnent les Pods via leurs Labels." },
     { term: "Manifeste YAML Kubernetes", def: "Fichier déclaratif décrivant un objet K8s. 4 champs obligatoires : apiVersion (ex: apps/v1), Kind (Pod, Service, Deployment...), metadata (name, namespace, labels), spec (configuration technique). Appliqué avec : kubectl apply -f fichier.yaml." },
     { term: "Secret vs ConfigMap (K8s)", def: "ConfigMap : données de configuration non sensibles (URLs, paramètres app). Secret : données sensibles (mots de passe, clés API, certificats) encodées en base64 (type Opaque). Les deux sont injectés dans les Pods comme variables d'environnement ou volumes." },
-    { term: "Labels (Kubernetes)", def: "Paires clé-valeur attachées aux objets K8s (Pods, Nodes, Services...) pour les identifier et les sélectionner. Les Services utilisent des Selectors pour trouver les Pods correspondants. Permettent aussi de cibler des sous-ensembles de ressources (ex: kubectl delete pods -l app=frontend)." }
+    { term: "Labels (Kubernetes)", def: "Paires clé-valeur attachées aux objets K8s (Pods, Nodes, Services...) pour les identifier et les sélectionner. Les Services utilisent des Selectors pour trouver les Pods correspondants. Permettent aussi de cibler des sous-ensembles de ressources (ex: kubectl delete pods -l app=frontend)." },
+    { term: "Deployment (Kubernetes)", def: "Objet K8s de référence pour déployer des applications stateless. Gère les ReplicaSets et ajoute : rolling updates (mises à jour sans interruption), rollback automatique, scaling. kubectl apply -f deploy.yaml. Préféré au ReplicaSet direct en pratique." },
+    { term: "ReplicaSet (Kubernetes)", def: "Objet K8s garantissant qu'un nombre défini de répliques de Pods tournent à tout moment (self-healing). Si un Pod tombe, le ReplicaSet en recrée un. Géré automatiquement par un Deployment — ne pas créer manuellement." },
+    { term: "HPA (Horizontal Pod Autoscaler)", def: "Composant K8s qui ajuste automatiquement le nombre de répliques d'un Deployment selon des métriques (CPU > 80% → scale out, < 20% → scale in). Permet l'élasticité automatique. Nécessite le Metrics Server installé dans le cluster." },
+    { term: "kubectl (commandes clés)", def: "CLI pour interagir avec K8s. Commandes essentielles : kubectl apply -f (créer/modifier), kubectl get pods/services/deployments (lister), kubectl describe pod <nom> (détails), kubectl logs <pod> (logs), kubectl delete -f (supprimer), kubectl scale --replicas=N (scaler)." },
+    { term: "Rolling Update (Kubernetes)", def: "Stratégie de mise à jour d'un Deployment : K8s remplace progressivement les anciens Pods par les nouveaux, sans interruption de service. Contrôlé par maxSurge (pods en plus) et maxUnavailable (pods indisponibles). Rollback possible avec kubectl rollout undo." }
   ]
 };

@@ -25,6 +25,7 @@ let currentIdx = 0;
 let score = 0;
 let answered = false;
 let results = [];
+let questionStates = []; // per-question: { selected, answered, isCorrect }
 
 // =====================================================================
 //  INIT
@@ -82,6 +83,18 @@ function showPage(name) {
 // =====================================================================
 //  QUIZ LOGIC
 // =====================================================================
+
+// Shuffle the options of a question and update the correct[] indices accordingly
+function shuffleQuestionOptions(q) {
+  const indices = q.options.map((_, i) => i);
+  const shuffledIndices = shuffle([...indices]);
+  return {
+    ...q,
+    options: shuffledIndices.map(i => q.options[i]),
+    correct: q.correct.map(origIdx => shuffledIndices.indexOf(origIdx))
+  };
+}
+
 function startQuiz() {
   if(selectedSessions.size === 0) { alert('Veuillez sélectionner au moins une séance.'); return; }
   const pool = QUESTIONS.filter(q => selectedSessions.has(q.seance));
@@ -93,7 +106,11 @@ function startQuiz() {
   let shuffled = order === 'random' ? shuffle([...pool]) : [...pool].sort((a,b) => a.seance - b.seance);
   quizQuestions = shuffled.slice(0, Math.min(nbQ, shuffled.length));
 
+  // Shuffle options so the correct answer isn't always in the same position
+  quizQuestions = quizQuestions.map(q => shuffleQuestionOptions(q));
+
   currentIdx = 0; score = 0; results = []; answered = false;
+  questionStates = quizQuestions.map(() => ({ selected: [], answered: false, isCorrect: false }));
 
   document.getElementById('nav-quiz').disabled = false;
   showPage('quiz');
@@ -137,11 +154,42 @@ function renderQuestion() {
 
   document.getElementById('explanation').className = '';
   document.getElementById('explanation').textContent = '';
-  document.getElementById('btn-validate').style.display = 'inline-block';
-  document.getElementById('btn-next').style.display = 'none';
+
+  // Restore state if this question was already answered
+  const state = questionStates[currentIdx];
+  if (state && state.answered) {
+    answered = true;
+    // Restore selections
+    state.selected.forEach(i => {
+      const inp = document.getElementById(`input-${i}`);
+      if (inp) inp.checked = true;
+    });
+    // Re-apply color classes (read-only)
+    q.options.forEach((_, i) => {
+      const item = document.getElementById(`opt-${i}`);
+      const isSelectedByUser = state.selected.includes(i);
+      const isCorrectAnswer = q.correct.includes(i);
+      if (isCorrectAnswer && isSelectedByUser) item.classList.add('correct');
+      else if (!isCorrectAnswer && isSelectedByUser) item.classList.add('incorrect');
+      else if (isCorrectAnswer && !isSelectedByUser) item.classList.add('missed');
+    });
+    document.getElementById('explanation').textContent = '💡 ' + q.explanation;
+    document.getElementById('explanation').className = 'show';
+    document.getElementById('btn-validate').style.display = 'none';
+    document.getElementById('btn-next').style.display = 'inline-block';
+    document.getElementById('btn-next').textContent = currentIdx + 1 < quizQuestions.length ? 'Suivant →' : 'Voir les résultats';
+  } else {
+    document.getElementById('btn-validate').style.display = 'inline-block';
+    document.getElementById('btn-next').style.display = 'none';
+  }
+
+  // Show/hide the Back button
+  const prevBtn = document.getElementById('btn-prev');
+  if (prevBtn) prevBtn.style.display = currentIdx > 0 ? 'inline-block' : 'none';
 }
 
 function onSelect(i) {
+  if (answered) return; // read-only when already validated
   const q = quizQuestions[currentIdx];
   if(q.type === 'single') {
     document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
@@ -186,6 +234,9 @@ function validateAnswer() {
   document.getElementById('explanation').textContent = '💡 ' + q.explanation;
   document.getElementById('explanation').className = 'show';
 
+  // Save per-question state
+  questionStates[currentIdx] = { selected, answered: true, isCorrect };
+
   results.push({ q, selected, correct: q.correct, isCorrect });
 
   document.getElementById('btn-validate').style.display = 'none';
@@ -204,6 +255,17 @@ function nextQuestion() {
     });
   } else {
     showResults();
+  }
+}
+
+function prevQuestion() {
+  if(currentIdx > 0) {
+    currentIdx--;
+    document.getElementById('question-card').style.animation = 'none';
+    requestAnimationFrame(() => {
+      document.getElementById('question-card').style.animation = '';
+      renderQuestion();
+    });
   }
 }
 
