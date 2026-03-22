@@ -149,6 +149,80 @@ const SEANCE_8 = {
       options: ["Le manque d'outils de développement modernes", "La séparation (silos) entre les équipes Dev et Ops entraînant des conflits et ralentissements", "L'absence de tests automatisés dans les projets logiciels", "Le coût trop élevé des serveurs physiques"],
       correct: [1],
       explanation: "DevOps résout principalement le problème des silos : dans les organisations traditionnelles, les équipes Dev (qui veulent déployer fréquemment) et Ops (qui veulent la stabilité) ont des objectifs conflictuels. DevOps casse ces silos via la collaboration, l'automatisation et une culture commune."
+    },
+    {
+      type: "single",
+      text: "Que représente la première voie DevOps (Flow) ?",
+      options: [
+        "Les boucles de rétroaction entre Ops et Dev sur les incidents de production",
+        "La culture d'expérimentation et d'apprentissage continu des erreurs",
+        "Les équipes Dev et Ops communiquent et collaborent tout au long du cycle, avec un flux de valeur rapide, continu et sans blocage",
+        "Le monitoring en temps réel des performances des applications"
+      ],
+      correct: [2],
+      explanation: "La première voie DevOps (Flow) signifie que les équipes Dev et Ops communiquent, partagent les informations et collaborent tout au long du cycle. Le flux de valeur doit être rapide, continu et sans blocage, permettant livraison rapide et petits changements fréquents."
+    },
+    {
+      type: "single",
+      text: "Que représente la deuxième voie DevOps (Feedback) ?",
+      options: [
+        "Les équipes partagent leurs connaissances via de la documentation accessible à tous",
+        "Les boucles de rétroaction : Ops informe immédiatement Dev si la performance chute après un déploiement, permettant des corrections rapides",
+        "Le flux de valeur doit être continu et sans blocage",
+        "La culture de l'expérimentation et de l'apprentissage des erreurs"
+      ],
+      correct: [1],
+      explanation: "La deuxième voie (Feedback) représente les boucles de rétroaction. Si Ops détecte une baisse de performance ou des erreurs après un déploiement, Dev est immédiatement informé pour corriger en continu et rapidement. C'est l'opposé du feedback tardif du Waterfall."
+    },
+    {
+      type: "single",
+      text: "Que représente la troisième voie DevOps (Learning) ?",
+      options: [
+        "L'utilisation d'outils de monitoring pour apprendre l'état de l'infrastructure",
+        "Le flux de valeur continu et sans blocage entre les équipes",
+        "L'encouragement de la culture d'expérimentation, de prise de risques calculés et d'apprentissage des échecs pour s'améliorer rapidement",
+        "La documentation et le partage des meilleures pratiques"
+      ],
+      correct: [2],
+      explanation: "La troisième voie (Learning) encourage une culture d'expérimentation et d'apprentissage pour s'améliorer rapidement : prendre des risques, essayer de nouvelles idées, apprendre efficacement de ses erreurs et monter en compétence en continu."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le SSOT (Single Source of Truth) dans le pilier Sharing de CALMS ?",
+      options: [
+        "Un seul fournisseur cloud pour éviter la complexité du multicloud",
+        "Un seul outil de monitoring pour centraliser toutes les métriques",
+        "Tout ce qui est nécessaire pour construire, déployer et comprendre le système doit être dans un système de contrôle de version (Git)",
+        "Un seul développeur responsable de l'architecture du système"
+      ],
+      correct: [2],
+      explanation: "Le SSOT (Single Source of Truth) est une bonne pratique du pilier Sharing : tout ce qui est nécessaire pour construire, déployer et comprendre le système (code, config, infra, docs) doit être versionné dans Git. Élimine les configurations 'fantômes' et les écarts entre environnements."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les bonnes pratiques du pilier Sharing de CALMS ? (plusieurs réponses)",
+      options: [
+        "Documentation accessible à tous (runbooks, procédures CI/CD, architecture)",
+        "SSOT (Single Source of Truth) : tout dans Git",
+        "Post-mortems sans blâme : analyser les incidents sans chercher un coupable",
+        "Garder les métriques de performance confidentielles pour éviter les conflits",
+        "Métriques de performance publiques par défaut au sein de l'entreprise"
+      ],
+      correct: [0, 1, 2, 4],
+      explanation: "Bonnes pratiques Sharing : documentation accessible à tous, SSOT (tout dans Git), post-mortems sans blâme (erreur = défaillance du système), et métriques publiques par défaut. Les métriques doivent être transparentes, pas confidentielles."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les métriques DORA (4 métriques) pour évaluer la performance DevOps ? (plusieurs réponses)",
+      options: [
+        "Deployment Frequency (fréquence des déploiements)",
+        "Lead Time for Changes (délai entre commit et production)",
+        "Change Failure Rate (% de déploiements causant un incident)",
+        "Time to Restore Service (temps pour restaurer le service après panne)",
+        "Code Coverage Rate (% de code couvert par des tests)"
+      ],
+      correct: [0, 1, 2, 3],
+      explanation: "Les 4 métriques DORA : Deployment Frequency (plus c'est fréquent, plus la maturité est élevée), Lead Time for Changes (quelques heures = bon pipeline), Change Failure Rate (5% = bon, 30% = problème de qualité), Time to Restore Service (20 min = bonne résilience). Le Code Coverage est une métrique technique mais pas DORA."
     }
   ],
   flashcards: [
@@ -167,6 +241,9 @@ const SEANCE_8 = {
     { term: "Métriques DORA", def: "4 métriques de performance DevOps : Deployment Frequency (fréquence des déploiements, les élites déploient plusieurs fois/jour), Lead Time for Changes (délai code→prod), Change Failure Rate (% de déploiements causant un incident), Time to Restore Service (temps de rétablissement)." },
     { term: "Shift Left", def: "Principe DevOps : intégrer tests, sécurité et qualité le plus tôt possible dans le cycle de développement. 'Gauche' = début du pipeline. Objectif : détecter les bugs au stade le moins coûteux. Ex : tests unitaires dès le code, SAST (analyse sécurité) dès le commit." },
     { term: "Scrum (rôles & cérémonies)", def: "Framework Agile. 3 rôles : Product Owner (backlog, priorisation), Scrum Master (facilitation), Dev Team (création). 4 cérémonies : Sprint Planning, Daily Scrum (15 min/jour), Sprint Review (démo), Rétrospective (amélioration continue). Sprint = 1-4 semaines." },
-    { term: "Silos Dev/Ops (problème)", def: "Problème des organisations traditionnelles : Dev (veut déployer vite, nouvelles fonctionnalités) vs Ops (veut la stabilité, éviter les changements). Résultat : conflits, lenteur, 'mur de la confusion'. DevOps casse ces silos par la collaboration et l'automatisation." }
+    { term: "Silos Dev/Ops (problème)", def: "Problème des organisations traditionnelles : Dev (veut déployer vite, nouvelles fonctionnalités) vs Ops (veut la stabilité, éviter les changements). Résultat : conflits, lenteur, 'mur de la confusion'. DevOps casse ces silos par la collaboration et l'automatisation." },
+    { term: "Les 3 Voies DevOps", def: "Standard de communication DevOps : (1) Flow — flux de valeur rapide, continu, sans blocage entre Dev et Ops ; (2) Feedback — boucles de rétroaction immédiates, Ops informe Dev des problèmes en production ; (3) Learning — culture d'expérimentation, apprendre des échecs, monter en compétence." },
+    { term: "SSOT (Single Source of Truth)", def: "Bonne pratique du pilier Sharing de CALMS : tout ce qui est nécessaire pour construire, déployer et comprendre le système doit être dans un VCS (Git). Code + config + infra + docs = dans Git. Élimine les configurations informelles et les écarts entre environnements." },
+    { term: "Post-mortem sans blâme", def: "Bonne pratique Sharing DevOps : après un incident, on analyse SANS chercher un coupable. L'erreur est vue comme une défaillance du système (pas d'un individu). Objectif : comprendre les causes profondes et améliorer le système. S'oppose à la culture punitive traditionnelle." }
   ]
 };

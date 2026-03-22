@@ -247,6 +247,150 @@ const SEANCE_11 = {
       ],
       correct: [1],
       explanation: "Mettre replicas à 0 arrête tous les Pods du Deployment (scale to zero) mais conserve le Deployment, ses labels et sa configuration. C'est utile pour économiser des ressources. On peut remettre les Pods en service en augmentant replicas à nouveau."
+    },
+    {
+      type: "single",
+      text: "En quoi consiste la stratégie de déploiement Bleu-Vert (Blue-Green) ?",
+      options: [
+        "Déployer progressivement la nouvelle version sur tous les serveurs un par un",
+        "Tester la nouvelle version sur un petit pourcentage d'utilisateurs avant de l'étendre",
+        "Maintenir deux environnements identiques (Bleu : version stable active, Vert : nouvelle version privée), puis basculer instantanément le trafic",
+        "Déployer simultanément deux versions et laisser les utilisateurs choisir"
+      ],
+      correct: [2],
+      explanation: "Blue-Green : on maintient 2 environnements identiques. Bleu = version stable actuelle (publique). Vert = nouvelle version (privée/testée). Une fois validée, le trafic bascule instantanément de Bleu vers Vert. Si problème : rollback immédiat vers Bleu. Avantage : zéro downtime et rollback très rapide."
+    },
+    {
+      type: "single",
+      text: "En quoi consiste la stratégie de déploiement Canari (Canary) ?",
+      options: [
+        "Basculer 100% du trafic vers la nouvelle version instantanément",
+        "Tester la nouvelle version sur un petit groupe d'utilisateurs (ex: 5%), surveiller, puis augmenter progressivement si aucun problème",
+        "Remplacer les serveurs un par un en répartissant le trafic proportionnellement",
+        "Déployer uniquement sur un environnement de staging avant la production"
+      ],
+      correct: [1],
+      explanation: "Canary : la nouvelle version est déployée pour un petit groupe d'utilisateurs ('canaris', ex: 5%), comportement étroitement surveillé. Si aucun problème, déploiement étendu progressivement (5% → 25% → 100%). Détecte rapidement les problèmes en production réelle avec impact limité."
+    },
+    {
+      type: "single",
+      text: "En quoi consiste le déploiement progressif (Rolling Deployment) ?",
+      options: [
+        "Déployer la nouvelle version uniquement sur un environnement de test isolé",
+        "Basculer tout le trafic instantanément vers la nouvelle version",
+        "Remplacer progressivement les anciennes instances par les nouvelles, une par une ou par petits groupes, derrière un load balancer",
+        "Tester la nouvelle version sur 5% des utilisateurs avant déploiement total"
+      ],
+      correct: [2],
+      explanation: "Rolling Deployment : on remplace progressivement les instances (serveurs/containers/pods) de l'ancienne version par la nouvelle, une par une ou par groupes. Le load balancer répartit le trafic proportionnellement. Ex: 1 serveur sur 4 mis à jour → 25% des utilisateurs ont la nouvelle version automatiquement."
+    },
+    {
+      type: "multi",
+      text: "Comparez les 3 stratégies de déploiement : quelle(s) affirmation(s) est/sont correcte(s) ? (plusieurs réponses)",
+      options: [
+        "Blue-Green nécessite le double d'infrastructure (2 environnements complets)",
+        "Canary a une complexité élevée car nécessite monitoring avancé et routage du trafic",
+        "Rolling Deployment n'a pas besoin d'infrastructure dupliquée",
+        "Blue-Green a le rollback le plus lent des 3 stratégies"
+      ],
+      correct: [0, 1, 2],
+      explanation: "Blue-Green : double infrastructure (2 environnements), rollback le PLUS RAPIDE (bascule instantanée). Canary : complexité élevée (monitoring avancé, routage), infrastructure standard + gestion du trafic. Rolling : infrastructure non dupliquée, rollback plus lent (serveur par serveur). Blue-Green a le rollback le plus RAPIDE, pas le plus lent."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que Helm dans le contexte de Kubernetes ?",
+      options: [
+        "Un outil de monitoring des performances des clusters Kubernetes",
+        "Un gestionnaire de packages (chart manager) pour Kubernetes qui regroupe les fichiers YAML dans des packages appelés Charts, avec des templates paramétrés",
+        "Un système de contrôle de version spécifique aux fichiers YAML Kubernetes",
+        "Un outil de scaling automatique des pods dans Kubernetes"
+      ],
+      correct: [1],
+      explanation: "Helm est le gestionnaire de packages de Kubernetes. Il regroupe dans des packages appelés Charts tous les fichiers YAML (Deployment, Service, Ingress...) paramétrés et prêts à déployer. Avantages : réutilisation du code, réduction des erreurs, déploiement sur plusieurs environnements (dev/staging/prod)."
+    },
+    {
+      type: "single",
+      text: "À quoi sert le fichier values.yaml dans un Helm Chart ?",
+      options: [
+        "Définir la version de Kubernetes utilisée par le chart",
+        "Stocker les secrets et mots de passe chiffrés du chart",
+        "Contenir toutes les valeurs de configuration qui personnalisent le chart, séparant la logique (template) de la configuration (valeurs)",
+        "Lister les dépendances des bibliothèques tierces du chart"
+      ],
+      correct: [2],
+      explanation: "Le fichier values.yaml contient toutes les valeurs de configuration qui personnalisent un Chart Helm. Permet de séparer la logique (template YAML avec variables) de la configuration (valeurs). Facilite l'adaptation à plusieurs environnements (dev/test/prod) sans modifier les templates."
+    },
+    {
+      type: "single",
+      text: "Quel est le rôle de l'objet Ingress dans Kubernetes ?",
+      options: [
+        "Gérer le réseau interne entre les pods du cluster",
+        "Stocker les données persistantes des applications",
+        "Exposer les applications au monde réel via routage HTTP/HTTPS par nom de domaine ou par chemin, et gérer les certificats SSL/TLS",
+        "Autoscaler automatiquement les pods en fonction de la charge"
+      ],
+      correct: [2],
+      explanation: "L'objet Ingress expose les applications au monde extérieur (production). Il gère : le routage par nom de domaine (URL → bon Service), le routage par chemin (/app, /images → différents services), et la sécurité SSL/TLS (certificat installé une seule fois sur l'Ingress plutôt que sur chaque Pod)."
+    },
+    {
+      type: "multi",
+      text: "Parmi tous les objets Kubernetes, lesquels sont mentionnés dans le cours ? (plusieurs réponses)",
+      options: [
+        "Namespace, Pod, Deployment, Service, ConfigMap, Secret, Ingress",
+        "PersistentVolumeClaim (PVC), PersistentVolume (PV), StatefulSet",
+        "Job, CronJob, Role / ClusterRole et RoleBinding",
+        "DockerFile, DockerCompose, DockerSwarm"
+      ],
+      correct: [0, 1, 2],
+      explanation: "Le cours liste l'ensemble des objets Kubernetes : Namespace (isolation logique), Pod, Deployment, Service, ConfigMap, Secret, Ingress, PersistentVolumeClaim (PVC), PersistentVolume (PV), Job, CronJob, StatefulSet, Role/ClusterRole et RoleBinding. Dockerfile, Docker Compose et Docker Swarm sont des objets Docker, pas Kubernetes."
+    },
+    {
+      type: "single",
+      text: "Quel objet Kubernetes sert à organiser et isoler les ressources au sein d'un même cluster ?",
+      options: [
+        "ConfigMap — stocke les configurations sous forme de clés-valeurs",
+        "Namespace — partitionne le cluster en espaces isolés (ex: un namespace par équipe ou environnement)",
+        "Service — expose les Pods à l'intérieur ou l'extérieur du cluster",
+        "ReplicaSet — maintient un nombre fixe de répliques de Pods"
+      ],
+      correct: [1],
+      explanation: "L'objet Namespace organise et isole les ressources dans un cluster Kubernetes. Un cluster peut contenir plusieurs Namespaces (ex: prod, staging, dev, ou un par équipe). Les ressources dans un Namespace sont isolées logiquement. Chaque objet Kubernetes appartient à un Namespace (sauf les Nodes et PersistentVolumes qui sont globaux)."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre un PersistentVolume (PV) et un PersistentVolumeClaim (PVC) dans Kubernetes ?",
+      options: [
+        "PV est une demande de stockage par un Pod, PVC est le stockage physique provisionné par l'admin",
+        "PV est le stockage physique provisionné par l'administrateur du cluster, PVC est la demande de stockage faite par un utilisateur/Pod",
+        "PV et PVC sont identiques, seule la syntaxe YAML diffère",
+        "PV gère le stockage dans le cloud, PVC gère le stockage local sur les Nodes"
+      ],
+      correct: [1],
+      explanation: "PersistentVolume (PV) : ressource de stockage provisionnée par l'administrateur du cluster (ex: disque NFS, volume cloud). PersistentVolumeClaim (PVC) : demande de stockage par un utilisateur ou un Pod (ex: 'je veux 10 Gi de stockage'). Kubernetes associe automatiquement un PVC à un PV disponible satisfaisant les critères. Indispensable pour les applications avec état (bases de données)."
+    },
+    {
+      type: "single",
+      text: "Pour quel type d'application utilise-t-on un StatefulSet plutôt qu'un Deployment dans Kubernetes ?",
+      options: [
+        "Pour les applications sans état (stateless) comme les serveurs web qui peuvent être remplacés librement",
+        "Pour les applications avec état (stateful) comme les bases de données qui nécessitent une identité stable et un stockage persistant",
+        "Pour les applications qui nécessitent plus de CPU que de mémoire",
+        "Pour les applications déployées en Blue-Green qui nécessitent 2 environnements identiques"
+      ],
+      correct: [1],
+      explanation: "StatefulSet est utilisé pour les applications AVEC ÉTAT (stateful) : bases de données (MySQL, PostgreSQL, MongoDB), systèmes de messagerie (Kafka), etc. Garantit : une identité stable et unique pour chaque Pod (pod-0, pod-1...), un ordre de déploiement/arrêt garanti, un stockage persistant dédié à chaque Pod via PVC. Deployment est pour les applications stateless (remplaçables librement)."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre un Job et un CronJob dans Kubernetes ?",
+      options: [
+        "Job exécute une tâche une seule fois jusqu'à complétion, CronJob planifie des exécutions répétitives à intervalles définis (comme cron Linux)",
+        "Job gère les pods en continu, CronJob les arrête après un délai configurable",
+        "CronJob remplace le Deployment pour les applications batch, Job remplace le ReplicaSet",
+        "Les deux sont identiques, CronJob est simplement un Job avec plusieurs répliques"
+      ],
+      correct: [0],
+      explanation: "Job : exécute une tâche ponctuelle jusqu'à sa complétion (ex: migration de base de données, traitement d'un fichier). Kubernetes garantit que la tâche s'exécute au moins une fois. CronJob : planifie des Jobs répétitifs selon une expression cron (ex: '0 2 * * *' = chaque jour à 2h). Exemples : sauvegardes nocturnes, rapports quotidiens, nettoyage périodique de données."
     }
   ],
   flashcards: [
@@ -266,6 +410,11 @@ const SEANCE_11 = {
     { term: "ReplicaSet (Kubernetes)", def: "Objet K8s garantissant qu'un nombre défini de répliques de Pods tournent à tout moment (self-healing). Si un Pod tombe, le ReplicaSet en recrée un. Géré automatiquement par un Deployment — ne pas créer manuellement." },
     { term: "HPA (Horizontal Pod Autoscaler)", def: "Composant K8s qui ajuste automatiquement le nombre de répliques d'un Deployment selon des métriques (CPU > 80% → scale out, < 20% → scale in). Permet l'élasticité automatique. Nécessite le Metrics Server installé dans le cluster." },
     { term: "kubectl (commandes clés)", def: "CLI pour interagir avec K8s. Commandes essentielles : kubectl apply -f (créer/modifier), kubectl get pods/services/deployments (lister), kubectl describe pod <nom> (détails), kubectl logs <pod> (logs), kubectl delete -f (supprimer), kubectl scale --replicas=N (scaler)." },
-    { term: "Rolling Update (Kubernetes)", def: "Stratégie de mise à jour d'un Deployment : K8s remplace progressivement les anciens Pods par les nouveaux, sans interruption de service. Contrôlé par maxSurge (pods en plus) et maxUnavailable (pods indisponibles). Rollback possible avec kubectl rollout undo." }
+    { term: "Rolling Update (Kubernetes)", def: "Stratégie de mise à jour d'un Deployment : K8s remplace progressivement les anciens Pods par les nouveaux, sans interruption de service. Contrôlé par maxSurge (pods en plus) et maxUnavailable (pods indisponibles). Rollback possible avec kubectl rollout undo." },
+    { term: "Blue-Green Deployment", def: "2 environnements identiques : Bleu (stable, public) + Vert (nouvelle version, privé). Une fois Vert validé, le trafic bascule instantanément. Rollback = rebascule vers Bleu. Avantages : zéro downtime, rollback très rapide. Inconvénient : double infrastructure (coût élevé)." },
+    { term: "Canary Deployment", def: "Déploiement progressif : la nouvelle version est exposée à un petit groupe d'utilisateurs (ex: 5%), comportement surveillé, puis extension progressive (25% → 100%). Rollback : couper le trafic vers la nouvelle version. Complexité élevée (monitoring + routage avancé). Détecte les bugs en production réelle avec impact limité." },
+    { term: "Rolling Deployment", def: "Remplacement progressif des instances (pods/serveurs) de l'ancienne vers la nouvelle version, une par une ou par groupes. Le load balancer répartit le trafic proportionnellement au nombre de pods mis à jour. Infrastructure non dupliquée. Rollback : serveur par serveur (plus lent)." },
+    { term: "Helm Chart", def: "Package Kubernetes regroupant tous les fichiers YAML (Deployment, Service, Ingress, ConfigMap...) paramétrés via des templates et un fichier values.yaml. Avantages : réutilisabilité, déploiement sur plusieurs environnements (dev/staging/prod) sans modifier le code, partage via Helm Hub." },
+    { term: "Ingress (Kubernetes)", def: "Objet K8s exposant les applications au monde extérieur via HTTP/HTTPS. Fonctions : routage par nom de domaine (host: monapp.com → Service A), routage par chemin (/api → Service B, /app → Service C), gestion SSL/TLS centralisée. Contrôleur Ingress populaire : Nginx Ingress Controller." }
   ]
 };

@@ -135,6 +135,147 @@ const SEANCE_7 = {
       options: ["Utiliser des outils open source (Kubernetes, Terraform)", "Adopter une stratégie Multicloud", "Utiliser des formats et APIs standardisés", "Signer un contrat uniquement avec un seul fournisseur pour bénéficier de remises"],
       correct: [0, 1, 2],
       explanation: "Pour réduire le Vendor Lock-in : utiliser des outils open source portables (Kubernetes, Terraform), adopter une stratégie multicloud, et préférer les APIs standardisées. S'engager exclusivement avec un fournisseur aggrave le lock-in."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'un Cloudlet dans le contexte du Cloud Computing ?",
+      options: [
+        "Un serveur cloud de très grande capacité installé dans un datacenter centralisé",
+        "Une petite infrastructure Cloud déployée localement, à proximité de l'utilisateur, agissant comme un mini-Cloud entre le Cloud et les périphériques",
+        "Un protocole de communication entre nœuds Edge et le Cloud central",
+        "Un conteneur Docker léger pour applications mobiles"
+      ],
+      correct: [1],
+      explanation: "Un Cloudlet est une petite infrastructure Cloud déployée localement, souvent à proximité de l'utilisateur. Il agit comme un mini-Cloud local, point d'accès entre le Cloud distant et les périphériques. Exemples : stations de base de télécommunication, centres de données locaux."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le concept d'offloading dans le contexte des Cloudlets ?",
+      options: [
+        "Transférer toutes les données de l'appareil mobile vers le cloud central",
+        "Déplacer les tâches lourdes d'un appareil local vers une ressource plus puissante (le Cloudlet) pour compenser les limites de l'appareil",
+        "Compresser les données avant de les envoyer au cloud",
+        "Déconnecter un nœud Edge du réseau pour maintenance"
+      ],
+      correct: [1],
+      explanation: "L'offloading consiste à déplacer les tâches lourdes de l'appareil local vers une ressource plus puissante (le Cloudlet). Les appareils mobiles et IoT ont des ressources limitées (puissance, mémoire, batterie) — le Cloudlet prend en charge les calculs intensifs."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les caractéristiques de performance d'un Cloudlet ? (plusieurs réponses)",
+      options: [
+        "Bande passante importante",
+        "Latence faible",
+        "Connexion à des réseaux à haut débit (4G, 5G, fibre optique)",
+        "Nécessite obligatoirement une connexion Internet publique",
+        "Mise à l'échelle rapide"
+      ],
+      correct: [0, 1, 2, 4],
+      explanation: "Les Cloudlets offrent : grande bande passante, faible latence, connexion haut débit (4G/5G/fibre) et mise à l'échelle rapide. Ils ne nécessitent pas obligatoirement une connexion Internet publique — ils fonctionnent localement."
+    },
+    {
+      type: "single",
+      text: "Par quel organisme le Mobile Edge Computing (MEC) a-t-il été standardisé ?",
+      options: [
+        "IEEE (Institute of Electrical and Electronics Engineers)",
+        "IETF (Internet Engineering Task Force)",
+        "ETSI (Institut Européen des Normes de Télécommunication)",
+        "W3C (World Wide Web Consortium)"
+      ],
+      correct: [2],
+      explanation: "Le concept de Mobile Edge Computing (MEC) a été standardisé par l'ETSI (Institut Européen des Normes de Télécommunication). Il se concentre sur les environnements mobiles, déplaçant le traitement vers les stations de base des opérateurs (antennes 5G)."
+    },
+    {
+      type: "single",
+      text: "Où sont situés les nœuds MEC (Mobile Edge Computing) pour traiter les données ?",
+      options: [
+        "Dans des datacenters centralisés distants",
+        "Sur les appareils mobiles des utilisateurs eux-mêmes",
+        "À la périphérie du réseau mobile, souvent sur des stations de base des opérateurs de télécommunications (antennes 5G)",
+        "Dans des nœuds Fog intermédiaires entre l'IoT et le cloud"
+      ],
+      correct: [2],
+      explanation: "Les nœuds MEC sont situés à la périphérie du réseau mobile, souvent sur les stations de base des opérateurs télécoms (antennes 5G, points d'accès mobiles). Objectif : rapprocher les capacités cloud des abonnés mobiles pour réduire la latence."
+    },
+    {
+      type: "single",
+      text: "Pour quels types d'applications le MEC est-il particulièrement optimisé ?",
+      options: [
+        "Applications de traitement par lots (batch processing) nocturnes",
+        "Applications nécessitant une interaction en temps réel sur appareils mobiles, avec forte bande passante et faible latence",
+        "Applications de stockage longue durée de grandes quantités de données",
+        "Applications de simulation numérique haute performance (HPC)"
+      ],
+      correct: [1],
+      explanation: "Le MEC est optimisé pour les applications nécessitant une interaction en temps réel sur appareils mobiles, avec faible latence et haute bande passante. Il profite des caractéristiques de la 5G : vitesses élevées, faible latence, gestion d'un grand nombre d'appareils simultanés."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le Federated Learning (Apprentissage Fédéré) ?",
+      options: [
+        "Une approche d'entraînement ML centralisée où toutes les données sont envoyées au cloud",
+        "Une approche ML permettant de créer des modèles sans transférer les données brutes vers le cloud, en entraînant le modèle localement sur chaque appareil",
+        "Une technique de compression des modèles ML pour les appareils mobiles",
+        "Un protocole de communication entre serveurs de machine learning"
+      ],
+      correct: [1],
+      explanation: "Le Federated Learning est une approche d'apprentissage automatique permettant de créer des modèles sans transférer les données brutes vers le cloud. Le modèle est entraîné de manière distribuée sur plusieurs appareils/serveurs — les données restent localement, renforçant la confidentialité."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les 3 étapes du processus Federated Learning ? (plusieurs réponses)",
+      options: [
+        "Étape 1 : Le serveur central envoie le modèle initial aux clients",
+        "Étape 2 : Chaque client entraîne le modèle localement sur ses données sans les transmettre",
+        "Étape 3 : Agrégation des paramètres (poids des modèles) par le serveur central via FedAvg",
+        "Étape 2 : Chaque client envoie ses données brutes au serveur central pour entraînement"
+      ],
+      correct: [0, 1, 2],
+      explanation: "Les 3 étapes du FL : (1) Le serveur envoie le modèle initial aux clients ; (2) Chaque client entraîne localement sur ses données (données NON transmises) ; (3) Les clients envoient uniquement les paramètres (poids) au serveur qui les agrège via FedAvg (moyenne pondérée)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que l'algorithme FedAvg dans le Federated Learning ?",
+      options: [
+        "Un algorithme de chiffrement des données entre clients et serveur",
+        "Un algorithme de tri des nœuds par performance",
+        "Un algorithme effectuant la moyenne pondérée des paramètres des modèles locaux (pondération par le nombre d'exemples utilisés par chaque client)",
+        "Un protocole de synchronisation des données entre clients"
+      ],
+      correct: [2],
+      explanation: "FedAvg (Federated Averaging) est l'algorithme d'agrégation standard du FL. Il calcule la moyenne pondérée des paramètres (poids des neurones) des modèles locaux, en tenant compte du nombre d'exemples utilisés par chaque client. C'est la méthode la plus courante."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre le Horizontal Federated Learning et le Vertical Federated Learning ?",
+      options: [
+        "Horizontal FL traite les données verticalement (colonnes), Vertical FL traite horizontalement (lignes)",
+        "Horizontal FL : clients avec les mêmes types de caractéristiques sur des individus différents. Vertical FL : clients avec des caractéristiques différentes sur les mêmes individus",
+        "Horizontal FL utilise FedAvg, Vertical FL utilise FedSGD exclusivement",
+        "Il n'y a aucune différence conceptuelle entre les deux types"
+      ],
+      correct: [1],
+      explanation: "Horizontal FL : clients possèdent des données avec mêmes caractéristiques (features) mais sur individus différents. Ex: plusieurs hôpitaux avec les mêmes champs (âge, diagnostic) sur des patients différents. Vertical FL : mêmes individus mais caractéristiques différentes. Ex: une banque (données financières) + une assurance (données santé) sur les mêmes clients."
+    },
+    {
+      type: "single",
+      text: "Dans le tableau comparatif Edge/Fog/Cloudlet/MEC/Cloud, quelle technologie a la latence la plus élevée ?",
+      options: ["Edge Computing", "Fog Computing", "Cloud Centralisé", "MEC"],
+      correct: [2],
+      explanation: "Le Cloud Centralisé a la latence la plus élevée (Élevée) car les données doivent parcourir de longues distances jusqu'aux datacenters distants. Edge Computing, Fog, Cloudlets et MEC ont tous une latence faible à très faible car ils traitent les données localement."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les 3 types de Federated Learning mentionnés dans le cours ? (plusieurs réponses)",
+      options: [
+        "Horizontal Federated Learning",
+        "Vertical Federated Learning",
+        "Transfer Federated Learning",
+        "Distributed Federated Learning",
+        "Centralized Federated Learning"
+      ],
+      correct: [0, 1, 2],
+      explanation: "Les 3 types de FL : (1) Horizontal FL (mêmes features, individus différents), (2) Vertical FL (features différentes, mêmes individus), (3) Transfer FL (utilise le transfer learning pour les données hétérogènes entre clients). Les 2 autres options sont inexistantes dans le cours."
     }
   ],
   flashcards: [
@@ -150,6 +291,11 @@ const SEANCE_7 = {
     { term: "Fog Computing", def: "Couche de traitement intermédiaire entre les appareils IoT (Edge) et le Cloud. Les nœuds Fog (routeurs intelligents, gateways) pré-traitent et filtrent les données localement avant envoi au Cloud. Réduit la bande passante et la latence par rapport à un traitement cloud pur." },
     { term: "Mobile Cloud Computing", def: "Paradigme déléguant les calculs intensifs d'un appareil mobile vers des ressources cloud distantes. Résout les contraintes : autonomie batterie, puissance CPU/RAM limitée. Applications : reconnaissance vocale (Siri, Google Assistant), rendu 3D à distance, IA mobile." },
     { term: "PUE (Power Usage Effectiveness)", def: "Indicateur clé du Green Cloud : PUE = Énergie totale datacenter / Énergie consommée par les serveurs. PUE idéal = 1,0. Datacenters classiques : 1,5-2,0. Hyperscalers (Google, Facebook) : ~1,1. Amélioration via refroidissement naturel, énergies renouvelables." },
-    { term: "Challenges du Cloud Computing", def: "5 défis principaux : 1) Sécurité des données (confidentialité, intégrité), 2) Vendor Lock-in (dépendance propriétaire), 3) Performances (latence, bande passante), 4) Conformité réglementaire (RGPD, HIPAA, PCI-DSS), 5) Intégration avec les systèmes existants (legacy)." }
+    { term: "Challenges du Cloud Computing", def: "5 défis principaux : 1) Sécurité des données (confidentialité, intégrité), 2) Vendor Lock-in (dépendance propriétaire), 3) Performances (latence, bande passante), 4) Conformité réglementaire (RGPD, HIPAA, PCI-DSS), 5) Intégration avec les systèmes existants (legacy)." },
+    { term: "Cloudlet", def: "Petite infrastructure Cloud déployée localement, à proximité de l'utilisateur. Agit comme un mini-Cloud entre le Cloud distant et les périphériques mobiles/IoT. Principe d'offloading : les tâches lourdes sont déplacées vers le Cloudlet. Connecté en haut débit (4G/5G/fibre). Latence très faible." },
+    { term: "MEC (Mobile Edge Computing)", def: "Standardisé par l'ETSI. Solution Cloud pour environnements mobiles : traitement déplacé vers les stations de base des opérateurs (antennes 5G). Apporte capacités Cloud au sein du réseau mobile, à proximité des abonnés. Optimisé pour applications temps réel avec faible latence." },
+    { term: "Federated Learning (FL)", def: "Approche ML distribuée : le modèle est entraîné localement sur chaque appareil/serveur WITHOUT transférer les données brutes au serveur central. 3 étapes : (1) envoi du modèle initial, (2) entraînement local, (3) agrégation des paramètres via FedAvg. Renforce la confidentialité." },
+    { term: "FedAvg (Federated Averaging)", def: "Algorithme d'agrégation standard du Federated Learning. Calcule la moyenne pondérée des paramètres (poids des neurones) des modèles locaux, en tenant compte du nombre d'exemples de chaque client. Crée un modèle global amélioré sans accéder aux données brutes." },
+    { term: "Types de Federated Learning", def: "3 types : Horizontal FL (mêmes caractéristiques, individus différents — ex: plusieurs hôpitaux avec les mêmes champs sur des patients différents) ; Vertical FL (caractéristiques différentes, mêmes individus — ex: banque + assurance sur mêmes clients) ; Transfer FL (pour données hétérogènes)." }
   ]
 };

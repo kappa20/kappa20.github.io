@@ -241,6 +241,90 @@ const SEANCE_10 = {
       ],
       correct: [1],
       explanation: "Quand un Quality Gate échoue (ex: couverture < 80%, vulnérabilité critique détectée), le pipeline est bloqué immédiatement. Aucun artefact n'est produit et le déploiement est empêché. Le développeur doit corriger le problème et recommiter."
+    },
+    {
+      type: "single",
+      text: "À quoi sert un Webhook combiné à Ngrok dans un pipeline Jenkins local ?",
+      options: [
+        "Le Webhook chiffre les artefacts Jenkins, Ngrok les signe numériquement",
+        "Le Webhook déclenche automatiquement le build Jenkins quand un événement GitHub se produit ; Ngrok crée un tunnel HTTPS pour rendre le serveur Jenkins local accessible depuis Internet",
+        "Ngrok remplace Jenkins comme outil CI, le Webhook notifie les développeurs par email",
+        "Le Webhook synchronise les branches Git, Ngrok gère les conflits de merge automatiquement"
+      ],
+      correct: [1],
+      explanation: "Webhook = mécanisme qui déclenche une action sur un serveur quand un événement se produit ailleurs (ex: push GitHub → déclenche le build Jenkins). Problème : GitHub doit atteindre le serveur Jenkins local. Ngrok crée un tunnel HTTPS vers le serveur local pour le rendre accessible depuis Internet. Ensemble : push GitHub → Webhook → Ngrok tunnel → Jenkins build automatique."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence technique entre SAST et DAST dans l'analyse de sécurité CI/CD ?",
+      options: [
+        "SAST analyse les dépendances tierces, DAST analyse le code source",
+        "SAST analyse le code source statiquement (sans l'exécuter), DAST teste les vulnérabilités sur l'application en cours d'exécution",
+        "SAST est exécuté en production, DAST est exécuté dans le pipeline CI",
+        "SAST détecte les secrets (mots de passe), DAST détecte les injections SQL"
+      ],
+      correct: [1],
+      explanation: "SAST (Static Application Security Testing) : analyse le code SOURCE sans l'exécuter → détecte injections SQL, XSS, buffer overflow. Réalisé dans le pipeline CI (phase build/analyse). DAST (Dynamic Application Security Testing) : teste les vulnérabilités sur l'APPLICATION EN COURS D'EXÉCUTION en pré-production → simule des attaques réelles. DAST requiert l'application déployée."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence technique entre Continuous Delivery et Continuous Deployment ?",
+      options: [
+        "Continuous Delivery déploie en staging automatiquement + validation manuelle requise avant prod ; Continuous Deployment déploie automatiquement jusqu'en production sans intervention humaine",
+        "Continuous Delivery est identique à CI, Continuous Deployment ajoute uniquement les tests de performance",
+        "Continuous Delivery n'automatise que le build, Continuous Deployment automatise aussi les tests",
+        "Continuous Deployment nécessite une approbation manuelle, Continuous Delivery est entièrement automatique"
+      ],
+      correct: [0],
+      explanation: "Continuous Delivery : déploiement automatique en staging/pré-production + tests supplémentaires, MAIS l'approbation humaine (PO, Lead tech) est requise avant le déploiement en production. Continuous Deployment : pipeline entièrement automatisé jusqu'en production sans intervention humaine. Continuous Deployment = niveau supérieur d'automatisation."
+    },
+    {
+      type: "single",
+      text: "Dans la phase de Conformité (Compliance) du pipeline CI, quelle obligation légale impose la licence GPL sur votre code ?",
+      options: [
+        "Payer des royalties au titulaire de la licence GPL",
+        "Rendre obligatoirement votre code source open source si vous utilisez une bibliothèque sous licence GPL",
+        "Interdire l'utilisation de la bibliothèque en environnement commercial",
+        "Chiffrer toutes les communications réseau de l'application"
+      ],
+      correct: [1],
+      explanation: "La licence GPL (GNU General Public License) est 'copyleft' : si votre logiciel utilise une bibliothèque GPL, votre code doit également être distribué sous GPL (open source). C'est pourquoi le pipeline CI vérifie les licences via SCA : une bibliothèque GPL non détectée peut forcer une entreprise à publier son code propriétaire."
+    },
+    {
+      type: "multi",
+      text: "Quels standards de conformité sont vérifiés dans la phase Compliance du pipeline CI ? (plusieurs réponses)",
+      options: [
+        "ISO 27001 — norme internationale de sécurité de l'information",
+        "PCI-DSS — standard de sécurité des données de paiement par carte",
+        "RGPD (GDPR) — protection des données personnelles des utilisateurs",
+        "IEEE 802.11 — standard de communication Wi-Fi sans fil"
+      ],
+      correct: [0, 1, 2],
+      explanation: "Les standards de conformité vérifiés en CI : ISO 27001 (sécurité de l'information), PCI-DSS (Payment Card Industry Data Security Standard — sécurité des paiements), RGPD (protéger les données personnelles). IEEE 802.11 est un standard réseau Wi-Fi, pas un standard de conformité logicielle."
+    },
+    {
+      type: "single",
+      text: "Dans quel langage est écrit un Jenkinsfile, et quelle structure principale organise les phases du pipeline ?",
+      options: [
+        "Python, organisé en classes et méthodes",
+        "YAML, organisé en stages et steps identiques à GitLab CI",
+        "Groovy (DSL), organisé en stages représentant chaque phase (checkout, test, build, déploiement)",
+        "JSON, organisé en jobs parallèles et séquentiels"
+      ],
+      correct: [2],
+      explanation: "Le Jenkinsfile est écrit en Groovy (DSL — Domain Specific Language). Structure typique : stage('Checkout') → récupère le code depuis Git ; stage('Install') → npm install ; stage('Test') → npm test ; stage('Build') → packaging. Chaque stage représente une phase du pipeline CI/CD exécutée automatiquement."
+    },
+    {
+      type: "single",
+      text: "Pourquoi un artefact CI peut-il être signé numériquement avant d'être stocké dans le dépôt d'artefacts ?",
+      options: [
+        "Pour chiffrer le contenu de l'artefact et empêcher toute lecture non autorisée",
+        "Pour garantir l'intégrité et l'authenticité de l'artefact : prouver qu'il n'a pas été modifié après sa création par le pipeline",
+        "Pour compresser l'artefact et réduire l'espace de stockage dans Nexus/Artifactory",
+        "Pour décrire les métadonnées de l'artefact (version, date, auteur) dans un format standardisé"
+      ],
+      correct: [1],
+      explanation: "La signature numérique d'un artefact CI garantit son intégrité (l'artefact n'a pas été altéré après création) et son authenticité (il provient bien du pipeline CI officiel). Si un attaquant modifie l'artefact dans le dépôt, la signature devient invalide. Différent du chiffrement : la signature ne cache pas le contenu, elle certifie son origine."
     }
   ],
   flashcards: [

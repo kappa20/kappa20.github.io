@@ -198,6 +198,48 @@ const SEANCE_2 = {
       options: ["La virtualisation matérielle est plus ancienne que la virtualisation complète logicielle", "La virtualisation assistée par le matériel utilise des extensions CPU dédiées pour gérer les instructions privilégiées directement, éliminant le besoin de traduction logicielle complexe", "La virtualisation complète ne peut pas exécuter Windows, la matérielle le peut", "Elles sont identiques en termes de performance"],
       correct: [1],
       explanation: "La virtualisation assistée par le matériel (Intel VT-x, AMD-V) ajoute des extensions CPU qui permettent à l'hyperviseur de gérer directement les instructions privilégiées sans traduction logicielle. Cela améliore les performances et simplifie l'hyperviseur."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que la translation binaire (binary translation) dans la virtualisation totale ?",
+      options: ["Un protocole de chiffrement des images disque", "Un traducteur qui remplace les instructions sensibles par des instructions non sensibles (opcode) équivalentes compatibles avec le processeur cible", "Un format de compression des machines virtuelles", "Un mécanisme de snapshot automatique"],
+      correct: [1],
+      explanation: "La translation binaire remplace les instructions sensibles émises par la VM par des instructions non sensibles (opcode) équivalentes compatibles avec le processeur de l'environnement cible. Lorsqu'une instruction problématique est émise par la VM, elle est interceptée par l'hyperviseur et traduite en une série d'instructions équivalentes."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que la translation dynamique (JIT — Just-In-Time) dans le contexte de la virtualisation ?",
+      options: ["La migration d'une VM d'un hôte à un autre en temps réel", "Une technique inspirée de la compilation à la volée où les instructions sont traduites au moment même de leur exécution, en traduisant uniquement les parties de code réellement utilisées", "La mise à jour automatique des hyperviseurs en temps réel", "La compression dynamique des images disque virtuelles"],
+      correct: [1],
+      explanation: "La translation dynamique (JIT - Just-In-Time) s'inspire de la compilation à la volée : les instructions de la machine source sont traduites en instructions de la machine cible au moment même de leur exécution. Seules les parties de code réellement utilisées sont traduites, ce qui optimise l'exécution."
+    },
+    {
+      type: "single",
+      text: "Comment les caches de traduction (translation caches) améliorent-ils la virtualisation totale ?",
+      options: ["En stockant les données des VMs sur des SSD pour un accès plus rapide", "En mémorisant les instructions déjà traduites pour les réutiliser sans re-traduction, le traducteur n'étant appelé que pour les instructions non encore analysées", "En compressant les instructions binaires avant leur exécution", "En parallélisant la traduction sur plusieurs cœurs CPU simultanément"],
+      correct: [1],
+      explanation: "Les caches de traduction permettent de ne traduire le code qu'une seule fois. Le traducteur n'est appelé que lorsque le processeur virtuel arrive à une instruction qui n'a pas encore été analysée. Les traductions précédentes sont réutilisées, réduisant considérablement le coût de la translation binaire."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le mode VMX introduit par la virtualisation matérielle Intel VT-x ?",
+      options: ["Un système de fichiers virtuel pour les images de VMs", "Un nouveau mode d'exécution CPU avec un niveau racine 'VMX root' (Ring -1) réservé à l'hyperviseur et un niveau 'VMX non-root' pour les VMs invitées", "Un protocole réseau dédié aux communications entre hyperviseurs", "Un format de compression pour les instantanés de machines virtuelles"],
+      correct: [1],
+      explanation: "La technologie VT-x introduit le mode VMX : VMX root operation (parfois appelé Ring -1) réservé à l'hyperviseur, et VMX non-root operation pour les VMs invitées. Chaque niveau comporte les 4 niveaux de privilèges Ring 0-3. Ainsi le noyau invité s'exécute en Ring 0 et les applications en Ring 3, sans conflit avec l'hyperviseur."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages de la virtualisation matérielle assistée (Intel VT-x / AMD-V) par rapport à la virtualisation totale logicielle ? (plusieurs réponses)",
+      options: ["Amélioration des performances en éliminant une partie de la traduction logicielle", "Réduction de la charge de travail de l'hyperviseur", "Le noyau invité peut s'exécuter en Ring 0 de manière sécurisée", "Élimination complète de toute traduction d'instructions"],
+      correct: [0, 1, 2],
+      explanation: "La virtualisation matérielle assistée améliore les performances, réduit la charge de l'hyperviseur, et permet au noyau invité de s'exécuter en Ring 0 (niveau VMX non-root). Cependant, elle ne supprime pas toute traduction : certaines instructions doivent encore être émulées."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que l'émulation dans le contexte de la virtualisation totale ?",
+      options: ["Une technique qui modifie le noyau de l'OS invité", "Le principe qui consiste à remplacer un composant matériel par une application dont le comportement est similaire ou identique à ce composant", "Un mécanisme de compression des images disque virtuelles", "Un protocole de communication entre hyperviseurs de type 1"],
+      correct: [1],
+      explanation: "L'émulation est le principe qui consiste à remplacer un composant matériel par une application dont le comportement est similaire voire identique. Dans la virtualisation totale, l'hyperviseur émule l'intégralité d'une machine physique pour le système invité — le noyau de l'OS ne subit aucune modification."
     }
   ],
   flashcards: [
@@ -219,6 +261,11 @@ const SEANCE_2 = {
     { term: "Snapshot (Instantané de VM)", def: "Sauvegarde de l'état complet d'une VM à un instant T : mémoire vive, état du disque, configuration matérielle. Permet un retour arrière rapide (rollback) en cas de problème. Utile avant les mises à jour, migrations ou modifications risquées." },
     { term: "Migration à chaud (Live Migration)", def: "Déplacement d'une VM d'un hôte physique à un autre SANS interruption de service. Exemple : VMware vMotion. La VM continue de fonctionner pendant le transfert. Essentiel pour la haute disponibilité et la maintenance matérielle sans downtime." },
     { term: "Intel VT-x / AMD-V (Virtualisation matérielle)", def: "Extensions du processeur (Intel Virtualization Technology, AMD Virtualization) qui ajoutent un mode d'exécution spécial pour les hyperviseurs. Permettent de gérer les instructions privilégiées directement au niveau CPU, améliorant performances et sécurité." },
-    { term: "P2V (Physical to Virtual)", def: "Processus de conversion d'un serveur physique en machine virtuelle. Outils : VMware vCenter Converter, Disk2VHD (Microsoft). Permet de migrer des serveurs physiques existants vers une infrastructure virtualisée sans réinstallation." }
+    { term: "P2V (Physical to Virtual)", def: "Processus de conversion d'un serveur physique en machine virtuelle. Outils : VMware vCenter Converter, Disk2VHD (Microsoft). Permet de migrer des serveurs physiques existants vers une infrastructure virtualisée sans réinstallation." },
+    { term: "Translation binaire (Binary Translation)", def: "Technique de virtualisation totale : un traducteur remplace les instructions sensibles de la VM par des instructions non sensibles (opcode) équivalentes compatibles avec le processeur hôte. Utilisée quand le noyau de l'OS invité ne peut pas être modifié (ex: Windows). Optimisée par les caches de traduction et le JIT." },
+    { term: "Translation dynamique (JIT — Just-In-Time)", def: "Technique d'optimisation de la translation binaire : les instructions sont traduites au moment de leur exécution (à la volée), inspirée de la compilation JIT. Seules les parties de code réellement utilisées sont traduites. Le code traduit peut être adapté selon les statistiques d'exécution collectées." },
+    { term: "Mode VMX / Ring -1", def: "Mode d'exécution CPU introduit par Intel VT-x. Deux niveaux : VMX root (Ring -1, pour l'hyperviseur) et VMX non-root (pour les VMs, avec Ring 0-3). Permet au noyau invité de s'exécuter en Ring 0 VMX non-root sans conflits avec l'hyperviseur en Ring -1. Chaque VM a ainsi ses propres niveaux de privilèges." },
+    { term: "Cache de traduction", def: "Optimisation de la translation binaire : les instructions déjà traduites sont mémorisées dans un cache. Le traducteur n'est appelé que pour les instructions non encore analysées. Réduit considérablement le coût de la translation binaire en évitant la re-traduction des instructions fréquentes." },
+    { term: "Émulation (Full Virtualization)", def: "Principe de la virtualisation totale : remplacer un composant matériel par une application dont le comportement est identique. L'hyperviseur émule l'intégralité d'une machine physique. Le noyau invité ne subit aucune modification. Avantage : compatibilité totale. Inconvénient : dégradation des performances par la traduction binaire." }
   ]
 };

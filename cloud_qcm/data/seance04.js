@@ -114,6 +114,48 @@ const SEANCE_4 = {
       options: ["Conflits de DLL entre applications", "Impossibilité de migrer une application d'un poste à un autre", "Incompatibilités entre différentes versions d'une même application", "Lenteur du réseau local"],
       correct: [0, 1, 2],
       explanation: "La virtualisation d'applications résout : les conflits de DLL (chaque package est isolé), les difficultés de migration (package portable), et les incompatibilités de versions. La lenteur du réseau n'est pas un problème d'installation classique."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre VDI persistant et VDI non-persistant ?",
+      options: ["Le VDI persistant utilise une connexion filaire, le VDI non-persistant une connexion Wi-Fi", "Le VDI persistant conserve les modifications de l'utilisateur entre les sessions (données personnalisées sauvegardées), le VDI non-persistant remet la VM à son état d'origine après chaque session", "Le VDI persistant nécessite un client lourd, le VDI non-persistant un client léger", "Le VDI persistant est géré par Azure, le VDI non-persistant par AWS"],
+      correct: [1],
+      explanation: "VDI Persistant : l'utilisateur retrouve sa VM avec ses données personnalisées à chaque connexion. VDI Non-persistant : une fois la session terminée, la VM revient à son état d'origine (modifications supprimées). Le non-persistant est plus facile à administrer (mises à jour sur une seule image maître) mais moins personnalisable."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le RDS (Remote Desktop Services) développé par Microsoft ?",
+      options: ["Un protocole de sauvegarde des données à distance", "Une technologie permettant aux utilisateurs de se connecter à un serveur Windows distant via RDP et d'accéder à leur bureau partagé, avec mutualisation des ressources entre plusieurs utilisateurs", "Un type de cloud privé dédié aux bureaux virtuels", "Un format d'image pour les machines virtuelles Windows Server"],
+      correct: [1],
+      explanation: "RDS (Remote Desktop Services) permet aux utilisateurs de se connecter à un serveur Windows distant via RDP (Remote Desktop Protocol). Le logiciel RDSH (Remote Desktop Session Host) installé sur le serveur permet à plusieurs utilisateurs de travailler simultanément dans un environnement bureautique personnel avec mutualisation des ressources."
+    },
+    {
+      type: "single",
+      text: "Quelle est la principale différence entre DaaS et VDI ?",
+      options: ["DaaS offre plus de sécurité que VDI car les données sont chiffrées", "VDI nécessite un matériel important dans le datacenter de l'entreprise avec contrôle total, DaaS est hébergé chez un fournisseur Cloud avec frais d'abonnement mensuels mais déploiement rapide", "VDI est toujours moins coûteux que DaaS à long terme", "Il n'y a aucune différence fonctionnelle entre DaaS et VDI"],
+      correct: [1],
+      explanation: "VDI est principalement géré en interne dans le datacenter de l'entreprise : contrôle total, données sensibles sécurisées, scalabilité limitée au matériel disponible. DaaS est hébergé chez un fournisseur Cloud : déploiement rapide, scalabilité facile, mais frais de service mensuels. VDI pour les données sensibles, DaaS pour la flexibilité."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que l'OS Streaming dans la virtualisation des postes de travail ?",
+      options: ["La diffusion de films via un système d'exploitation virtuel", "Une technologie où le BIOS du poste est configuré pour démarrer sur le réseau, téléchargeant l'OS et les fichiers nécessaires depuis un serveur de streaming au fur et à mesure des besoins", "La mise à jour automatique du système d'exploitation via Internet", "Un protocole de sauvegarde du système d'exploitation sur le réseau"],
+      correct: [1],
+      explanation: "L'OS Streaming (technologie Citrix et VMware) : le BIOS du poste est configuré pour démarrer sur le réseau. Le poste télécharge les fichiers nécessaires pour démarrer depuis un serveur de streaming et les garde en mémoire vive. La configuration est réinitialisée à chaque démarrage, et le serveur envoie des éléments supplémentaires au fur et à mesure."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les deux approches de la virtualisation des postes de travail ? (plusieurs réponses)",
+      options: ["Poste de travail virtuel local (Local Desktop Virtualization) : s'exécute sur le poste client", "Virtualisation de bureau à distance : s'exécute sur un serveur distant (client léger)", "Virtualisation de stockage du poste : uniquement les données sont virtualisées", "Virtualisation applicative pure : uniquement les applications sont virtualisées, pas le bureau"],
+      correct: [0, 1],
+      explanation: "Il existe deux approches : (1) Poste de travail virtuel local — le bureau virtuel s'exécute sur le poste client physique (Local Desktop Virtualization, avec OS Streaming ou poste indépendant de l'OS local) ; (2) Virtualisation de bureau à distance — le bureau s'exécute sur un serveur distant, l'utilisateur utilise un client léger (VDI, RDS)."
+    },
+    {
+      type: "multi",
+      text: "Quels avantages offre le DaaS (Desktop as a Service) par rapport au VDI traditionnel ? (plusieurs réponses)",
+      options: ["Déploiement rapide et simple des logiciels et des OS", "Augmentation de la mobilité des utilisateurs (connexion à distance depuis partout)", "Contrôle total de l'infrastructure par l'entreprise", "Flexibilité face aux demandes des utilisateurs et scalabilité facile"],
+      correct: [0, 1, 3],
+      explanation: "Le DaaS offre : déploiement rapide, mobilité accrue (accès depuis n'importe où), et scalabilité flexible. En revanche, l'entreprise n'a pas de contrôle total sur l'infrastructure — c'est le fournisseur DaaS qui gère tous les problèmes de connectivité et d'infrastructure."
     }
   ],
   flashcards: [
@@ -127,6 +169,11 @@ const SEANCE_4 = {
     { term: "VDI (Virtual Desktop Infrastructure)", def: "Virtualisation des postes de travail sur des serveurs centraux. L'utilisateur se connecte à son bureau virtuel depuis n'importe quel terminal léger. Gestion centralisée, sécurité renforcée, BYOD facilité. Exemples : Citrix Virtual Apps & Desktops, VMware Horizon." },
     { term: "Streaming d'applications (App-V)", def: "Transmission à la demande des composants d'une application depuis un serveur vers le client, sans installation locale complète. Seule la partie utilisée est téléchargée. Exemple : Microsoft App-V. Optimise l'utilisation du réseau et simplifie la gestion." },
     { term: "Snapshot de séquençage", def: "Mécanisme de création d'un package de virtualisation : snapshot avant installation → installation normale de l'application → snapshot après → la différence = le package autonome. Utilisé par ThinApp, App-V, Turbo Studio." },
-    { term: "Outils de virtualisation d'apps (espace utilisateur)", def: "VMware ThinApp : crée un exécutable autonome portable. Microsoft App-V : streaming + virtualisation. Turbo Studio : packages multi-platefomes. Cameyo : virtualisation cloud d'apps Windows. Tous évitent les conflits DLL et les installations." }
+    { term: "Outils de virtualisation d'apps (espace utilisateur)", def: "VMware ThinApp : crée un exécutable autonome portable. Microsoft App-V : streaming + virtualisation. Turbo Studio : packages multi-platefomes. Cameyo : virtualisation cloud d'apps Windows. Tous évitent les conflits DLL et les installations." },
+    { term: "VDI Persistant vs Non-persistant", def: "Persistant : chaque utilisateur a sa VM dédiée, les modifications sont sauvegardées entre sessions (données personnalisées conservées). Non-persistant : la VM revient à son état d'origine après chaque session (modifications supprimées). Non-persistant = administration simplifiée (une image maître), persistant = meilleure expérience utilisateur." },
+    { term: "RDS (Remote Desktop Services) / RDSH", def: "Technologie Microsoft : utilisateurs se connectent via RDP (Remote Desktop Protocol) à un serveur Windows distant (Terminal Server). Le RDSH (Remote Desktop Session Host) permet plusieurs utilisateurs simultanément avec mutualisation des ressources. Moins coûteux que VDI mais bureau partagé, pas individuel." },
+    { term: "DaaS (Desktop as a Service)", def: "Bureau virtuel fourni comme service Cloud, accessible via Internet, avec abonnement par utilisateur. Le fournisseur gère toute l'infrastructure. Exemples : Amazon Workspaces (Linux/Windows), Azure Virtual Desktop (Windows), Citrix Managed Desktops. Vs VDI : hébergement externe, déploiement rapide, frais mensuels." },
+    { term: "OS Streaming", def: "Technologie de virtualisation des postes (Citrix, VMware) : l'OS est streamé depuis un serveur réseau. Le BIOS démarre sur le réseau, télécharge les fichiers nécessaires en mémoire vive. Configuration réinitialisée à chaque démarrage. Avantage : administration centralisée (une seule image maître pour tous les postes)." },
+    { term: "VDI (Virtual Desktop Infrastructure) — types d'attribution", def: "Deux modes d'attribution VM : (1) Image dédiée — un seul bureau par serveur (pour applications gourmandes en ressources) ; (2) Bassin d'images (pool) — un serveur contient plusieurs VMs, affectation statique (toujours la même VM) ou dynamique (VM assignée à la connexion). Chaque utilisateur a accès à son bureau sécurisé." }
   ]
 };

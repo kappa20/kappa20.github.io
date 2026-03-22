@@ -142,6 +142,76 @@ const SEANCE_5 = {
       options: ["La quantité de RAM allouée à un conteneur", "Un mécanisme de stockage persistant permettant de conserver les données même après la suppression d'un conteneur", "Un réseau virtuel entre conteneurs", "Le fichier de configuration de lancement d'un conteneur"],
       correct: [1],
       explanation: "Un volume Docker est un mécanisme de stockage persistant géré par Docker. Les données d'un volume survivent à la suppression du conteneur. Utile pour les bases de données, les fichiers de log et toute donnée devant persister entre les redémarrages."
+    },
+    {
+      type: "single",
+      text: "Quels sont les 5 pilotes réseau disponibles dans Docker ?",
+      options: ["bridge, none, host, overlay, macvlan", "tcp, udp, http, websocket, grpc", "public, private, hybrid, vlan, vxlan", "ethernet, wifi, bluetooth, fiber, satellite"],
+      correct: [0],
+      explanation: "Docker dispose de 5 pilotes réseau : bridge (conteneurs isolés, communication interne uniquement), none (aucune interface réseau), host (partage l'interface réseau de l'hôte), overlay (multi-hôtes pour Docker Swarm), macvlan (attribue une adresse MAC au conteneur pour apparaître comme un périphérique physique)."
+    },
+    {
+      type: "multi",
+      text: "Parmi les pilotes réseau Docker, lesquels permettent une communication depuis l'extérieur du conteneur ? (plusieurs réponses)",
+      options: ["host (même interface réseau que l'hôte, accessible de l'extérieur)", "macvlan (adresse MAC dédiée, apparaît comme périphérique physique sur le réseau)", "bridge (isolé, pas accessible directement de l'extérieur sans mapping de port)", "none (aucune communication interne ou externe)"],
+      correct: [0, 1],
+      explanation: "Le mode host partage l'interface réseau de l'hôte (les conteneurs sont accessibles de l'extérieur). Le mode macvlan attribue une adresse MAC à chaque conteneur (connexion directe au réseau physique). Le mode bridge isole les conteneurs entre eux. Le mode none désactive tout réseau."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que Docker Swarm ?",
+      options: ["Un outil de monitoring et visualisation des conteneurs Docker", "Un outil d'orchestration natif Docker permettant de gérer des clusters de machines Docker et de déployer des applications de manière distribuée et hautement disponible", "Un registre privé d'images Docker pour les entreprises", "Un format de fichier alternatif au Dockerfile pour la composition de services"],
+      correct: [1],
+      explanation: "Docker Swarm est l'outil d'orchestration natif de Docker. Il permet de gérer des clusters de machines Docker (nœuds) et de déployer des applications sur plusieurs hôtes Docker de manière distribuée, fault-tolerant et hautement disponible. Alternative à Kubernetes pour l'orchestration de conteneurs."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le Docker Daemon (dockerd) dans l'architecture Docker Engine ?",
+      options: ["L'interface en ligne de commande (CLI) que l'utilisateur utilise pour interagir avec Docker", "Le processus d'arrière-plan principal du Docker Engine qui reçoit les commandes via l'API REST et gère la création, l'exécution et la surveillance des conteneurs", "Le format de fichier utilisé pour stocker les images Docker en local", "Le protocole réseau interne entre conteneurs Docker"],
+      correct: [1],
+      explanation: "Le Docker Daemon (dockerd) est le processus principal du Docker Engine, tournant en arrière-plan. Il reçoit les commandes via l'API REST (depuis le CLI ou des applications tierces) et les transmet à containerd pour la gestion effective des conteneurs. Il gère images, réseaux et volumes."
+    },
+    {
+      type: "single",
+      text: "Quel est le rôle de containerd dans l'architecture Docker Engine ?",
+      options: ["Fournir l'interface CLI pour les commandes docker", "Un runtime de conteneur de bas niveau responsable de la gestion du cycle de vie des conteneurs (démarrage, arrêt, pause), composant sous-jacent utilisé par le Docker Daemon", "Un registre d'images Docker privé", "Le composant qui gère les volumes et les réseaux Docker"],
+      correct: [1],
+      explanation: "containerd est un runtime de conteneur de bas niveau (composant sous-jacent du Docker Engine). Il est responsable de la gestion du cycle de vie des conteneurs : démarrage, arrêt, pause, suppression. Il est utilisé par le Docker Daemon (dockerd) et constitue un standard industriel (CNCF)."
+    },
+    {
+      type: "single",
+      text: "Que fait l'instruction EXPOSE dans un Dockerfile ?",
+      options: ["Elle ouvre automatiquement le port dans le pare-feu du système hôte", "Elle documente le port sur lequel l'application écoute dans le conteneur (information pour les utilisateurs et docker-compose, sans ouvrir réellement le port sur l'hôte)", "Elle configure le réseau Docker et crée un mapping de port automatique", "Elle expose le conteneur directement sur Internet sans configuration supplémentaire"],
+      correct: [1],
+      explanation: "L'instruction EXPOSE dans un Dockerfile indique le port sur lequel l'application écoute dans le conteneur. C'est principalement une information documentaire (pour les développeurs et docker-compose). Pour publier réellement le port sur l'hôte, il faut utiliser le flag -p lors du 'docker run' (ex: -p 8080:80)."
+    },
+    {
+      type: "multi",
+      text: "Parmi ces instructions Dockerfile, lesquelles sont correctement décrites ? (plusieurs réponses)",
+      options: ["FROM : définit l'image de base (OS de départ)", "RUN : exécute une commande lors de la construction de l'image", "CMD : définit la commande par défaut exécutée au démarrage du conteneur", "WORKDIR : change le répertoire courant dans l'image (équivalent cd)"],
+      correct: [0, 1, 2, 3],
+      explanation: "Toutes ces descriptions sont correctes : FROM (image de base), RUN (commande au build), CMD (commande au démarrage du conteneur, ex: 'npm run start'), WORKDIR (répertoire courant pour les commandes suivantes, équivalent de 'cd'). Autres instructions : COPY (copie de fichiers), ADD (copie ou téléchargement), EXPOSE (port), VOLUME (répertoire partagé)."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence fondamentale entre un conteneur LXC et un conteneur Docker ?",
+      options: ["LXC utilise un hyperviseur de type 2, Docker n'en utilise pas", "LXC est un conteneur système (simule un OS complet avec init et multi-processus), Docker est un conteneur processus (conçu pour une seule application ou service)", "LXC est plus récent et plus performant que Docker", "Docker nécessite un noyau modifié, LXC non"],
+      correct: [1],
+      explanation: "LXC est un conteneur système : il simule un OS complet (init, services, plusieurs processus), comme une VM légère. Docker est un conteneur processus : il isole une seule application principale, conçu pour les microservices. LXC supporte d'autres formats comme Docker et OCI, mais Docker est optimisé pour le déploiement d'applications."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les différences entre OpenVZ et LXC ? (plusieurs réponses)",
+      options: ["OpenVZ nécessite un noyau Linux modifié, LXC fonctionne avec le noyau Linux standard", "LXC prend en charge les formats Docker et OCI, OpenVZ n'est pas compatible", "OpenVZ n'est pas compatible avec les technologies Docker ou LXC", "LXC appelle ses conteneurs VPS (Virtual Private Servers), OpenVZ les appelle containers"],
+      correct: [0, 1, 2],
+      explanation: "Différences OpenVZ vs LXC : OpenVZ utilise un noyau Linux modifié (ce qui crée des problèmes de maintenance à chaque nouvelle version du noyau), LXC utilise le noyau standard. LXC prend en charge Docker et OCI, OpenVZ est incompatible avec ces technologies. OpenVZ (pas LXC) appelle ses conteneurs VPS."
+    },
+    {
+      type: "single",
+      text: "Que fait la commande 'docker commit' ?",
+      options: ["Elle valide les modifications d'un Dockerfile avant le build", "Elle crée une nouvelle image Docker à partir des modifications apportées à un conteneur en cours d'exécution", "Elle pousse une image locale vers Docker Hub", "Elle sauvegarde les volumes persistants d'un conteneur"],
+      correct: [1],
+      explanation: "La commande 'docker commit' crée une nouvelle image Docker à partir des modifications apportées à un conteneur en cours d'exécution. Elle capture l'état actuel du conteneur sous forme d'image réutilisable. C'est l'une des façons de créer des images (alternative au Dockerfile, moins recommandée pour la reproductibilité)."
     }
   ],
   flashcards: [
@@ -159,6 +229,13 @@ const SEANCE_5 = {
     { term: "Dockerfile", def: "Fichier texte de construction automatique d'image Docker. Instructions principales : FROM (image de base), RUN (exécuter commandes au build), COPY (copier fichiers), EXPOSE (déclarer port), ENV (variable d'env), CMD (commande au démarrage du conteneur)." },
     { term: "Docker Compose", def: "Outil de gestion d'applications multi-conteneurs. Fichier docker-compose.yml décrit : services (conteneurs), réseaux et volumes. Commandes clés : docker-compose up (lancer tout), docker-compose down (arrêter), docker-compose ps (état des services)." },
     { term: "Volume Docker", def: "Stockage persistant géré par Docker, survivant à la suppression du conteneur. Types : Volume nommé (géré par Docker, recommandé), Bind Mount (répertoire hôte monté dans le conteneur). Essentiel pour les bases de données et fichiers persistants." },
-    { term: "Docker Hub / Registre d'images", def: "Registre public officiel Docker. Contient des images officielles (ubuntu, nginx, mysql, python...) et de la communauté. Commandes : docker pull (télécharger), docker push (pousser), docker search (chercher). Alternative privée : Harbor, Nexus, ECR (AWS)." }
+    { term: "Docker Hub / Registre d'images", def: "Registre public officiel Docker. Contient des images officielles (ubuntu, nginx, mysql, python...) et de la communauté. Commandes : docker pull (télécharger), docker push (pousser), docker search (chercher). Alternative privée : Harbor, Nexus, ECR (AWS)." },
+    { term: "5 pilotes réseau Docker", def: "bridge : réseau isolé par défaut, conteneurs communiquent entre eux uniquement. none : aucune interface réseau. host : partage l'interface réseau de l'hôte (accessible de l'extérieur, non isolé). overlay : multi-hôtes pour Docker Swarm. macvlan : attribue une adresse MAC au conteneur (apparaît comme périphérique physique sur le réseau)." },
+    { term: "Docker Swarm", def: "Outil d'orchestration natif Docker. Gère des clusters de nœuds Docker (manager + workers). Permet de déployer des applications multi-conteneurs sur plusieurs hôtes de manière distribuée et fault-tolerant. Alternative à Kubernetes, plus simple à configurer mais moins riche en fonctionnalités." },
+    { term: "Docker Engine — Architecture", def: "Trois composants : (1) Docker CLI — interface utilisateur (commandes docker). (2) Docker Daemon (dockerd) — processus d'arrière-plan, reçoit les commandes via REST API et les transmet. (3) containerd — runtime de bas niveau responsable du cycle de vie des conteneurs (démarrage, arrêt, pause). Architecture client-serveur basée sur REST API." },
+    { term: "containerd", def: "Runtime de conteneur de bas niveau (standard industriel CNCF). Composant sous-jacent du Docker Engine responsable de la gestion du cycle de vie des conteneurs. Gère le téléchargement des images, la création, le démarrage et l'arrêt des conteneurs. Indépendant de Docker, aussi utilisé par Kubernetes." },
+    { term: "Instructions Dockerfile clés", def: "FROM (image de base) ; RUN (commande au build) ; COPY/ADD (copier fichiers dans l'image) ; WORKDIR (changer répertoire courant, équivalent cd) ; EXPOSE (documenter le port d'écoute) ; VOLUME (déclarer répertoire partagé pour données persistantes) ; CMD (commande par défaut au démarrage du conteneur) ; ENV (variable d'environnement)." },
+    { term: "OpenVZ vs LXC vs Docker", def: "OpenVZ : noyau modifié, conteneurs VPS (systèmes complets), incompatible Docker/LXC. LXC : noyau standard, conteneurs système (OS complet), compatible Docker/OCI. Docker : conteneur processus (une seule application), portable, images en couches, Docker Hub, architecture client-serveur. Progression : OpenVZ → LXC → Docker (adoption croissante)." },
+    { term: "docker commit", def: "Commande pour créer une nouvelle image à partir d'un conteneur en cours d'exécution. Capture l'état actuel du conteneur. Workflow alternatif au Dockerfile : container running → modifications → docker commit → nouvelle image. Moins reproductible que le Dockerfile, mais utile pour capturer un état ou déboguer." }
   ]
 };

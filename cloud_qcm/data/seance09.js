@@ -204,6 +204,79 @@ const SEANCE_9 = {
       options: ["Renommer la branche principale", "Réécrire l'historique d'une branche en déplaçant ses commits à la pointe d'une autre branche, créant un historique linéaire", "Annuler le dernier commit", "Fusionner deux branches en créant un commit de merge"],
       correct: [1],
       explanation: "git rebase déplace les commits d'une branche à la pointe d'une autre, créant un historique linéaire (sans commit de merge). Différence avec merge : merge crée un commit de fusion et conserve la divergence ; rebase réécrit l'historique pour le linéariser."
+    },
+    {
+      type: "single",
+      text: "Quelle est la différence entre 'git reset --soft HEAD~1' et 'git reset --hard' ?",
+      options: [
+        "--soft supprime définitivement les modifications, --hard les conserve dans la staging area",
+        "--soft annule le dernier commit mais conserve les changements dans l'index (staged), --hard supprime toutes les modifications non sauvegardées",
+        "--soft agit sur les fichiers locaux, --hard agit uniquement sur le dépôt distant",
+        "Les deux sont identiques, seule la vitesse d'exécution diffère"
+      ],
+      correct: [1],
+      explanation: "git reset --soft HEAD~1 : annule le dernier commit mais conserve les changements dans l'index (comme s'ils étaient toujours staged → prêts pour un nouveau commit). git reset --hard : toutes les modifications non sauvegardées sont perdues définitivement. Danger : --hard est irréversible."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les 4 états possibles d'un fichier dans le cycle de vie Git ? (plusieurs réponses)",
+      options: [
+        "Untracked — le fichier existe mais n'est pas encore suivi par Git",
+        "Staged (Indexé) — le fichier a été ajouté avec git add mais pas encore commité",
+        "Committed (Non modifié) — le fichier est enregistré dans l'historique du dépôt local",
+        "Modified — le fichier est modifié mais non indexé (pas encore dans la staging area)",
+        "Pushed — le fichier est synchronisé avec le dépôt distant"
+      ],
+      correct: [0, 1, 2, 3],
+      explanation: "Les 4 états du cycle de vie Git : Untracked (non suivi), Staged/Indexé (git add effectué), Committed/Non modifié (version dans le dépôt local), Modified (modifié localement mais non indexé). 'Pushed' n'est pas un état Git — c'est une opération de synchronisation avec le distant."
+    },
+    {
+      type: "single",
+      text: "Que fait l'option '-a' dans la commande 'git commit -a -m \"message\"' ?",
+      options: [
+        "Force le commit sans vérifier les conflits de merge",
+        "Ajoute automatiquement tous les fichiers nouveaux (untracked) au commit",
+        "Permet de ne pas utiliser git add en indexant automatiquement les fichiers déjà suivis (tracked) et modifiés",
+        "Crée une branche automatiquement avant de commiter"
+      ],
+      correct: [2],
+      explanation: "git commit -a contourne git add pour les fichiers déjà suivis (tracked) et modifiés → les indexe et commite en une seule commande. Attention : ne fonctionne PAS pour les fichiers Untracked (nouveaux fichiers non suivis) qui nécessitent toujours git add explicitement."
+    },
+    {
+      type: "single",
+      text: "Quelle commande affiche l'historique des commits sous forme abrégée avec vue graphique, noms des branches et tous les commits ?",
+      options: [
+        "git log --full --branches --visual",
+        "git log --oneline --graph --decorate --all",
+        "gitk --all --branches --compact",
+        "git history --graph --short --tags"
+      ],
+      correct: [1],
+      explanation: "git log --oneline --graph --decorate --all affiche : --oneline (hash abrégé + message sur une ligne), --graph (arbre ASCII des branches), --decorate (noms des branches/tags), --all (tous les commits y compris branches distantes). C'est la commande standard pour visualiser l'historique dans le terminal."
+    },
+    {
+      type: "multi",
+      text: "Quelles caractéristiques techniques distinguent un VCS Centralisé (SVN) d'un VCS Distribué (Git) ? (plusieurs réponses)",
+      options: [
+        "VCS Centralisé : historique uniquement sur le serveur, travail hors-ligne impossible",
+        "VCS Centralisé : point de défaillance unique (si serveur tombe, tout s'arrête)",
+        "VCS Distribué : chaque développeur possède une copie complète avec tout l'historique",
+        "VCS Distribué : vitesse très rapide car la plupart des opérations sont locales"
+      ],
+      correct: [0, 1, 2, 3],
+      explanation: "VCS Centralisé (SVN, CVS) : historique sur le serveur uniquement, hors-ligne impossible, point de défaillance unique, vitesse lente (réseau requis). VCS Distribué (Git, Mercurial) : copie complète sur chaque poste, hors-ligne possible, aucun point de défaillance unique, très rapide (opérations locales). Git est le standard actuel."
+    },
+    {
+      type: "single",
+      text: "Dans Git Flow, après avoir corrigé un bug critique sur la branche Hotfix, vers quelles branches faut-il obligatoirement la fusionner ?",
+      options: [
+        "Uniquement dans Master/Main pour publier le correctif",
+        "Dans Master/Main ET réinjectée dans Develop pour ne pas perdre le correctif",
+        "Dans Develop uniquement, puis Develop sera mergée dans Master lors de la prochaine Release",
+        "Dans Release, qui sera ensuite mergée dans Master et Develop"
+      ],
+      correct: [1],
+      explanation: "La branche Hotfix est créée depuis Master pour corriger un bug critique en production. Une fois terminée, elle doit être mergée dans : (1) Master → pour publier le correctif en production avec un tag de version, ET (2) Develop → pour réinjecter le correctif dans la branche d'intégration et éviter qu'il soit perdu lors de la prochaine release."
     }
   ],
   flashcards: [

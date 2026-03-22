@@ -163,6 +163,68 @@ const SEANCE_6 = {
       options: ["Heroku", "Google App Engine", "AWS EC2", "Azure App Service", "Gmail"],
       correct: [0, 1, 3],
       explanation: "Heroku, Google App Engine et Azure App Service sont des PaaS (le développeur déploie son application sans gérer l'infrastructure). AWS EC2 est IaaS (infrastructure). Gmail est SaaS (application complète)."
+    },
+    {
+      type: "single",
+      text: "Dans un cloud privé virtuel, quel mécanisme technique assure l'isolation des ressources de l'entreprise sur une infrastructure physique partagée ?",
+      options: [
+        "Un hyperviseur de type 1 dédié exclusivement à l'entreprise",
+        "Des technologies logicielles avancées rendant l'environnement invisible depuis Internet via VPN",
+        "Un réseau VLAN exclusif avec fibre optique dédiée entre l'entreprise et le datacenter",
+        "Un conteneur Docker sécurisé par chiffrement AES256 sur le serveur du fournisseur"
+      ],
+      correct: [1],
+      explanation: "Dans le cloud privé virtuel, l'isolation est assurée par des technologies logicielles avancées : l'environnement est rendu invisible depuis l'Internet public via VPN. L'infrastructure physique reste partagée avec d'autres clients, contrairement au cloud privé on-premise ou hébergé."
+    },
+    {
+      type: "multi",
+      text: "Quels sont les avantages du cloud privé hébergé (hosted) par rapport au cloud privé on-premise ? (plusieurs réponses)",
+      options: [
+        "Moins d'investissement initial (pas d'achat de matériel physique)",
+        "Contrôle total sur l'infrastructure physique du serveur",
+        "Bénéfice de l'expertise technique du fournisseur hébergeur",
+        "Évolutivité plus rapide des ressources"
+      ],
+      correct: [0, 2, 3],
+      explanation: "Cloud privé hébergé : moins d'investissement initial, expertise du fournisseur pour la gestion physique, évolutivité rapide. Inconvénients : moins de contrôle sur l'infrastructure physique, dépendance vis-à-vis du fournisseur. Le contrôle total de l'infrastructure physique est l'avantage du on-premise, pas du hébergé."
+    },
+    {
+      type: "single",
+      text: "Quel inconvénient technique est spécifique au cloud privé virtuel mais pas au cloud privé on-premise ?",
+      options: [
+        "Coûts d'investissement en matériel très élevés",
+        "Nécessité de maintenir une équipe IT interne importante",
+        "Problèmes de performance possibles en cas de pic d'activité (infrastructure physique partagée)",
+        "Impossibilité de personnaliser les configurations logicielles"
+      ],
+      correct: [2],
+      explanation: "Le cloud privé virtuel partage l'infrastructure physique avec d'autres clients → problèmes de performance lors des pics d'activité. On-premise : inconvénients = coûts d'investissement élevés + maintenance interne + compétences techniques requises. Le virtuel évite ces coûts mais subit la contention de ressources partagées."
+    },
+    {
+      type: "single",
+      text: "IBM Cloud est particulièrement reconnu pour quel outil d'intelligence artificielle ?",
+      options: ["IBM DeepMind", "IBM Watson", "IBM Cortana", "IBM AutoML"],
+      correct: [1],
+      explanation: "IBM Cloud est particulièrement fort en IA avec Watson. Services IBM Cloud : IBM Cloud Kubernetes Service, IBM Watson (IA), IBM Cloud Foundry, IBM Cloud Functions (serverless). Watson propose des APIs NLP, vision, speech, etc."
+    },
+    {
+      type: "single",
+      text: "Quel service Google Cloud Platform (GCP) est spécifiquement dédié au traitement de données massives (Big Data) ?",
+      options: ["Google Compute Engine (GCE)", "Google Cloud Storage (GCS)", "BigQuery", "Google Kubernetes Engine (GKE)"],
+      correct: [2],
+      explanation: "BigQuery est le service GCP de data warehouse serverless pour le Big Data : requêtes SQL sur des pétaoctets en secondes. GCE = machines virtuelles (IaaS), GCS = stockage objet, GKE = Kubernetes managé. GCP est reconnu pour l'IA/ML et le Big Data (BigQuery, Vertex AI)."
+    },
+    {
+      type: "single",
+      text: "Lors du déploiement d'un cloud public, que signifie techniquement que 'le fournisseur assure l'isolation des ressources' ?",
+      options: [
+        "Chaque client a son propre datacenter physique chez le fournisseur",
+        "Les ressources sont mutualisées (multi-tenant) mais le fournisseur garantit qu'un client ne peut pas accéder aux données d'un autre",
+        "Le fournisseur chiffre toutes les communications réseau avec TLS 1.3",
+        "Le fournisseur installe un pare-feu physique dédié pour chaque client"
+      ],
+      correct: [1],
+      explanation: "Cloud public = architecture multi-tenant : plusieurs clients partagent la même infrastructure physique. Le fournisseur assure l'isolation par hyperviseur, VLAN, et contrôle d'accès logiciel pour garantir qu'un tenant ne peut pas accéder aux ressources/données d'un autre. C'est différent du cloud privé (single-tenant)."
     }
   ],
   flashcards: [

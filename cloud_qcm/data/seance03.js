@@ -149,6 +149,83 @@ const SEANCE_3 = {
       options: ["Réseau programmable et configurable par logiciel", "Gestion centralisée de l'ensemble du réseau", "Automatisation des configurations réseau", "Élimination complète du matériel réseau physique"],
       correct: [0, 1, 2],
       explanation: "Le SDN permet : la programmabilité du réseau, une gestion centralisée (vue globale du réseau), et l'automatisation des configurations. Il ne supprime pas le matériel physique : le plan de données reste matériel, seul le plan de contrôle est logiciel."
+    },
+    {
+      type: "single",
+      text: "Comment fonctionne OpenFlow dans un réseau SDN quand un paquet n'a pas de correspondance dans la table de flux ?",
+      options: ["Le switch rejette le paquet automatiquement", "Le switch interroge le contrôleur SDN via OpenFlow pour obtenir les règles relatives à la gestion de ce paquet", "Le switch envoie le paquet en broadcast sur tous ses ports", "Le switch demande à l'administrateur réseau une confirmation manuelle"],
+      correct: [1],
+      explanation: "Fonctionnement OpenFlow : un paquet entre dans le switch → cherche une correspondance dans sa table de flux → si trouvée : applique l'action spécifiée → si non trouvée : interroge le contrôleur SDN via OpenFlow qui décide de la manière dont le paquet doit être acheminé."
+    },
+    {
+      type: "multi",
+      text: "Qu'est-ce que contient une règle de table de flux OpenFlow ? (plusieurs réponses)",
+      options: ["Des critères de correspondance (adresse source/destination, protocole, ports)", "Une action à exécuter (transférer, bloquer, rediriger)", "Des statistiques (nombre de paquets et d'octets traités)", "Le code source de l'application à traiter"],
+      correct: [0, 1, 2],
+      explanation: "Une règle de table de flux OpenFlow contient : (1) des critères de correspondance (adresse source/destination, protocole, ports) pour identifier les paquets, (2) une action à exécuter (transférer, bloquer, rediriger), (3) des statistiques (paquets et octets traités)."
+    },
+    {
+      type: "multi",
+      text: "Quelles sont les deux limitations principales du SDN ? (plusieurs réponses)",
+      options: ["Point de panne central (Single Point of Failure) : si le contrôleur tombe, le réseau devient instable", "Point d'attaque unique (Single Point of Attack) : si le contrôleur est compromis, tout le réseau est affecté", "Incompatibilité avec les équipements Cisco et Juniper", "Impossibilité de gérer le trafic réseau à grande échelle"],
+      correct: [0, 1],
+      explanation: "Le SDN a deux limitations majeures : (1) Single Point of Failure — la défaillance du contrôleur SDN peut rendre le réseau instable ou indisponible ; (2) Single Point of Attack — si le contrôleur est compromis, l'ensemble du réseau peut être affecté. Des configurations de contrôleurs redondants sont souvent mises en place."
+    },
+    {
+      type: "single",
+      text: "Dans l'architecture ETSI NFV, que désigne le bloc MANO ?",
+      options: ["Un protocole de communication entre VNFs", "Management and Orchestration : l'ensemble des composants de gestion NFV incluant NFVO, VNFM et VIM", "Un type de serveur COTS pour les fonctions réseau virtualisées", "Le plan de données de l'infrastructure NFV"],
+      correct: [1],
+      explanation: "MANO (Management and Orchestration) est le bloc central de gestion de l'architecture ETSI NFV. Il comprend trois composants : NFVO (NFV Orchestrator — garantit les ressources pour les VNFs), VNFM (VNF Manager — gère le cycle de vie des VNFs), et VIM (Virtualized Infrastructure Manager — contrôle les ressources de la NFVI)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que la NFVI (NFV Infrastructure) dans l'architecture ETSI NFV ?",
+      options: ["L'ensemble des VNFs déployées sur le réseau", "L'infrastructure qui fournit les ressources virtuelles nécessaires (calcul, réseau, stockage) pour supporter l'exécution des VNFs", "Le contrôleur SDN qui gère les flux NFV", "Le registre centralisé des fonctions réseau disponibles"],
+      correct: [1],
+      explanation: "La NFVI (NFV Infrastructure) fournit les ressources virtuelles nécessaires (capacité réseau, puissance de calcul, espace mémoire) pour supporter l'exécution des VNFs. Elle comprend la couche de virtualisation (hyperviseur) et le matériel physique sous-jacent (serveurs, stockage, réseau)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'une VNF (Virtual Network Function) ?",
+      options: ["Un switch physique haute performance pour les datacenters", "Une fonction réseau traditionnellement assurée par un équipement physique dédié (pare-feu, NAT, load balancer), maintenant virtualisée et exécutée sur du matériel standard", "Un protocole de routage pour les réseaux SDN", "Un type de VLAN pour l'isolation des datacenters"],
+      correct: [1],
+      explanation: "Une VNF (Virtual Network Function) est une fonction réseau traditionnellement assurée par un équipement physique dédié (pare-feu, routeur, NAT, load balancer, DPI), maintenant virtualisée et exécutée sous forme de machine virtuelle sur des serveurs standards (COTS). Les VNFs remplacent les nœuds réseau physiques."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce qu'un LUN (Logical Unit Number) dans un SAN ?",
+      options: ["Un numéro de port unique d'un switch Fibre Channel", "Un volume logique avec un identifiant unique résidant dans un ou plusieurs périphériques SAN, accessible par le serveur comme un disque local", "Un protocole de communication entre baies de stockage SAN", "Un type de cache pour les requêtes d'accès au stockage SAN"],
+      correct: [1],
+      explanation: "Un LUN (Logical Unit Number) est un volume logique avec un identifiant unique, qui peut résider dans un ou plusieurs périphériques de stockage SAN. Les blocs logiques LUN sont directement accessibles par le système d'exploitation du serveur comme s'ils étaient des disques locaux — c'est la clé de l'accès en mode bloc du SAN."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que le protocole FCoE (Fibre Channel over Ethernet) ?",
+      options: ["Un remplacement du protocole Ethernet par Fibre Channel dans les datacenters", "Une technologie permettant de transporter le trafic Fibre Channel sur des réseaux Ethernet, véhiculant à la fois le trafic applicatif et le trafic SAN", "Un protocole de stockage objet pour les clouds publics", "Un type de VLAN dédié au stockage SAN"],
+      correct: [1],
+      explanation: "FCoE (Fibre Channel over Ethernet) est une technologie permettant de transporter le trafic Fibre Channel sur des réseaux Ethernet, tout en conservant les mécanismes FC. L'infrastructure Ethernet véhicule à la fois le trafic applicatif et le trafic SAN, offrant des débits élevés (dizaines de Gbit/s)."
+    },
+    {
+      type: "single",
+      text: "Qu'est-ce que Mininet dans le contexte des réseaux SDN ?",
+      options: ["Un hyperviseur de type 1 léger pour les réseaux virtuels", "Un logiciel open source permettant de créer des réseaux virtuels complets (hôtes, commutateurs, contrôleurs SDN) sur un seul ordinateur en utilisant les namespaces réseau de Linux", "Un protocole de monitoring pour les contrôleurs SDN", "Un format de configuration pour les tables de flux OpenFlow"],
+      correct: [1],
+      explanation: "Mininet est un logiciel open source qui crée des réseaux virtuels complets sur un seul ordinateur en émulant des hôtes, des commutateurs OpenFlow, des contrôleurs SDN et des liens réseau. Il utilise les namespaces réseau de Linux pour l'isolation. Compatible avec OpenDaylight, Ryu, ONOS et POX."
+    },
+    {
+      type: "single",
+      text: "Que sont les serveurs COTS (Commercial Off-The-Shelf) dans le contexte de la NFV ?",
+      options: ["Des serveurs propriétaires avec des extensions matérielles dédiées aux fonctions réseau", "Des serveurs standard prêts à l'emploi, moins chers que les équipements réseau propriétaires, pouvant réunir plusieurs fonctions réseau virtualisées sur une seule machine", "Des commutateurs OpenFlow haute performance pour les environnements NFV", "Des serveurs NAS dédiés aux infrastructures NFV"],
+      correct: [1],
+      explanation: "Les serveurs COTS sont des serveurs standard prêts à l'emploi, beaucoup moins chers que les équipements réseaux propriétaires. Ils peuvent exécuter diverses tâches et réunir plusieurs fonctions réseau virtualisées (VNFs) sur un seul serveur physique, réduisant les coûts et les interventions sur le terrain."
+    },
+    {
+      type: "single",
+      text: "Quelle est la configuration typique d'un SAN pour assurer la haute disponibilité ?",
+      options: ["Un seul FABRIC redondant avec deux baies de stockage", "Un double FABRIC (deux réseaux de switches Fibre Channel interconnectés) pour assurer la tolérance aux pannes et la maintenance matérielle transparente", "Une connexion directe entre les serveurs et les baies de stockage sans switch", "Un protocole iSCSI sur un réseau Wi-Fi haute performance"],
+      correct: [1],
+      explanation: "Les réseaux SAN sont configurés en double FABRIC (deux réseaux redondants de switches Fibre Channel) pour assurer une haute disponibilité par duplication du chemin d'accès. Cela garantit la tolérance aux pannes et permet une maintenance matérielle transparente pour les applications."
     }
   ],
   flashcards: [
@@ -167,6 +244,14 @@ const SEANCE_3 = {
     { term: "Thin Provisioning vs Thick Provisioning", def: "Thin : l'espace disque est alloué dynamiquement selon la consommation réelle → optimise l'utilisation du stockage. Thick : tout l'espace est réservé immédiatement à la création → plus simple mais gaspille de l'espace. Choix selon politique de performance/densité." },
     { term: "SDN vs NFV", def: "SDN (Software-Defined Networking) : sépare plan de contrôle et plan de données → réseau programmable. NFV (Network Function Virtualization) : virtualise les équipements réseau physiques (firewall, routeur) en logiciels. Complémentaires : SDN gère le flux, NFV virtualise les fonctions." },
     { term: "VLAN par niveaux (1, 2, 3)", def: "Niveau 1 (port-based) : basé sur le port du switch, rigide. Niveau 2 (MAC address-based) : basé sur l'adresse MAC, souple mais requiert configuration. Niveau 3 (IP/protocole) : basé sur l'adresse IP ou le protocole applicatif, le plus flexible." },
-    { term: "iSCSI", def: "Protocole SAN qui encapsule les commandes SCSI (accès disque en mode bloc) dans des paquets TCP/IP. Permet de créer un SAN à moindre coût sur un réseau Ethernet standard. Alternative moins coûteuse au Fibre Channel." }
+    { term: "iSCSI", def: "Protocole SAN qui encapsule les commandes SCSI (accès disque en mode bloc) dans des paquets TCP/IP. Permet de créer un SAN à moindre coût sur un réseau Ethernet standard. Alternative moins coûteuse au Fibre Channel." },
+    { term: "OpenFlow", def: "Protocole clé du SDN standardisé par l'Open Network Foundation (ONF). Permet au contrôleur SDN de gérer directement les équipements réseau via des tables de flux. Fonctionnement : paquet entrant → recherche dans flow table → correspondance → action (transférer/bloquer) ; pas de correspondance → interroge le contrôleur." },
+    { term: "Table de flux (Flow Table) OpenFlow", def: "Structure de données dans un switch OpenFlow contenant des règles de traitement des paquets. Chaque règle comprend : critères de correspondance (adresse src/dst, protocole, port), action à exécuter (transférer, bloquer, rediriger), et statistiques (paquets/octets traités)." },
+    { term: "ETSI NFV MANO", def: "Management and Orchestration (MANO) de l'architecture ETSI NFV. Comprend : NFVO (NFV Orchestrator — allocation des ressources aux VNFs), VNFM (VNF Manager — cycle de vie des VNFs : création, mise à l'échelle, fin), VIM (Virtualized Infrastructure Manager — contrôle des ressources physiques NFVI)." },
+    { term: "VNF (Virtual Network Function)", def: "Fonction réseau (pare-feu, NAT, load balancer, DPI, DNS, routeur, VPN) virtualisée et exécutée sur du matériel standard (serveur COTS) au lieu d'équipements dédiés. Les VNFs remplacent les nœuds réseau physiques propriétaires. Gérées par le VNFM dans l'architecture ETSI NFV." },
+    { term: "NFVI (NFV Infrastructure)", def: "Couche d'infrastructure de l'architecture ETSI NFV. Fournit les ressources virtuelles (calcul, réseau, stockage) pour exécuter les VNFs. Composée de : matériel physique (serveurs COTS, switches, stockage) + couche de virtualisation (hyperviseur). Le VIM gère les ressources NFVI." },
+    { term: "LUN (Logical Unit Number)", def: "Volume logique avec identifiant unique dans un SAN. Peut résider sur un ou plusieurs périphériques de stockage physiques. Accessible par le serveur comme un disque local (accès en mode bloc). Le système de fichiers du serveur est installé directement sur le LUN, contrairement au NAS (accès fichier)." },
+    { term: "FCoE (Fibre Channel over Ethernet)", def: "Protocole SAN permettant de transporter le trafic Fibre Channel sur des réseaux Ethernet. Unifie le trafic applicatif et le trafic SAN sur la même infrastructure Ethernet. Débits élevés (dizaines de Gbit/s). Intermédiaire entre FC (dédié, coûteux) et iSCSI (IP, économique)." },
+    { term: "Mininet (SDN)", def: "Logiciel open source d'émulation de réseaux SDN sur un seul ordinateur. Crée des hôtes, commutateurs OpenFlow, contrôleurs et liens réseau virtuels en utilisant les namespaces réseau Linux. Compatible avec OpenDaylight, Ryu, ONOS, POX. Idéal pour tester et prototyper des architectures SDN." }
   ]
 };
