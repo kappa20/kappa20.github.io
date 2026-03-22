@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM - Cloud Computing & DevOps</title>
+<style>
+  :root {
+    --primary: #1a2a6c;
+    --accent: #c0392b;
+    --light: #f5f7fa;
+    --border: #dee2e6;
+    --success: #27ae60;
+    --fail: #e74c3c;
+    --warn: #f39c12;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--light); color: #333; }
+
+  header {
+    background: linear-gradient(135deg, var(--primary), #2c3e80);
+    color: white; padding: 20px 30px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  header h1 { font-size: 1.4rem; }
+  header p { font-size: .85rem; opacity: .8; }
+
+  nav {
+    background: white; border-bottom: 2px solid var(--primary);
+    display: flex; gap: 4px; padding: 0 20px;
+  }
+  nav button {
+    padding: 12px 20px; border: none; background: none;
+    cursor: pointer; font-weight: 600; color: #666;
+    border-bottom: 3px solid transparent; transition: all .2s;
+  }
+  nav button.active { color: var(--primary); border-bottom-color: var(--accent); }
+  nav button:hover { color: var(--primary); }
+
+  .page { display: none; padding: 24px; max-width: 900px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* === SETUP PAGE === */
+  .setup-card {
+    background: white; border-radius: 12px; padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08); margin-bottom: 20px;
+  }
+  .setup-card h2 { color: var(--primary); margin-bottom: 18px; font-size: 1.1rem; }
+  .sessions-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;
+  }
+  .session-item {
+    border: 2px solid var(--border); border-radius: 8px; padding: 12px 14px;
+    cursor: pointer; transition: all .2s; user-select: none;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .session-item:hover { border-color: var(--primary); background: #f0f3ff; }
+  .session-item.selected { border-color: var(--primary); background: #e8ecff; }
+  .session-item input[type=checkbox] { margin-top: 2px; accent-color: var(--primary); }
+  .session-num { font-weight: 700; color: var(--accent); font-size: .95rem; }
+  .session-title { font-size: .82rem; color: #555; margin-top: 2px; }
+
+  .controls-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 16px; }
+  .btn {
+    padding: 10px 22px; border: none; border-radius: 8px;
+    cursor: pointer; font-weight: 600; font-size: .9rem; transition: all .2s;
+  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: #253580; }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { background: #a93226; }
+  .btn-outline { background: white; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-outline:hover { background: #f0f3ff; }
+  .btn-sm { padding: 6px 14px; font-size: .82rem; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  label.option-label {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 14px; border-radius: 6px; cursor: pointer;
+    border: 2px solid var(--border); margin-bottom: 8px; transition: all .2s;
+  }
+  label.option-label:hover { border-color: var(--primary); background: #f0f3ff; }
+  label.option-label input { margin-top: 3px; accent-color: var(--primary); flex-shrink: 0; }
+
+  select {
+    padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px;
+    font-size: .9rem; color: #333; background: white;
+  }
+
+  /* === QUIZ PAGE === */
+  #quiz-header {
+    background: white; border-radius: 12px; padding: 16px 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06); margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .progress-bar-wrap { flex: 1; min-width: 160px; }
+  .progress-label { font-size: .8rem; color: #666; margin-bottom: 4px; }
+  .progress-bar {
+    height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden;
+  }
+  .progress-fill { height: 100%; background: var(--primary); transition: width .4s; }
+
+  #question-card {
+    background: white; border-radius: 12px; padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08); animation: fadeIn .3s;
+  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+  .q-meta { display: flex; gap: 10px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+  .badge {
+    padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600;
+  }
+  .badge-seance { background: #e8ecff; color: var(--primary); }
+  .badge-type { background: #fff3cd; color: #856404; }
+  .badge-multi { background: #d4edda; color: #155724; }
+
+  .q-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 18px; line-height: 1.5; }
+  .q-hint { font-size: .8rem; color: #888; margin-bottom: 14px; font-style: italic; }
+
+  .option-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 16px; border-radius: 8px; cursor: pointer;
+    border: 2px solid var(--border); margin-bottom: 8px; transition: all .2s;
+  }
+  .option-item:hover { border-color: var(--primary); background: #f0f3ff; }
+  .option-item.selected { border-color: var(--primary); background: #e8ecff; }
+  .option-item.correct { border-color: var(--success)!important; background: #d4edda!important; }
+  .option-item.incorrect { border-color: var(--fail)!important; background: #fde8e8!important; }
+  .option-item.missed { border-color: var(--warn)!important; background: #fef3cd!important; }
+  .option-item input { margin-top: 3px; flex-shrink: 0; }
+  .option-letter {
+    width: 24px; height: 24px; border-radius: 50%; background: #e0e0e0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .8rem; flex-shrink: 0;
+  }
+  .option-text { line-height: 1.4; }
+
+  #explanation {
+    margin-top: 16px; padding: 14px 16px; border-radius: 8px;
+    background: #f0f7ff; border-left: 4px solid var(--primary);
+    font-size: .9rem; display: none;
+  }
+  #explanation.show { display: block; }
+
+  .quiz-nav { margin-top: 20px; display: flex; gap: 12px; justify-content: space-between; }
+
+  /* === RESULTS PAGE === */
+  .result-summary {
+    background: white; border-radius: 12px; padding: 30px;
+    text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,.08); margin-bottom: 24px;
+  }
+  .score-circle {
+    width: 120px; height: 120px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 16px auto; font-weight: 700;
+    border: 6px solid var(--primary);
+  }
+  .score-num { font-size: 2rem; color: var(--primary); }
+  .score-total { font-size: .85rem; color: #888; }
+
+  .result-details { margin-top: 20px; }
+  .result-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px; border-radius: 8px; margin-bottom: 8px;
+    border: 1px solid var(--border);
+  }
+  .result-row.rr-correct { border-left: 4px solid var(--success); }
+  .result-row.rr-wrong { border-left: 4px solid var(--fail); }
+  .result-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+  .result-q { font-weight: 600; font-size: .9rem; }
+  .result-ans { font-size: .82rem; color: #666; margin-top: 4px; }
+
+  /* === HISTORY PAGE === */
+  .history-item {
+    background: white; border-radius: 10px; padding: 18px 22px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.07); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .hist-score { font-size: 1.5rem; font-weight: 700; color: var(--primary); min-width: 60px; }
+  .hist-info { flex: 1; }
+  .hist-date { font-size: .8rem; color: #888; }
+  .hist-sessions { font-size: .85rem; margin-top: 4px; }
+  .hist-bar-wrap { width: 120px; }
+  .hist-bar { height: 8px; border-radius: 4px; background: #e0e0e0; overflow: hidden; margin-top: 4px; }
+  .hist-fill { height: 100%; background: var(--success); }
+  .hist-fill.medium { background: var(--warn); }
+  .hist-fill.low { background: var(--fail); }
+  .empty-state { text-align: center; padding: 60px; color: #aaa; }
+  .empty-state svg { margin-bottom: 12px; }
+
+  /* RESPONSIVE */
+  @media(max-width:600px) {
+    header h1 { font-size: 1.1rem; }
+    .sessions-grid { grid-template-columns: 1fr 1fr; }
+    #quiz-header { flex-direction: column; }
+    .quiz-nav { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>QCM — Le Cloud Computing &amp; DevOps</h1>
+    <p>Pr. F. Benabbou · Master DSBD &amp; IA · FSBM Casablanca</p>
+  </div>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage('setup')">Configurer</button>
+  <button onclick="showPage('quiz')" id="nav-quiz" disabled>Quiz</button>
+  <button onclick="showPage('history')">Historique</button>
+</nav>
+
+<!-- ====== SETUP PAGE ====== -->
+<div id="page-setup" class="page active">
+  <div class="setup-card">
+    <h2>Sélectionnez les séances</h2>
+    <div class="controls-row" style="margin-bottom:14px">
+      <button class="btn btn-outline btn-sm" onclick="selectAll(true)">Tout sélectionner</button>
+      <button class="btn btn-outline btn-sm" onclick="selectAll(false)">Tout désélectionner</button>
+    </div>
+    <div class="sessions-grid" id="sessions-grid"></div>
+  </div>
+
+  <div class="setup-card">
+    <h2>Options du quiz</h2>
+    <div class="controls-row">
+      <div>
+        <label style="font-size:.88rem;font-weight:600;color:#555;display:block;margin-bottom:6px">Nombre de questions</label>
+        <select id="nb-questions">
+          <option value="5">5 questions</option>
+          <option value="10" selected>10 questions</option>
+          <option value="15">15 questions</option>
+          <option value="20">20 questions</option>
+          <option value="999">Toutes les questions</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:.88rem;font-weight:600;color:#555;display:block;margin-bottom:6px">Ordre des questions</label>
+        <select id="order-questions">
+          <option value="random">Aléatoire</option>
+          <option value="sequential">Séquentiel</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" style="width:100%;padding:14px;font-size:1rem" onclick="startQuiz()">
+    Démarrer le quiz
+  </button>
+</div>
+
+<!-- ====== QUIZ PAGE ====== -->
+<div id="page-quiz" class="page">
+  <div id="quiz-header">
+    <div>
+      <div style="font-weight:700;color:var(--primary)" id="q-counter">Question 1 / 10</div>
+      <div style="font-size:.8rem;color:#888;margin-top:2px" id="q-seance-info"></div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-label" id="progress-label">0%</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div style="font-weight:700;color:var(--success)" id="score-display">Score: 0</div>
+  </div>
+
+  <div id="question-card">
+    <div class="q-meta" id="q-meta"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-hint" id="q-hint"></div>
+    <div id="options-container"></div>
+    <div id="explanation"></div>
+  </div>
+
+  <div class="quiz-nav">
+    <button class="btn btn-outline" onclick="quitQuiz()">Abandonner</button>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-accent" id="btn-validate" onclick="validateAnswer()">Valider</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()" style="display:none">Suivant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== RESULTS PAGE ====== -->
+<div id="page-results" class="page">
+  <div class="result-summary">
+    <h2 style="color:var(--primary)">Résultats du quiz</h2>
+    <div class="score-circle" id="res-circle">
+      <span class="score-num" id="res-score">0</span>
+      <span class="score-total" id="res-total">/ 0</span>
+    </div>
+    <div id="res-message" style="font-size:1.1rem;margin-bottom:8px"></div>
+    <div id="res-pct" style="font-size:.9rem;color:#888"></div>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="startQuiz()">Recommencer</button>
+      <button class="btn btn-outline" onclick="showPage('setup')">Reconfigurer</button>
+    </div>
+  </div>
+  <h3 style="margin-bottom:14px;color:var(--primary)">Détail des réponses</h3>
+  <div id="result-details" class="result-details"></div>
+</div>
+
+<!-- ====== HISTORY PAGE ====== -->
+<div id="page-history" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+    <h2 style="color:var(--primary)">Historique des quiz</h2>
+    <button class="btn btn-accent btn-sm" onclick="clearHistory()">Effacer l'historique</button>
+  </div>
+  <div id="history-list"></div>
+</div>
+
+<script>
+// =====================================================================
+//  DATA: All questions
+// =====================================================================
+const SESSIONS = [
+  { id:1,  title:"Introduction Cloud Computing" },
+  { id:2,  title:"La Virtualisation" },
+  { id:3,  title:"Virtualisation de Stockage" },
+  { id:4,  title:"Virtualisation des Applications" },
+  { id:5,  title:"Conteneurs & App Virtuelles" },
+  { id:6,  title:"Concepts de base du CC" },
+  { id:7,  title:"Technologies Émergentes" },
+  { id:8,  title:"Philosophie DevOps & Agile" },
+  { id:9,  title:"Développement Continu & Git" },
+  { id:10, title:"Intégration Continue CI" },
+  { id:11, title:"Déploiement Continu CD" },
+  { id:12, title:"Infrastructure as Code (IaC)" }
+];
+
+const QUESTIONS = [
+  // ===== SÉANCE 1 =====
+  {
+    seance:1,
+    type:"single",
+    text:"Quelle entreprise est considérée comme le véritable pionnier du Cloud Computing en 1999 ?",
+    options:["Amazon Web Services","Microsoft Azure","Salesforce.com","Google Cloud"],
+    correct:[2],
+    explanation:"Salesforce.com est considéré comme un pionnier du Cloud Computing en lançant en 1999 le concept de livraison d'applications d'entreprise (CRM) via un site web."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"En quelle année Amazon a-t-il proposé Elastic Compute Cloud (EC2) ?",
+    options:["1999","2002","2004","2006"],
+    correct:[3],
+    explanation:"En 2006, Amazon a proposé EC2 (Elastic Compute Cloud), permettant aux petites entreprises et aux particuliers de louer des ordinateurs pour exécuter leurs applications."
+  },
+  {
+    seance:1,
+    type:"multi",
+    text:"Lesquels de ces services sont des exemples de solutions Cloud utilisées au quotidien ? (plusieurs réponses)",
+    options:["Dropbox","Microsoft Word (version bureau)","Gmail","YouTube"],
+    correct:[0,2,3],
+    explanation:"Dropbox, Gmail et YouTube sont des services Cloud accessibles via Internet. Microsoft Word en version bureau est installé localement, ce n'est pas un service Cloud."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Que propose Amazon Web Services depuis 2002 ?",
+    options:["Des logiciels de bureautique","Des services de location de serveurs à la demande","Des smartphones connectés","Des réseaux sociaux"],
+    correct:[1],
+    explanation:"Depuis 2002, AWS fournit des services de location de serveurs à la demande via Internet."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Le Cloud Computing permet à des entreprises de :",
+    options:["Acheter obligatoirement leur propre matériel","Externaliser leur infrastructure informatique via Internet","Supprimer complètement la notion de serveur","Fonctionner sans connexion Internet"],
+    correct:[1],
+    explanation:"Le Cloud Computing permet d'externaliser l'infrastructure informatique et d'accéder à des ressources via Internet, sans avoir à acheter son propre matériel."
+  },
+  {
+    seance:1,
+    type:"multi",
+    text:"Parmi les propositions suivantes, lesquelles sont des fournisseurs majeurs du Cloud Public ? (plusieurs réponses)",
+    options:["Amazon Web Services (AWS)","Microsoft Azure","Google Cloud","Mozilla Firefox"],
+    correct:[0,1,2],
+    explanation:"AWS, Microsoft Azure et Google Cloud sont les trois grands fournisseurs de Cloud Public. Mozilla Firefox est un navigateur web, pas un fournisseur Cloud."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"En 2007, quelle entreprise a lancé la plate-forme Force.com destinée aux développeurs ?",
+    options:["Google","Amazon","Microsoft","Salesforce.com"],
+    correct:[3],
+    explanation:"En 2007, Salesforce.com a lancé Force.com, une plate-forme Cloud de développement (PaaS) destinée aux développeurs."
+  },
+  {
+    seance:1,
+    type:"multi",
+    text:"En 2009, lesquelles de ces offres sont apparues comme des applications d'entreprise Cloud basées sur le web ? (plusieurs réponses)",
+    options:["Google Apps (Logiciel comme service)","Microsoft Azure (Plateforme comme service)","Ubuntu Enterprise Cloud (Infrastructure comme service)","Apache HTTP Server"],
+    correct:[0,1,2],
+    explanation:"En 2009, Google Apps, Microsoft Azure, IBM Smart Business Service, Sun Cloud et Ubuntu Enterprise Cloud de Canonical ont tous émergé comme solutions Cloud d'entreprise. Apache HTTP Server est un serveur web local, pas un service Cloud."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Quelle suite bureautique Microsoft a été lancée en 2010 comme service Cloud ?",
+    options:["Microsoft Windows","Office 365","Microsoft Teams","Microsoft Access"],
+    correct:[1],
+    explanation:"En 2010, Microsoft a lancé Office 365, sa suite bureautique en tant que service Cloud, permettant l'accès aux applications Office via Internet."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Quelle entreprise a lancé IBM Smart Cloud en 2011 ?",
+    options:["Google","Oracle","IBM","Salesforce"],
+    correct:[2],
+    explanation:"En 2011, IBM a lancé IBM Smart Cloud, un ensemble de technologies et de services visant à aider les entreprises à adopter et à intégrer des environnements cloud."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Selon la définition du NIST, le Cloud Computing permet l'accès à un ensemble partagé de ressources informatiques via quel moyen ?",
+    options:["Un réseau local privé uniquement","Un réseau de télécommunications (Internet)","Une connexion directe entre machines","Un support physique (clé USB, CD)"],
+    correct:[1],
+    explanation:"Selon le NIST, le Cloud Computing est un modèle permettant l'accès aisé, à la demande et au travers d'un réseau de télécommunications, à un ensemble partagé de ressources informatiques pouvant être rapidement mises en service."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Qui a prononcé en 1960 la phrase « Computation may someday be organized as public utility » (prédisant le Cloud) ?",
+    options:["Bill Gates","John McCarthy","Linus Torvalds","Tim Berners-Lee"],
+    correct:[1],
+    explanation:"En 1960, John McCarthy (informaticien et pionnier de l'IA) a annoncé que le calcul informatique pourrait un jour être organisé comme un service public, préfigurant ainsi le concept de Cloud Computing."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Le Grid Computing (Calcul Grille) est apparu dans le domaine académique et de la recherche à quel moment ?",
+    options:["Dans les années 1960","Dans les années 1970","Au milieu des années 1990","Dans les années 2010"],
+    correct:[2],
+    explanation:"Le Grid Computing a été formellement introduit et défini dans le domaine académique et de la recherche au milieu des années 1990, pour permettre l'accès à une puissance de calcul distribuée."
+  },
+  {
+    seance:1,
+    type:"multi",
+    text:"Parmi ces affirmations, lesquelles sont correctes concernant l'originalité du Cloud Computing ? (plusieurs réponses)",
+    options:["Le concept de ressources distantes existait déjà dans les années 1960","Le Cloud représente un nouveau modèle de consommation des services","Les technologies de virtualisation modernes ont permis l'essor du Cloud","Le Cloud Computing est entièrement nouveau et n'a aucune origine antérieure"],
+    correct:[0,1,2],
+    explanation:"Le Cloud s'appuie sur des concepts anciens (calcul distribué, ressources distantes depuis les années 1960) mais représente bien une innovation : nouveau modèle de consommation, basé sur la virtualisation moderne et l'élasticité pour offrir des services dématérialisés à la demande."
+  },
+  {
+    seance:1,
+    type:"multi",
+    text:"Quels sont les quatre domaines technologiques dont la convergence a produit le Cloud Computing ? (plusieurs réponses)",
+    options:["L'informatique utilitaire","Le Grid Computing","La virtualisation","L'architecture Orientée Service (SOA)"],
+    correct:[0,1,2,3],
+    explanation:"Le Cloud Computing est le produit de la convergence de quatre domaines : l'informatique utilitaire, le Grid Computing, la virtualisation et l'architecture Orientée Service (SOA)."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Dans l'informatique utilitaire, quel modèle de facturation caractérise les services Cloud ?",
+    options:["Abonnement annuel fixe","Paiement à la consommation (pay-per-use)","Achat définitif de licence","Gratuité totale"],
+    correct:[1],
+    explanation:"L'informatique utilitaire introduit le concept de services vendus avec un modèle de paiement à la consommation (pay-per-use), où l'on paie uniquement ce que l'on utilise, comme pour l'électricité."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Qu'est-ce que l'Architecture Orientée Service (SOA) ?",
+    options:["Un système d'exploitation pour serveurs Cloud","Une méthode de développement logiciel qui conçoit une application comme un ensemble de services réutilisables et faiblement couplés","Un protocole réseau pour la communication Cloud","Un type d'hyperviseur pour la virtualisation"],
+    correct:[1],
+    explanation:"L'Architecture Orientée Services (SOA) est une méthode de développement logiciel qui conçoit une application comme un ensemble de services réutilisables, faiblement couplés et interconnectés, permettant d'augmenter la flexibilité et de réduire les coûts d'intégration."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Quelle est la principale différence entre le Grid Computing et le Cloud Computing ?",
+    options:["Le Grid est axé sur le calcul haute performance (HPC) et la recherche, le Cloud sur des services à la demande accessibles à tous","Le Grid est plus récent que le Cloud","Le Cloud ne peut pas faire de calcul distribué","Le Grid utilise Internet alors que le Cloud utilise un réseau local"],
+    correct:[0],
+    explanation:"Le Grid Computing était principalement axé sur le calcul haute performance (HPC) pour la recherche, avec des protocoles spécifiques et une intégration lourde. Le Cloud Computing se base sur l'abstraction des ressources, l'élasticité et l'accessibilité à la demande pour tous."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Quel est le rôle de la virtualisation dans le Cloud Computing ?",
+    options:["Elle remplace complètement le matériel physique","Elle crée des versions virtuelles (logicielles) de ressources physiques et fournit l'abstraction des ressources","Elle supprime le besoin de système d'exploitation","Elle assure uniquement la sécurité des données"],
+    correct:[1],
+    explanation:"La virtualisation consiste à créer une version virtuelle (logicielle) d'une ressource physique (serveur, stockage, réseau). Elle fournit l'abstraction des ressources et permet à plusieurs programmes de cohabiter sur le même matériel sans se gêner mutuellement."
+  },
+  {
+    seance:1,
+    type:"multi",
+    text:"Quelles sont les caractéristiques essentielles du Cloud Computing selon le cours ? (plusieurs réponses)",
+    options:["Libre-service à la demande","Accès par réseau","Mutualisation des ressources","Élasticité","Service mesurable avec paiement à l'usage"],
+    correct:[0,1,2,3,4],
+    explanation:"Les 5 caractéristiques essentielles du Cloud Computing sont : le libre-service à la demande, l'accès par réseau, la mutualisation des ressources (resource pooling), l'élasticité rapide et le service mesurable (pay-per-use)."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Que signifie le concept de 'Libre-service à la demande' dans le Cloud Computing ?",
+    options:["Le client doit contacter le fournisseur pour toute nouvelle ressource","La ressource informatique est fournie automatiquement sans intervention humaine côté fournisseur","Les services Cloud sont toujours gratuits","Le client doit acheter du matériel avant d'accéder au service"],
+    correct:[1],
+    explanation:"Le libre-service à la demande signifie que la capacité de stockage et la puissance de calcul sont fournies automatiquement selon les besoins du consommateur, sans nécessité d'une intervention humaine côté fournisseur. La demande est automatique et la réponse est immédiate."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Qu'est-ce que le concept 'multi-tenant' (multi-locataire) dans le Cloud ?",
+    options:["Un immeuble hébergeant des serveurs physiques","Une architecture où une seule instance d'un logiciel ou d'une infrastructure est partagée entre plusieurs utilisateurs (locataires)","Un type de réseau réservé aux grandes entreprises","Un protocole de sécurité Cloud"],
+    correct:[1],
+    explanation:"Le terme multi-tenant (ou multi-locataire) fait référence à une architecture dans laquelle une seule instance d'un logiciel ou d'une infrastructure est partagée entre plusieurs utilisateurs ou clients (locataires). Chaque locataire utilise la même ressource, mais ses données et configurations sont isolées et sécurisées."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Comment les services Cloud sont-ils accessibles selon la caractéristique 'Accès réseau' ?",
+    options:["Uniquement depuis un ordinateur de bureau","Via Internet avec des techniques standardisées permettant l'accès depuis ordinateur, téléphone ou tablette","Exclusivement via un réseau privé d'entreprise","Seulement depuis les locaux du fournisseur Cloud"],
+    correct:[1],
+    explanation:"Les services de Cloud Computing sont mis à disposition sur l'Internet et utilisent des techniques standardisées qui permettent de s'en servir aussi bien avec un ordinateur qu'un téléphone ou une tablette."
+  },
+  {
+    seance:1,
+    type:"single",
+    text:"Qu'est-ce que l'élasticité dans le contexte du Cloud Computing ?",
+    options:["La capacité à stocker des fichiers de grande taille","La capacité d'un système à s'adapter automatiquement aux changements de charge en augmentant ou diminuant dynamiquement les ressources allouées","La flexibilité des contrats commerciaux avec le fournisseur","La possibilité de changer de fournisseur Cloud facilement"],
+    correct:[1],
+    explanation:"L'Elastic Computing (Calcul Élastique) est la capacité d'un système Cloud à s'adapter automatiquement et rapidement aux changements de charge de travail en augmentant ou en diminuant dynamiquement les ressources (CPU, mémoire, stockage, réseau). La capacité est virtuellement infinie et l'ajustement est automatique."
+  },
+
+  // ===== SÉANCE 2 =====
+  {
+    seance:2,
+    type:"single",
+    text:"Qu'est-ce que la virtualisation ?",
+    options:[
+      "Un processus de sauvegarde automatique des données",
+      "Un processus qui masque les caractéristiques physiques d'une ressource pour simplifier les interactions",
+      "Un protocole réseau de communication sécurisée",
+      "Une méthode de compression de fichiers"
+    ],
+    correct:[1],
+    explanation:"La virtualisation est un processus permettant de masquer les caractéristiques physiques d'une ressource informatique pour simplifier les interactions entre cette ressource et d'autres systèmes."
+  },
+  {
+    seance:2,
+    type:"single",
+    text:"Qu'est-ce qu'une Machine Virtuelle (VM) ?",
+    options:[
+      "Un ordinateur physique dédié à une seule application",
+      "Un environnement virtuel fonctionnant comme un ordinateur à partir de ressources virtuelles",
+      "Un protocole de communication entre serveurs",
+      "Un système de stockage distribué"
+    ],
+    correct:[1],
+    explanation:"Une Machine Virtuelle (VM) est un environnement virtuel fonctionnant comme un ordinateur à partir de ressources virtuelles, avec son propre système d'exploitation (invité), indépendant de la machine physique hôte."
+  },
+  {
+    seance:2,
+    type:"multi",
+    text:"Quels sont les domaines de virtualisation ? (plusieurs réponses)",
+    options:["Serveurs","Réseaux","Stockage","Processeurs graphiques (GPU uniquement)","Postes de travail"],
+    correct:[0,1,2,4],
+    explanation:"Les domaines de virtualisation incluent : Serveurs, Réseaux, Stockage, Postes de travail, Applications, etc. La virtualisation GPU seule n'est pas un domaine distinct listé dans le cours."
+  },
+  {
+    seance:2,
+    type:"single",
+    text:"La virtualisation de serveurs permet de :",
+    options:[
+      "Regrouper plusieurs serveurs physiques sous-employés sur un seul hôte virtuel",
+      "Augmenter le nombre de serveurs physiques nécessaires",
+      "Supprimer totalement la couche système d'exploitation",
+      "Empêcher la migration des machines virtuelles"
+    ],
+    correct:[0],
+    explanation:"La virtualisation de serveurs permet de regrouper plusieurs serveurs physiques sous-employés sur un seul hôte qui exécute des systèmes virtuels, optimisant ainsi l'utilisation des ressources."
+  },
+  {
+    seance:2,
+    type:"multi",
+    text:"Quels sont les avantages de la virtualisation de serveurs ? (plusieurs réponses)",
+    options:[
+      "Meilleure disponibilité grâce à la facilité de déploiement",
+      "Augmentation de la consommation électrique",
+      "Réduction de la surface au sol et de la consommation énergétique",
+      "Meilleure sécurité par cloisonnement des serveurs"
+    ],
+    correct:[0,2,3],
+    explanation:"La virtualisation de serveurs permet : une meilleure disponibilité, une réduction de la surface au sol et de la consommation électrique, et une meilleure sécurité par cloisonnement. Elle réduit la consommation (pas l'augmente)."
+  },
+  {
+    seance:2,
+    type:"single",
+    text:"Quel est le rôle de l'hyperviseur de type 1 ?",
+    options:[
+      "Il s'installe sur un système d'exploitation hôte existant",
+      "Il s'exécute directement sur le matériel physique sans OS hôte",
+      "Il gère uniquement les connexions réseau",
+      "Il remplace le stockage physique par du stockage en nuage"
+    ],
+    correct:[1],
+    explanation:"Un hyperviseur de type 1 (bare-metal) s'exécute directement sur le matériel physique, sans nécessiter de système d'exploitation hôte. Il gère directement les ressources matérielles."
+  },
+  {
+    seance:2,
+    type:"single",
+    text:"Qu'est-ce qu'un outil P2V ?",
+    options:[
+      "Un outil de communication Peer-to-Peer",
+      "Un outil de conversion physique vers virtuel permettant de transformer des serveurs physiques en VMs",
+      "Un protocole de virtualisation de réseau",
+      "Un système de protection contre les virus"
+    ],
+    correct:[1],
+    explanation:"P2V (Physical to Virtual) désigne les outils permettant de transformer des serveurs physiques en machines virtuelles, comme VMware vCenter Converter."
+  },
+
+  // ===== SÉANCE 3 =====
+  {
+    seance:3,
+    type:"single",
+    text:"Que fait la virtualisation de stockage ?",
+    options:[
+      "Elle remplace les disques physiques par des disques SSD uniquement",
+      "Elle regroupe et abstrait les ressources de stockage physique pour créer un espace de stockage virtuel unique",
+      "Elle supprime la nécessité d'interfaces de stockage",
+      "Elle chiffre automatiquement toutes les données stockées"
+    ],
+    correct:[1],
+    explanation:"La virtualisation de stockage consiste à regrouper et abstraire les ressources de stockage physique provenant de plusieurs dispositifs pour créer un espace de stockage virtuel unique."
+  },
+  {
+    seance:3,
+    type:"single",
+    text:"Qu'est-ce que le Logical Volume Manager (LVM) ?",
+    options:[
+      "Un protocole réseau pour les volumes distants",
+      "Une couche logicielle d'abstraction qui masque la complexité du matériel de stockage sous-jacent",
+      "Un outil de sauvegarde incrémentielle",
+      "Un système de fichiers distribués"
+    ],
+    correct:[1],
+    explanation:"Le LVM (Logical Volume Manager) est une couche logicielle d'abstraction et d'administration qui masque la complexité du matériel sous-jacent et permet de créer, redimensionner et allouer dynamiquement des volumes logiques."
+  },
+  {
+    seance:3,
+    type:"multi",
+    text:"Quelles sont les interfaces de stockage qui se distinguent par ? (plusieurs réponses)",
+    options:["Le débit","La latence","Le protocole utilisé (ATA, SATA, SCSI)","La couleur du connecteur","Le type de connexion"],
+    correct:[0,1,2,4],
+    explanation:"Les interfaces de stockage se distinguent par : le débit, la latence, le protocole utilisé (ATA/SATA/SCSI/SAS) et le type de connexion. La couleur du connecteur n'est pas un critère technique."
+  },
+  {
+    seance:3,
+    type:"single",
+    text:"La virtualisation de stockage sépare :",
+    options:[
+      "Le réseau local du réseau étendu",
+      "La représentation logique (volume logique) de l'espace physique (volumes physiques)",
+      "L'interface utilisateur de l'interface administrateur",
+      "Les données des métadonnées"
+    ],
+    correct:[1],
+    explanation:"La virtualisation de stockage sépare la représentation logique du stockage (volume logique) de l'espace de stockage physique (volumes physiques)."
+  },
+  {
+    seance:3,
+    type:"multi",
+    text:"Quels sont les avantages de la virtualisation de stockage ? (plusieurs réponses)",
+    options:[
+      "Ajouter un périphérique de stockage sans interruption des services",
+      "Réallouer dynamiquement l'espace de stockage",
+      "Regrouper des unités de disques de différentes tailles et constructeurs",
+      "Réduire systématiquement la latence d'accès aux données"
+    ],
+    correct:[0,1,2],
+    explanation:"Les avantages incluent : ajouter du stockage sans interruption, réallocation dynamique de l'espace, et regroupement de disques hétérogènes. La réduction systématique de la latence n'est pas garantie."
+  },
+  {
+    seance:3,
+    type:"single",
+    text:"Pourquoi dit-on qu'il n'existe pas d'interface de stockage universelle ?",
+    options:[
+      "Car les standards techniques changent tous les ans",
+      "Car les besoins et contraintes sont très différents selon les usages",
+      "Car les fabricants refusent de standardiser leurs interfaces",
+      "Car la virtualisation rend les interfaces inutiles"
+    ],
+    correct:[1],
+    explanation:"Il n'existe pas d'interface de stockage universelle car les besoins et contraintes varient fortement selon les usages (débit, latence, protocole, fiabilité)."
+  },
+
+  // ===== SÉANCE 4 =====
+  {
+    seance:4,
+    type:"single",
+    text:"Quel est l'objectif principal de la virtualisation d'applications ?",
+    options:[
+      "Augmenter la consommation mémoire des applications",
+      "Réduire la complexité liée à la gestion et au déploiement des applications",
+      "Remplacer le système d'exploitation par une application virtuelle",
+      "Supprimer la nécessité d'un réseau local"
+    ],
+    correct:[1],
+    explanation:"La virtualisation d'applications vise à réduire la complexité liée à la gestion et au déploiement des applications au sein d'un système d'information (SI)."
+  },
+  {
+    seance:4,
+    type:"multi",
+    text:"Quels sont les problèmes liés à une installation classique d'applications ? (plusieurs réponses)",
+    options:[
+      "Non-compatibilité entre différentes applications",
+      "Conflits de DLL (Dynamic Link Library)",
+      "Impossibilité de migrer une application d'un host à un autre",
+      "Vitesse d'exécution toujours trop rapide"
+    ],
+    correct:[0,1,2],
+    explanation:"Les problèmes d'une installation classique : non-compatibilité entre applications, conflits de DLL, impossibilité de migration entre hosts, lenteur du déploiement. La vitesse excessive n'est pas un problème classique."
+  },
+  {
+    seance:4,
+    type:"single",
+    text:"La virtualisation d'applications dans un espace utilisateur consiste à :",
+    options:[
+      "Exécuter l'application directement dans le noyau du système",
+      "Encapsuler l'application dans un package autonome contenant tout ce dont elle a besoin",
+      "Installer l'application sur chaque machine physique individuellement",
+      "Créer une copie physique de l'application sur chaque serveur"
+    ],
+    correct:[1],
+    explanation:"La virtualisation dans un espace utilisateur encapsule l'application dans un package autonome contenant toutes ses dépendances, permettant son exécution sans installation traditionnelle."
+  },
+  {
+    seance:4,
+    type:"multi",
+    text:"Parmi ces outils, lesquels permettent la virtualisation d'applications dans un espace utilisateur ? (plusieurs réponses)",
+    options:["VMware ThinApp","Microsoft App-V","Turbo Studio","Kubernetes","Cameyo"],
+    correct:[0,1,2,4],
+    explanation:"ThinApp, App-V, Turbo Studio et Cameyo sont des outils de virtualisation d'applications dans un espace utilisateur. Kubernetes est une plateforme d'orchestration de conteneurs."
+  },
+  {
+    seance:4,
+    type:"single",
+    text:"Combien de méthodes principales de virtualisation d'applications existe-t-il selon le cours ?",
+    options:["2","3","4","6"],
+    correct:[2],
+    explanation:"Il existe 4 méthodes de virtualisation d'applications : utilisation d'une VM, virtualisation dans un espace utilisateur, isolation de processus (conteneurs), et virtualisation basée sur le cloud."
+  },
+  {
+    seance:4,
+    type:"single",
+    text:"Dans la virtualisation d'applications via une VM, qui fournit l'environnement d'exécution isolé ?",
+    options:["Le système d'exploitation hôte","La VM elle-même","Le réseau local","L'hyperviseur de type 2 uniquement"],
+    correct:[1],
+    explanation:"C'est la VM qui fournit un environnement d'exécution isolé pour l'application, séparé du système d'exploitation hôte et des autres applications."
+  },
+
+  // ===== SÉANCE 5 =====
+  {
+    seance:5,
+    type:"single",
+    text:"Qu'est-ce qu'un conteneur dans le contexte de la virtualisation d'applications ?",
+    options:[
+      "Un serveur physique dédié à une seule application",
+      "Une méthode de virtualisation basée sur l'isolation de processus au niveau du système d'exploitation",
+      "Un disque dur externe portable",
+      "Un hyperviseur de type 1"
+    ],
+    correct:[1],
+    explanation:"Un conteneur est une méthode de virtualisation basée sur l'isolation de processus. Contrairement à une VM, il partage le noyau du système d'exploitation hôte mais isole les processus."
+  },
+  {
+    seance:5,
+    type:"multi",
+    text:"Quelles sont les limites de la virtualisation dans un espace utilisateur (ex: ThinApp) ? (plusieurs réponses)",
+    options:[
+      "Limitée à un système d'exploitation spécifique",
+      "Certaines applications ne peuvent pas être virtualisées (antivirus, pilotes)",
+      "Nécessite une machine physique pour le séquençage ou la capture",
+      "Incompatible avec tous les systèmes Windows"
+    ],
+    correct:[0,1,2],
+    explanation:"Les limites incluent : limitation à un OS spécifique, impossibilité de virtualiser certaines apps (antivirus, pilotes), nécessité d'une machine cible pour le séquençage. Ce n'est pas incompatible avec tous les Windows."
+  },
+  {
+    seance:5,
+    type:"single",
+    text:"Comment fonctionne le packaging d'une application virtuelle dans l'espace utilisateur ?",
+    options:[
+      "L'application est recompilée pour chaque plateforme",
+      "L'application est créée par capture d'instantanés du système physique et emballée avec ses dépendances",
+      "L'application est copiée telle quelle sans modification",
+      "L'application est fragmentée en micro-services"
+    ],
+    correct:[1],
+    explanation:"L'application virtuelle est créée par capture d'instantanés du système physique. Elle est ensuite emballée avec ses dépendances, éliminant ainsi les conflits entre applications."
+  },
+  {
+    seance:5,
+    type:"single",
+    text:"La virtualisation d'application basée sur le Cloud permet :",
+    options:[
+      "D'exécuter des applications sans connexion Internet",
+      "D'exécuter des applications hébergées dans le cloud accessibles via navigateur ou client léger",
+      "De remplacer le système d'exploitation local",
+      "D'éliminer tout besoin de mise à jour"
+    ],
+    correct:[1],
+    explanation:"La virtualisation d'applications basée sur le Cloud permet d'héberger et d'exécuter les applications dans le cloud, accessibles via un navigateur ou un client léger depuis n'importe où."
+  },
+  {
+    seance:5,
+    type:"multi",
+    text:"Quels outils sont mentionnés pour la virtualisation d'applications dans un espace utilisateur ? (plusieurs réponses)",
+    options:["Turbo Studio","VMware ThinApp","Docker","Microsoft App-V"],
+    correct:[0,1,3],
+    explanation:"Turbo Studio, VMware ThinApp et Microsoft App-V sont des outils de virtualisation d'applications dans un espace utilisateur. Docker est un outil de conteneurisation."
+  },
+
+  // ===== SÉANCE 6 =====
+  {
+    seance:6,
+    type:"single",
+    text:"Combien de types de déploiement Cloud Computing sont présentés dans le cours ?",
+    options:["3","4","5","6"],
+    correct:[2],
+    explanation:"Le cours présente 5 types de déploiement : Public Cloud, Private Cloud, Hybrid Cloud, Multi-Cloud, et Community Cloud."
+  },
+  {
+    seance:6,
+    type:"single",
+    text:"Le Cloud Public est caractérisé par :",
+    options:[
+      "Des ressources détenues et gérées par l'entreprise elle-même",
+      "Des ressources détenues par un fournisseur tiers et partagées entre plusieurs organisations via Internet",
+      "Un accès réservé à une seule organisation",
+      "Des ressources hébergées exclusivement sur site"
+    ],
+    correct:[1],
+    explanation:"Le Cloud Public est un modèle où les ressources informatiques sont détenues et gérées par un fournisseur tiers et partagées entre plusieurs organisations via Internet."
+  },
+  {
+    seance:6,
+    type:"multi",
+    text:"Quels sont les avantages du Cloud Public ? (plusieurs réponses)",
+    options:[
+      "Accès de n'importe où",
+      "Tarification à la demande (pay-as-you-go)",
+      "Contrôle total de l'infrastructure par le client",
+      "Haute disponibilité et redondance",
+      "Évolutivité à la demande"
+    ],
+    correct:[0,1,3,4],
+    explanation:"Le Cloud Public offre : accès universel, pay-as-you-go, haute disponibilité, et évolutivité. En revanche, le contrôle total de l'infrastructure reste chez le fournisseur, pas le client."
+  },
+  {
+    seance:6,
+    type:"multi",
+    text:"Quels sont les inconvénients du Cloud Public ? (plusieurs réponses)",
+    options:[
+      "Les clients ne savent pas précisément où sont hébergées leurs données",
+      "Coût initial très élevé",
+      "Les données peuvent migrer d'un datacenter à l'autre",
+      "Moins adapté pour les grandes entreprises avec des applications spécifiques"
+    ],
+    correct:[0,2,3],
+    explanation:"Les inconvénients incluent : manque de visibilité sur l'emplacement des données, migration possible entre datacenters, et moins adapté aux grandes entreprises ayant des besoins spécifiques. Le coût initial est faible (pas élevé)."
+  },
+  {
+    seance:6,
+    type:"multi",
+    text:"Parmi les exemples suivants, lesquels sont des services AWS ? (plusieurs réponses)",
+    options:["EC2 (Elastic Compute Cloud)","S3 (Simple Storage Service)","Azure Kubernetes Service","Lambda (fonction sans serveur)"],
+    correct:[0,1,3],
+    explanation:"EC2, S3 et Lambda sont des services AWS. Azure Kubernetes Service (AKS) est un service Microsoft Azure."
+  },
+  {
+    seance:6,
+    type:"single",
+    text:"Microsoft Azure est particulièrement populaire pour les entreprises qui :",
+    options:[
+      "Utilisent exclusivement des systèmes Linux",
+      "Sont déjà investies dans l'écosystème Microsoft",
+      "N'ont pas de connexion Internet stable",
+      "Cherchent à éviter le Cloud Public"
+    ],
+    correct:[1],
+    explanation:"Microsoft Azure est populaire pour les entreprises déjà investies dans l'écosystème Microsoft, avec une forte intégration dans les produits comme Windows Server."
+  },
+
+  // ===== SÉANCE 7 =====
+  {
+    seance:7,
+    type:"single",
+    text:"Quel est l'objectif principal du Green Cloud Computing ?",
+    options:[
+      "Peindre les centres de données en vert",
+      "Réduire la consommation d'énergie et l'empreinte carbone des centres de données",
+      "Utiliser uniquement des serveurs de couleur verte",
+      "Éliminer tous les serveurs physiques"
+    ],
+    correct:[1],
+    explanation:"Le Green Cloud vise à rendre le cloud computing plus respectueux de l'environnement en réduisant la consommation d'énergie et l'empreinte carbone des centres de données."
+  },
+  {
+    seance:7,
+    type:"multi",
+    text:"Lesquelles de ces technologies sont considérées comme émergentes dans le Cloud Computing ? (plusieurs réponses)",
+    options:["Edge Computing","Fog Computing","Mobile Cloud","IA & Cloud Computing","Mainframe Computing"],
+    correct:[0,1,2,3],
+    explanation:"Les technologies émergentes du CC incluent : Green Cloud, Edge Computing, Fog Computing, Mobile Cloud et IA & Cloud. Le Mainframe Computing est une technologie ancienne."
+  },
+  {
+    seance:7,
+    type:"multi",
+    text:"Quels sont les challenges du Cloud Computing présentés dans le cours ? (plusieurs réponses)",
+    options:[
+      "Sécurité des données",
+      "Vendor Lock-in",
+      "Performances (latence et bande passante)",
+      "Excès de ressources disponibles",
+      "Normes et Conformité"
+    ],
+    correct:[0,1,2,4],
+    explanation:"Les challenges incluent : sécurité des données, vendor lock-in, performances, normes & conformité, intégration et optimisation des ressources. L'excès de ressources n'est pas un challenge typique."
+  },
+  {
+    seance:7,
+    type:"single",
+    text:"Le Vendor Lock-in dans le Cloud Computing désigne :",
+    options:[
+      "Un contrat à durée déterminée avec un fournisseur Cloud",
+      "La dépendance vis-à-vis des outils et technologies d'un fournisseur, avec difficulté de migration",
+      "Un système de verrouillage physique des serveurs",
+      "Un problème de sécurité lié aux accès non autorisés"
+    ],
+    correct:[1],
+    explanation:"Le Vendor Lock-in désigne la dépendance vis-à-vis des outils et technologies d'un fournisseur spécifique, rendant difficile la migration vers un autre fournisseur."
+  },
+  {
+    seance:7,
+    type:"single",
+    text:"Selon le cours, quelle est la consommation énergétique actuelle des centres de données mondiales ?",
+    options:["1% de l'approvisionnement énergétique mondial","3% de l'approvisionnement énergétique mondial","10% de l'approvisionnement énergétique mondial","15% de l'approvisionnement énergétique mondial"],
+    correct:[1],
+    explanation:"Les centres de données sont actuellement responsables de 3% de l'approvisionnement énergétique mondial, et ce chiffre pourrait dépasser 10% d'ici 2030."
+  },
+  {
+    seance:7,
+    type:"multi",
+    text:"Le Green Cloud englobe quelles pratiques ? (plusieurs réponses)",
+    options:[
+      "L'efficacité énergétique des centres de données",
+      "La conception de logiciels économes en énergie",
+      "La gestion intelligente des ressources via des algorithmes",
+      "L'augmentation du nombre de serveurs physiques"
+    ],
+    correct:[0,1,2],
+    explanation:"Le Cloud vert englobe : l'efficacité énergétique des datacenters (refroidissement, énergies renouvelables), la conception de logiciels économes, et la gestion intelligente des ressources."
+  },
+
+  // ===== SÉANCE 8 =====
+  {
+    seance:8,
+    type:"single",
+    text:"Comment appelle-t-on le modèle de développement logiciel classique en cascade ?",
+    options:["Agile Model","Waterfall / Silos Model","DevOps Model","Scrum Model"],
+    correct:[1],
+    explanation:"Le modèle de développement logiciel classique est souvent désigné par Waterfall (cascade) ou Silos Model, où les phases se succèdent séquentiellement."
+  },
+  {
+    seance:8,
+    type:"multi",
+    text:"Quelles sont les limites des méthodes classiques de développement ? (plusieurs réponses)",
+    options:[
+      "Cloisonnement (Silos) des équipes Dev et Ops",
+      "Cycles de développement longs",
+      "Automatisation trop importante",
+      "Retour d'information tardif"
+    ],
+    correct:[0,1,3],
+    explanation:"Les limites classiques sont : le cloisonnement des équipes, les longs cycles de développement, et le retour d'information tardif. L'excès d'automatisation n'est pas un problème classique (au contraire, il y en a trop peu)."
+  },
+  {
+    seance:8,
+    type:"single",
+    text:"Quand a été rédigé le Manifeste Agile ?",
+    options:["1995","1999","2001","2008"],
+    correct:[2],
+    explanation:"Le Manifeste Agile a été rédigé en 2001 à Snowbird (Utah) par 17 experts du logiciel, définissant 4 valeurs et 12 principes."
+  },
+  {
+    seance:8,
+    type:"multi",
+    text:"Parmi les frameworks Agiles suivants, lesquels sont mentionnés dans le cours ? (plusieurs réponses)",
+    options:["Scrum","Kanban","Extreme Programming (XP)","PRINCE2","Lean Software Development"],
+    correct:[0,1,2,4],
+    explanation:"Les frameworks Agiles mentionnés sont : Scrum, Kanban, Extreme Programming (XP) et Lean Software Development. PRINCE2 est une méthode de gestion de projet traditionnelle, pas Agile."
+  },
+  {
+    seance:8,
+    type:"single",
+    text:"Quelle est la durée typique d'un Sprint dans la méthode Agile ?",
+    options:["1 à 2 jours","1 à 4 semaines","1 à 3 mois","6 mois à 1 an"],
+    correct:[1],
+    explanation:"Dans la méthode Agile, un Sprint (cycle itératif) dure généralement de 1 à 4 semaines."
+  },
+  {
+    seance:8,
+    type:"single",
+    text:"Qui a présenté la méthode Scrum en 1995 ?",
+    options:["Linus Torvalds et Richard Stallman","Jeff Sutherland et Ken Schwaber","Kent Beck et Martin Fowler","Eric Brecht et Ward Cunningham"],
+    correct:[1],
+    explanation:"En 1995, Jeff Sutherland et Ken Schwaber ont présenté la méthode Scrum lors d'une conférence."
+  },
+
+  // ===== SÉANCE 9 =====
+  {
+    seance:9,
+    type:"single",
+    text:"Le développement continu est la première étape du cycle de vie DevOps, il implique :",
+    options:[
+      "Le déploiement automatique en production",
+      "La planification et le codage des logiciels",
+      "La surveillance des performances en production",
+      "La gestion des incidents de sécurité"
+    ],
+    correct:[1],
+    explanation:"Le développement continu est la première étape du cycle de vie DevOps. Il implique la planification et le codage des logiciels, avec des cycles de développement plus petits."
+  },
+  {
+    seance:9,
+    type:"multi",
+    text:"Pourquoi un système de gestion de versions est-il indispensable en développement continu ? (plusieurs réponses)",
+    options:[
+      "Pour enregistrer l'historique des modifications",
+      "Pour collaborer efficacement entre développeurs",
+      "Pour remplacer le langage de programmation",
+      "Pour gérer les conflits lorsque plusieurs utilisateurs modifient le même fichier"
+    ],
+    correct:[0,1,3],
+    explanation:"Un système de gestion de versions permet : d'enregistrer l'historique, de collaborer efficacement, et de gérer les conflits. Il ne remplace pas le langage de programmation."
+  },
+  {
+    seance:9,
+    type:"single",
+    text:"Dans l'environnement de développement continu, quand sont exécutés les tests automatisés ?",
+    options:[
+      "Uniquement avant la mise en production finale",
+      "Chaque fois qu'une modification est effectuée dans le code",
+      "Une fois par semaine selon un planning défini",
+      "Seulement lorsque le chef de projet le demande"
+    ],
+    correct:[1],
+    explanation:"En développement continu, les tests sont automatisés et exécutés chaque fois qu'une modification est effectuée dans le code, servant de 'feedbacks techniques' sur la qualité."
+  },
+  {
+    seance:9,
+    type:"multi",
+    text:"Quels sont les risques liés au travail sans système de gestion de versions ? (plusieurs réponses)",
+    options:[
+      "Conflits élevés lorsque plusieurs développeurs travaillent sur les mêmes fichiers",
+      "Impossibilité de revenir à une version stable en cas de problème",
+      "Manque de visibilité sur les modifications",
+      "Trop grande vitesse de déploiement"
+    ],
+    correct:[0,1,2],
+    explanation:"Sans gestion de versions : risques de conflits entre développeurs, impossibilité de revenir en arrière, et manque de visibilité sur les modifications."
+  },
+  {
+    seance:9,
+    type:"single",
+    text:"Quel système de gestion de versions est mentionné comme exemple dans le cours ?",
+    options:["SVN uniquement","Git et SVN","Mercurial uniquement","CVS"],
+    correct:[1],
+    explanation:"Le cours mentionne Git et SVN comme exemples de systèmes de gestion de versions utilisés dans le développement continu."
+  },
+  {
+    seance:9,
+    type:"single",
+    text:"Le DevOps Lifecycle comprend combien d'étapes continues ?",
+    options:["4","5","6","8"],
+    correct:[2],
+    explanation:"Le DevOps Lifecycle comprend 6 étapes continues : Continuous Development, Continuous Integration, Continuous Testing, Continuous Deployment, Continuous Monitoring, et Continuous Feedback."
+  },
+
+  // ===== SÉANCE 10 =====
+  {
+    seance:10,
+    type:"single",
+    text:"Qu'est-ce que l'Intégration Continue (CI) ?",
+    options:[
+      "Une méthode de déploiement manuel en production",
+      "Une pratique permettant de produire une nouvelle version du logiciel de façon automatisée à chaque commit",
+      "Un système de surveillance des performances en production",
+      "Un protocole de communication entre microservices"
+    ],
+    correct:[1],
+    explanation:"L'intégration continue est une pratique qui permet de produire automatiquement une nouvelle version du logiciel. Elle commence lorsque le développeur fait un commit/push et se termine quand un artefact prêt est généré."
+  },
+  {
+    seance:10,
+    type:"multi",
+    text:"Quels sont les 4 rôles fondamentaux de la phase d'analyse de la qualité dans le pipeline CI ? (plusieurs réponses)",
+    options:["Qualité","Sécurité","Conformité (Compliance)","Gouvernance (Quality Gates)","Performance réseau"],
+    correct:[0,1,2,3],
+    explanation:"Les 4 rôles fondamentaux de la phase d'analyse sont : Qualité (code smells, duplication), Sécurité (SAST, SCA), Conformité (licences, standards), et Gouvernance (Quality Gates)."
+  },
+  {
+    seance:10,
+    type:"single",
+    text:"Qu'est-ce que le SAST dans le contexte du CI ?",
+    options:[
+      "Simple Automated System Testing",
+      "Static Application Security Testing — analyse statique du code source pour détecter des vulnérabilités",
+      "Server Availability Standard Testing",
+      "Software Architecture Scalability Test"
+    ],
+    correct:[1],
+    explanation:"SAST (Static Application Security Testing) est une méthode d'analyse statique du code source permettant de détecter des failles de sécurité comme les injections SQL ou XSS."
+  },
+  {
+    seance:10,
+    type:"multi",
+    text:"Parmi ces outils, lesquels sont utilisés pour l'analyse de sécurité (SAST) dans le CI ? (plusieurs réponses)",
+    options:["SonarQube","Fortify","Checkmarx","Jenkins","Veracode"],
+    correct:[0,1,2,4],
+    explanation:"SonarQube, Fortify, Checkmarx et Veracode sont des outils SAST. Jenkins est un outil d'automatisation CI/CD, pas un outil d'analyse de sécurité spécifique."
+  },
+  {
+    seance:10,
+    type:"single",
+    text:"Qu'est-ce qu'un 'Quality Gate' dans le pipeline CI ?",
+    options:[
+      "Une porte physique d'accès au datacenter",
+      "Un ensemble de critères pour décider si le code sera bloqué ou autorisé à être déployé",
+      "Un outil de gestion des versions du code",
+      "Un protocole de communication sécurisée entre serveurs"
+    ],
+    correct:[1],
+    explanation:"Un Quality Gate est un ensemble de critères ou seuils définis pour évaluer et décider si le code sera bloqué ou autorisé à être déployé (ex: 'pipeline échoue si complexité > 20')."
+  },
+  {
+    seance:10,
+    type:"single",
+    text:"Le SCA (Software Composition Analysis) permet de :",
+    options:[
+      "Analyser la performance des serveurs",
+      "Identifier les vulnérabilités dans les bibliothèques tierces utilisées",
+      "Gérer les licences commerciales des logiciels",
+      "Compresser le code source pour réduire sa taille"
+    ],
+    correct:[1],
+    explanation:"Le SCA (Software Composition Analysis) identifie les vulnérabilités dans les bibliothèques tierces utilisées par l'application."
+  },
+
+  // ===== SÉANCE 11 =====
+  {
+    seance:11,
+    type:"single",
+    text:"Kubernetes est :",
+    options:[
+      "Un système de gestion de bases de données relationnelles",
+      "Une plateforme d'orchestration de conteneurs open-source créée par Google en 2015",
+      "Un langage de programmation pour le Cloud",
+      "Un outil de monitoring des performances réseau"
+    ],
+    correct:[1],
+    explanation:"Kubernetes (k8s) est une plateforme d'orchestration de conteneurs open-source créée par Google en 2015. Son rôle est d'automatiser le déploiement, la mise à l'échelle et l'orchestration des conteneurs."
+  },
+  {
+    seance:11,
+    type:"multi",
+    text:"Quels sont les rôles de Kubernetes ? (plusieurs réponses)",
+    options:[
+      "Automatisation du déploiement",
+      "Mise à l'échelle automatique (Scaling)",
+      "Gestion des conteneurs (Self-Healing)",
+      "Remplacement du système d'exploitation",
+      "Redémarrage automatique des conteneurs en panne"
+    ],
+    correct:[0,1,2,4],
+    explanation:"Kubernetes assure : l'automatisation du déploiement, le scaling automatique, le self-healing (redémarrage auto), et la gestion des conteneurs. Il ne remplace pas le système d'exploitation."
+  },
+  {
+    seance:11,
+    type:"single",
+    text:"Qu'est-ce qu'un Pod dans Kubernetes ?",
+    options:[
+      "Un nœud maître dans le cluster",
+      "La plus petite unité d'exécution dans Kubernetes, représentant un groupe de conteneurs",
+      "Un outil de monitoring des performances",
+      "Un type de stockage persistant"
+    ],
+    correct:[1],
+    explanation:"Un Pod est la plus petite unité d'exécution dans Kubernetes. Il représente un groupe de un ou plusieurs conteneurs étroitement liés qui partagent le même réseau et espace de stockage."
+  },
+  {
+    seance:11,
+    type:"multi",
+    text:"Quelles sont les méthodes de déploiement des artefacts en DevOps ? (plusieurs réponses)",
+    options:[
+      "Déploiement direct sur un serveur (Ansible)",
+      "Conteneurisation (Docker) et Orchestration (Kubernetes)",
+      "Plateformes Cloud/PaaS (Heroku, AWS Elastic Beanstalk)",
+      "Installation manuelle poste par poste"
+    ],
+    correct:[0,1,2],
+    explanation:"Les méthodes de déploiement DevOps incluent : déploiement direct (Ansible), conteneurisation et orchestration (Docker/Kubernetes), et plateformes Cloud/PaaS. L'installation manuelle est contraire à la philosophie DevOps."
+  },
+  {
+    seance:11,
+    type:"single",
+    text:"Que signifie le 'Self-Healing' dans Kubernetes ?",
+    options:[
+      "Kubernetes répare automatiquement le code source défectueux",
+      "Kubernetes redémarre automatiquement les conteneurs en panne et remplace les instances défaillantes",
+      "Kubernetes corrige automatiquement les bugs dans les applications",
+      "Kubernetes sauvegarde automatiquement les données en cas de panne"
+    ],
+    correct:[1],
+    explanation:"Le Self-Healing dans Kubernetes désigne la capacité à redémarrer automatiquement les conteneurs en panne, à assurer la découverte de services et à remplacer les conteneurs défaillants."
+  },
+  {
+    seance:11,
+    type:"single",
+    text:"Dans l'architecture Kubernetes, qu'est-ce qu'un Node ?",
+    options:[
+      "La plus petite unité d'exécution",
+      "Une machine au sein du cluster Kubernetes sur laquelle s'exécutent les conteneurs",
+      "Un fichier de configuration YAML",
+      "Un registre d'images Docker"
+    ],
+    correct:[1],
+    explanation:"Un Node est une machine (physique ou virtuelle) au sein du cluster Kubernetes. C'est là que les conteneurs sont exécutés. Il existe des nodes maîtres et des nodes de travail (workers)."
+  },
+
+  // ===== SÉANCE 12 =====
+  {
+    seance:12,
+    type:"single",
+    text:"Qu'est-ce que l'Infrastructure en tant que Code (IaC) ?",
+    options:[
+      "L'écriture d'applications directement sur des serveurs physiques",
+      "La gestion et le provisionnement de l'infrastructure via des fichiers de configuration versionnés",
+      "L'installation manuelle de logiciels sur chaque serveur",
+      "Un protocole de communication entre centres de données"
+    ],
+    correct:[1],
+    explanation:"L'IaC (Infrastructure as Code) consiste à gérer et provisionner l'infrastructure informatique via des fichiers de configuration versionnés (code), plutôt que par des processus manuels."
+  },
+  {
+    seance:12,
+    type:"single",
+    text:"Ansible est principalement :",
+    options:[
+      "Un langage de programmation orienté objet",
+      "Un outil de gestion de configuration et d'Infrastructure as Code (IaC)",
+      "Une base de données NoSQL",
+      "Un système d'exploitation pour serveurs"
+    ],
+    correct:[1],
+    explanation:"Ansible est principalement un outil de gestion de configuration. Il gère aussi l'Infrastructure as Code (IaC) et permet d'automatiser le provisioning, la configuration et l'orchestration."
+  },
+  {
+    seance:12,
+    type:"multi",
+    text:"Quelles tâches Ansible permet-il d'automatiser ? (plusieurs réponses)",
+    options:[
+      "Le Provisioning (IaC) — création de ressources Cloud",
+      "La Gestion de Configuration — installer des services, gérer les fichiers de config",
+      "L'Orchestration — coordonner des tâches sur plusieurs serveurs",
+      "La compilation du code source en binaire"
+    ],
+    correct:[0,1,2],
+    explanation:"Ansible automatise : le Provisioning (IaC), la Gestion de Configuration (installer services, gérer configs), et l'Orchestration (coordonner des tâches multi-serveurs). La compilation n'est pas son domaine."
+  },
+  {
+    seance:12,
+    type:"single",
+    text:"Qu'est-ce qu'un Playbook Ansible ?",
+    options:[
+      "Un manuel d'utilisation de l'application",
+      "Un fichier YAML décrivant l'état souhaité de l'infrastructure qu'Ansible exécutera automatiquement",
+      "Un script Python de surveillance des serveurs",
+      "Un tableau de bord de visualisation des métriques"
+    ],
+    correct:[1],
+    explanation:"Un Playbook Ansible est un fichier YAML utilisé pour décrire l'état souhaité de l'infrastructure. Ansible lit ce fichier et l'exécute automatiquement sur les machines cibles."
+  },
+  {
+    seance:12,
+    type:"single",
+    text:"Ansible est dit 'agentless', ce qui signifie :",
+    options:[
+      "Il n'a pas besoin de connexion réseau",
+      "Il n'installe aucun logiciel agent sur les nœuds qu'il gère",
+      "Il fonctionne sans interface utilisateur",
+      "Il ne nécessite pas de fichiers de configuration"
+    ],
+    correct:[1],
+    explanation:"Ansible est agentless (sans agent), ce qui signifie qu'il n'installe aucun logiciel sur les nœuds qu'il gère. Il utilise SSH pour se connecter et effectuer les tâches."
+  },
+  {
+    seance:12,
+    type:"multi",
+    text:"Quelles sont les responsabilités du Node Manager (Control Node) dans Ansible ? (plusieurs réponses)",
+    options:[
+      "Interpréter les fichiers YAML (Playbooks) et les transformer en instructions",
+      "Décider de l'ordre d'exécution des tâches sur les serveurs",
+      "Centraliser les logs et afficher un résumé global",
+      "Stocker toutes les données des applications déployées"
+    ],
+    correct:[0,1,2],
+    explanation:"Le Node Manager (Control Node) : interprète les Playbooks YAML, décide de l'ordre d'exécution, génère les modules Python nécessaires, et centralise les logs. Il ne stocke pas les données des applications."
+  },
+  {
+    seance:12,
+    type:"single",
+    text:"Quel est l'inconvénient principal du déploiement classique d'infrastructure sans IaC ?",
+    options:[
+      "Trop grande rapidité de déploiement",
+      "Installation individuelle, erreurs humaines et difficulté de reproduction",
+      "Coût des licences Ansible trop élevé",
+      "Incompatibilité avec les environnements Cloud"
+    ],
+    correct:[1],
+    explanation:"Le déploiement classique (connexion SSH manuelle à chaque serveur) entraîne : installation individuelle longue, risque élevé d'erreurs humaines, et difficulté de reproduction de la configuration."
+  }
+];
+
+// =====================================================================
+//  STATE
+// =====================================================================
+let selectedSessions = new Set(SESSIONS.map(s => s.id));
+let quizQuestions = [];
+let currentIdx = 0;
+let score = 0;
+let answered = false;
+let results = [];
+
+// =====================================================================
+//  INIT
+// =====================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  buildSessionsGrid();
+  renderHistory();
+});
+
+function buildSessionsGrid() {
+  const grid = document.getElementById('sessions-grid');
+  grid.innerHTML = '';
+  SESSIONS.forEach(s => {
+    const count = QUESTIONS.filter(q => q.seance === s.id).length;
+    const div = document.createElement('div');
+    div.className = 'session-item' + (selectedSessions.has(s.id) ? ' selected' : '');
+    div.innerHTML = `
+      <input type="checkbox" id="s${s.id}" ${selectedSessions.has(s.id) ? 'checked' : ''} onchange="toggleSession(${s.id})">
+      <div>
+        <div class="session-num">Séance ${s.id}</div>
+        <div class="session-title">${s.title}</div>
+        <div style="font-size:.75rem;color:#aaa;margin-top:2px">${count} questions</div>
+      </div>`;
+    div.onclick = (e) => { if(e.target.tagName !== 'INPUT') toggleSession(s.id); };
+    grid.appendChild(div);
+  });
+}
+
+function toggleSession(id) {
+  if(selectedSessions.has(id)) selectedSessions.delete(id);
+  else selectedSessions.add(id);
+  buildSessionsGrid();
+}
+
+function selectAll(val) {
+  if(val) SESSIONS.forEach(s => selectedSessions.add(s.id));
+  else selectedSessions.clear();
+  buildSessionsGrid();
+}
+
+// =====================================================================
+//  NAVIGATION
+// =====================================================================
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const idx = ['setup','quiz','history'].indexOf(name);
+  document.querySelectorAll('nav button')[idx]?.classList.add('active');
+  if(name === 'history') renderHistory();
+}
+
+// =====================================================================
+//  QUIZ LOGIC
+// =====================================================================
+function startQuiz() {
+  if(selectedSessions.size === 0) { alert('Veuillez sélectionner au moins une séance.'); return; }
+  const pool = QUESTIONS.filter(q => selectedSessions.has(q.seance));
+  if(pool.length === 0) { alert('Aucune question disponible pour les séances sélectionnées.'); return; }
+
+  const nbQ = parseInt(document.getElementById('nb-questions').value);
+  const order = document.getElementById('order-questions').value;
+
+  let shuffled = order === 'random' ? shuffle([...pool]) : [...pool].sort((a,b) => a.seance - b.seance);
+  quizQuestions = shuffled.slice(0, Math.min(nbQ, shuffled.length));
+
+  currentIdx = 0; score = 0; results = []; answered = false;
+
+  document.getElementById('nav-quiz').disabled = false;
+  showPage('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = quizQuestions[currentIdx];
+  const total = quizQuestions.length;
+  const pct = Math.round((currentIdx / total) * 100);
+
+  document.getElementById('q-counter').textContent = `Question ${currentIdx + 1} / ${total}`;
+  const sName = SESSIONS.find(s => s.id === q.seance)?.title || '';
+  document.getElementById('q-seance-info').textContent = `Séance ${q.seance} — ${sName}`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+  document.getElementById('score-display').textContent = `Score: ${score}`;
+
+  document.getElementById('q-meta').innerHTML = `
+    <span class="badge badge-seance">Séance ${q.seance}</span>
+    <span class="badge ${q.type === 'multi' ? 'badge-multi' : 'badge-type'}">${q.type === 'multi' ? 'Choix multiples' : 'Choix unique'}</span>`;
+
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-hint').textContent = q.type === 'multi' ? '(Plusieurs réponses possibles — cochez toutes les bonnes réponses)' : '(Une seule bonne réponse)';
+
+  const container = document.getElementById('options-container');
+  const letters = ['A','B','C','D','E','F'];
+  container.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const item = document.createElement('div');
+    item.className = 'option-item';
+    item.id = `opt-${i}`;
+    item.innerHTML = `
+      <input type="${q.type === 'multi' ? 'checkbox' : 'radio'}" name="opt" id="input-${i}" value="${i}" onchange="onSelect(${i})">
+      <div class="option-letter">${letters[i]}</div>
+      <div class="option-text">${opt}</div>`;
+    item.onclick = (e) => { if(e.target.tagName !== 'INPUT') { document.getElementById(`input-${i}`).click(); } };
+    container.appendChild(item);
+  });
+
+  document.getElementById('explanation').className = '';
+  document.getElementById('explanation').textContent = '';
+  document.getElementById('btn-validate').style.display = 'inline-block';
+  document.getElementById('btn-next').style.display = 'none';
+}
+
+function onSelect(i) {
+  const q = quizQuestions[currentIdx];
+  if(q.type === 'single') {
+    document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+  }
+  const item = document.getElementById(`opt-${i}`);
+  const input = document.getElementById(`input-${i}`);
+  if(q.type === 'multi') {
+    item.classList.toggle('selected', input.checked);
+  } else {
+    item.classList.add('selected');
+  }
+}
+
+function getSelected() {
+  const inputs = document.querySelectorAll('#options-container input:checked');
+  return Array.from(inputs).map(i => parseInt(i.value));
+}
+
+function validateAnswer() {
+  if(answered) return;
+  const q = quizQuestions[currentIdx];
+  const selected = getSelected();
+  if(selected.length === 0) { alert('Veuillez sélectionner au moins une réponse.'); return; }
+
+  answered = true;
+  const correct = q.correct.slice().sort();
+  const sel = selected.slice().sort();
+  const isCorrect = JSON.stringify(correct) === JSON.stringify(sel);
+  if(isCorrect) score++;
+
+  // Color options
+  q.options.forEach((_, i) => {
+    const item = document.getElementById(`opt-${i}`);
+    const isSelectedByUser = selected.includes(i);
+    const isCorrectAnswer = q.correct.includes(i);
+
+    if(isCorrectAnswer && isSelectedByUser) item.classList.add('correct');
+    else if(!isCorrectAnswer && isSelectedByUser) item.classList.add('incorrect');
+    else if(isCorrectAnswer && !isSelectedByUser) item.classList.add('missed');
+    item.classList.remove('selected');
+  });
+
+  document.getElementById('explanation').textContent = '💡 ' + q.explanation;
+  document.getElementById('explanation').className = 'show';
+
+  results.push({ q, selected, correct: q.correct, isCorrect });
+
+  document.getElementById('btn-validate').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'inline-block';
+  document.getElementById('btn-next').textContent = currentIdx + 1 < quizQuestions.length ? 'Suivant →' : 'Voir les résultats';
+  document.getElementById('score-display').textContent = `Score: ${score}`;
+}
+
+function nextQuestion() {
+  currentIdx++;
+  if(currentIdx < quizQuestions.length) {
+    document.getElementById('question-card').style.animation = 'none';
+    requestAnimationFrame(() => {
+      document.getElementById('question-card').style.animation = '';
+      renderQuestion();
+    });
+  } else {
+    showResults();
+  }
+}
+
+function quitQuiz() {
+  if(confirm('Abandonner le quiz ? La progression sera perdue.')) {
+    showPage('setup');
+  }
+}
+
+// =====================================================================
+//  RESULTS
+// =====================================================================
+function showResults() {
+  const total = quizQuestions.length;
+  const pct = Math.round((score / total) * 100);
+  const circle = document.getElementById('res-circle');
+  circle.style.borderColor = pct >= 70 ? 'var(--success)' : pct >= 50 ? 'var(--warn)' : 'var(--fail)';
+  document.getElementById('res-score').textContent = score;
+  document.getElementById('res-total').textContent = '/ ' + total;
+  document.getElementById('res-pct').textContent = pct + '% de bonnes réponses';
+
+  let msg = pct >= 80 ? '🎉 Excellent ! Très bonne maîtrise du cours !' :
+            pct >= 60 ? '👍 Bien ! Continuez vos révisions.' :
+            pct >= 40 ? '📚 Des lacunes à combler, révisez les séances concernées.' :
+            '⚠️ Des révisions importantes sont nécessaires.';
+  document.getElementById('res-message').textContent = msg;
+
+  const details = document.getElementById('result-details');
+  details.innerHTML = '';
+  results.forEach((r, i) => {
+    const sName = SESSIONS.find(s => s.id === r.q.seance)?.title || '';
+    const letters = ['A','B','C','D','E','F'];
+    const correctLabels = r.correct.map(i => letters[i] + '. ' + r.q.options[i]).join(', ');
+    const selectedLabels = r.selected.map(i => letters[i] + '. ' + r.q.options[i]).join(', ');
+    details.innerHTML += `
+      <div class="result-row ${r.isCorrect ? 'rr-correct' : 'rr-wrong'}">
+        <div class="result-icon">${r.isCorrect ? '✅' : '❌'}</div>
+        <div>
+          <div class="result-q">Q${i+1}. <span style="font-size:.8rem;color:#888">[Séance ${r.q.seance} – ${sName}]</span></div>
+          <div class="result-q" style="margin-top:4px">${r.q.text}</div>
+          <div class="result-ans" style="margin-top:6px">
+            ${!r.isCorrect ? `<span style="color:var(--fail)">Votre réponse : ${selectedLabels}</span><br>` : ''}
+            <span style="color:var(--success)">Bonne réponse : ${correctLabels}</span>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  // Save to history
+  const sessions = [...new Set(quizQuestions.map(q => q.seance))].sort();
+  saveHistory({ score, total, pct, sessions, date: new Date().toISOString() });
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-results').classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+}
+
+// =====================================================================
+//  HISTORY
+// =====================================================================
+function saveHistory(entry) {
+  const h = JSON.parse(localStorage.getItem('qcm_history') || '[]');
+  h.unshift(entry);
+  if(h.length > 50) h.pop();
+  localStorage.setItem('qcm_history', JSON.stringify(h));
+}
+
+function renderHistory() {
+  const h = JSON.parse(localStorage.getItem('qcm_history') || '[]');
+  const list = document.getElementById('history-list');
+  if(!list) return;
+  if(h.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>Aucun quiz passé pour l'instant.</div></div>`;
+    return;
+  }
+  list.innerHTML = h.map((entry, i) => {
+    const date = new Date(entry.date);
+    const dateStr = date.toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    const fillClass = entry.pct >= 70 ? '' : entry.pct >= 50 ? 'medium' : 'low';
+    const sessions = (entry.sessions || []).map(s => `S${s}`).join(', ');
+    return `<div class="history-item">
+      <div class="hist-score">${entry.score}/${entry.total}</div>
+      <div class="hist-info">
+        <div style="font-weight:600">${entry.pct}% — ${getMention(entry.pct)}</div>
+        <div class="hist-date">${dateStr}</div>
+        <div class="hist-sessions">Séances : ${sessions || 'N/A'}</div>
+      </div>
+      <div class="hist-bar-wrap">
+        <div style="font-size:.75rem;text-align:right;color:#888">${entry.pct}%</div>
+        <div class="hist-bar"><div class="hist-fill ${fillClass}" style="width:${entry.pct}%"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getMention(pct) {
+  if(pct >= 80) return '🏆 Excellent';
+  if(pct >= 60) return '👍 Bien';
+  if(pct >= 40) return '📚 À améliorer';
+  return '⚠️ Insuffisant';
+}
+
+function clearHistory() {
+  if(confirm('Effacer tout l\'historique ?')) {
+    localStorage.removeItem('qcm_history');
+    renderHistory();
+  }
+}
+
+// =====================================================================
+//  UTILS
+// =====================================================================
+function shuffle(arr) {
+  for(let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+</script>
+</body>
+</html>
