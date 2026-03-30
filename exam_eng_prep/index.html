@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Revision — Exam Prep</title>
+<style>
+  :root {
+    --blue: #1a4fa0; --green: #2e7d32; --orange: #e65100;
+    --bg: #f5f7fa; --card: #ffffff; --border: #e0e4ec;
+    --correct: #2e7d32; --wrong: #c62828; --neutral: #555;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #222; }
+  header { background: var(--blue); color: white; padding: 18px 30px; display:flex; align-items:center; justify-content:space-between; }
+  header h1 { font-size: 1.4rem; }
+  nav { display:flex; gap:8px; flex-wrap:wrap; padding: 14px 24px; background:#eef1f8; border-bottom:2px solid var(--border); }
+  nav button { padding: 7px 16px; border:none; border-radius:20px; cursor:pointer; font-size:.9rem; background:#dce3f5; color:var(--blue); font-weight:600; transition:.2s; }
+  nav button.active, nav button:hover { background:var(--blue); color:white; }
+  .page { display:none; padding: 24px; max-width:960px; margin:0 auto; }
+  .page.active { display:block; }
+  .section-title { font-size:1.5rem; font-weight:700; color:var(--blue); margin-bottom:18px; border-left:5px solid var(--blue); padding-left:12px; }
+  .rule-box { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin-bottom:18px; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .rule-box h3 { color:var(--blue); margin-bottom:10px; font-size:1.05rem; }
+  .rule-box table { width:100%; border-collapse:collapse; font-size:.92rem; }
+  .rule-box table th { background:#eef1f8; padding:7px 10px; text-align:left; border:1px solid var(--border); }
+  .rule-box table td { padding:7px 10px; border:1px solid var(--border); }
+  .watch-out { background:#fff8e1; border-left:4px solid #f9a825; padding:10px 14px; border-radius:6px; font-size:.9rem; margin-top:10px; }
+  .watch-out strong { color:#e65100; }
+  .example { color:#555; font-style:italic; font-size:.9rem; }
+  /* Exercises */
+  .exercise-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin-bottom:20px; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+  .exercise-card h3 { color:var(--green); margin-bottom:12px; font-size:1rem; }
+  .q-item { margin-bottom:12px; }
+  .q-item label { display:block; margin-bottom:4px; font-size:.93rem; }
+  .q-item input[type="text"] { width:180px; padding:5px 10px; border:2px solid #ccc; border-radius:6px; font-size:.93rem; outline:none; }
+  .q-item input[type="text"]:focus { border-color:var(--blue); }
+  .q-item input.correct { border-color:var(--correct); background:#e8f5e9; }
+  .q-item input.wrong { border-color:var(--wrong); background:#ffebee; }
+  .q-item .feedback { font-size:.85rem; margin-top:3px; display:none; }
+  .q-item .feedback.show { display:block; }
+  .q-item .feedback.ok { color:var(--correct); }
+  .q-item .feedback.err { color:var(--wrong); }
+  /* MCQ */
+  .mcq-options { display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
+  .mcq-options button { padding:6px 14px; border:2px solid #ccc; border-radius:20px; background:white; cursor:pointer; font-size:.9rem; }
+  .mcq-options button:hover { border-color:var(--blue); }
+  .mcq-options button.selected-ok { border-color:var(--correct); background:#e8f5e9; color:var(--correct); font-weight:700; }
+  .mcq-options button.selected-err { border-color:var(--wrong); background:#ffebee; color:var(--wrong); font-weight:700; }
+  .mcq-options button.reveal-ok { border-color:var(--correct); background:#c8e6c9; }
+  .btn-check { margin-top:12px; padding:8px 20px; background:var(--blue); color:white; border:none; border-radius:8px; cursor:pointer; font-size:.95rem; }
+  .btn-check:hover { background:#1338a0; }
+  .score-bar { margin-top:10px; font-weight:700; font-size:.95rem; }
+  .tag { display:inline-block; background:#eef1f8; border-radius:12px; padding:2px 10px; font-size:.8rem; color:var(--blue); margin-left:8px; }
+  .verb-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap:6px; margin-top:8px; }
+  .verb-chip { background:#eef1f8; border-radius:8px; padding:5px 10px; font-size:.88rem; text-align:center; }
+  .verb-chip.gerund { background:#e8f5e9; }
+  .verb-chip.inf { background:#e3f2fd; }
+  .verb-chip.both { background:#fff3e0; }
+  .progress-wrap { height:8px; background:#dce3f5; border-radius:4px; overflow:hidden; margin-bottom:16px; }
+  .progress-bar { height:100%; background:var(--blue); border-radius:4px; transition:.5s; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>English Revision — Exam Prep</h1>
+  <span style="font-size:.85rem;opacity:.8">B2 / C1 Level</span>
+</header>
+
+<nav>
+  <button class="active" onclick="showPage('gerund')">Gerund &amp; Infinitive</button>
+  <button onclick="showPage('reported')">Reported Speech</button>
+  <button onclick="showPage('wordform')">Word Formation</button>
+  <button onclick="showPage('connectives')">Connectives</button>
+  <button onclick="showPage('writing')">Writing Skills</button>
+  <button onclick="showPage('exercises')">Mixed Exercises</button>
+</nav>
+
+<!-- ===================== GERUND & INFINITIVE ===================== -->
+<div id="page-gerund" class="page active">
+  <div class="section-title">Gerund &amp; Infinitive</div>
+
+  <div class="rule-box">
+    <h3>Verb + -ing (Gerund)</h3>
+    <p style="font-size:.9rem;margin-bottom:8px">These verbs are <strong>always</strong> followed by the gerund (-ing form):</p>
+    <div class="verb-grid">
+      <span class="verb-chip gerund">admit</span><span class="verb-chip gerund">appreciate</span>
+      <span class="verb-chip gerund">avoid</span><span class="verb-chip gerund">can't help</span>
+      <span class="verb-chip gerund">delay</span><span class="verb-chip gerund">deny</span>
+      <span class="verb-chip gerund">detest</span><span class="verb-chip gerund">discuss</span>
+      <span class="verb-chip gerund">dislike</span><span class="verb-chip gerund">enjoy</span>
+      <span class="verb-chip gerund">escape</span><span class="verb-chip gerund">face</span>
+      <span class="verb-chip gerund">fancy</span><span class="verb-chip gerund">feel like</span>
+      <span class="verb-chip gerund">finish</span><span class="verb-chip gerund">give up</span>
+      <span class="verb-chip gerund">involve</span><span class="verb-chip gerund">keep (on)</span>
+      <span class="verb-chip gerund">mention</span><span class="verb-chip gerund">mind</span>
+      <span class="verb-chip gerund">miss</span><span class="verb-chip gerund">postpone</span>
+      <span class="verb-chip gerund">practise</span><span class="verb-chip gerund">put off</span>
+      <span class="verb-chip gerund">resist</span><span class="verb-chip gerund">risk</span>
+      <span class="verb-chip gerund">suggest</span><span class="verb-chip gerund">understand</span>
+    </div>
+    <p class="example" style="margin-top:8px">✓ I've finished <em>writing</em> my essay. &nbsp;✓ She avoided <em>answering</em> the question.</p>
+    <div class="watch-out"><strong>Watch out!</strong> After a preposition, always use -ing: <em>I'm interested in <strong>hearing</strong> more.</em></div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Verb + Full Infinitive (to + verb)</h3>
+    <p style="font-size:.9rem;margin-bottom:8px">These verbs are followed by the full infinitive:</p>
+    <div class="verb-grid">
+      <span class="verb-chip inf">able</span><span class="verb-chip inf">afford</span>
+      <span class="verb-chip inf">agree</span><span class="verb-chip inf">appear</span>
+      <span class="verb-chip inf">arrange</span><span class="verb-chip inf">ask</span>
+      <span class="verb-chip inf">attempt</span><span class="verb-chip inf">beg</span>
+      <span class="verb-chip inf">choose</span><span class="verb-chip inf">decide</span>
+      <span class="verb-chip inf">encourage</span><span class="verb-chip inf">expect</span>
+      <span class="verb-chip inf">fail</span><span class="verb-chip inf">happen</span>
+      <span class="verb-chip inf">help</span><span class="verb-chip inf">hope</span>
+      <span class="verb-chip inf">manage</span><span class="verb-chip inf">offer</span>
+      <span class="verb-chip inf">plan</span><span class="verb-chip inf">pleased</span>
+      <span class="verb-chip inf">prepare</span><span class="verb-chip inf">pretend</span>
+      <span class="verb-chip inf">promise</span><span class="verb-chip inf">refuse</span>
+      <span class="verb-chip inf">seem</span><span class="verb-chip inf">tend</span>
+      <span class="verb-chip inf">want</span><span class="verb-chip inf">wish</span>
+      <span class="verb-chip inf">would like</span>
+    </div>
+    <p class="example" style="margin-top:8px">✓ She refused <em>to answer</em>. &nbsp;✓ I managed <em>to escape</em>.</p>
+  </div>
+
+  <div class="rule-box">
+    <h3>Verb + Bare Infinitive (no "to")</h3>
+    <div class="verb-grid">
+      <span class="verb-chip">feel</span><span class="verb-chip">hear</span>
+      <span class="verb-chip">let</span><span class="verb-chip">make</span>
+      <span class="verb-chip">notice</span><span class="verb-chip">see</span>
+      <span class="verb-chip">watch</span>
+    </div>
+    <p class="example" style="margin-top:8px">✓ She made me <em>stand</em> in the corner. &nbsp;✓ I heard her <em>sing</em>.</p>
+    <div class="watch-out"><strong>Watch out!</strong> In passive: <em>I <strong>was made to stand</strong> in the corner.</em></div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Verbs with CHANGE in meaning</h3>
+    <table>
+      <tr><th>Verb</th><th>+ -ing</th><th>+ infinitive</th></tr>
+      <tr><td><strong>remember</strong></td><td>recall a past event: <em>I remember seeing him.</em></td><td>not forget to do sth: <em>Remember to lock the door.</em></td></tr>
+      <tr><td><strong>forget</strong></td><td>recall a past event: <em>I'll never forget meeting her.</em></td><td>fail to remember: <em>I forgot to call him.</em></td></tr>
+      <tr><td><strong>stop</strong></td><td>cease an activity: <em>He stopped smoking.</em></td><td>pause to do sth else: <em>He stopped to buy coffee.</em></td></tr>
+      <tr><td><strong>try</strong></td><td>experiment: <em>Try adding salt.</em></td><td>attempt: <em>Try to be on time.</em></td></tr>
+      <tr><td><strong>regret</strong></td><td>feel sorry about past: <em>I regret saying that.</em></td><td>sorry to say (formal): <em>I regret to inform you…</em></td></tr>
+      <tr><td><strong>mean</strong></td><td>involve: <em>This means working late.</em></td><td>intend: <em>I mean to finish today.</em></td></tr>
+      <tr><td><strong>go on</strong></td><td>continue same thing: <em>She went on talking.</em></td><td>move to next thing: <em>She went on to explain.</em></td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Prefer / Would rather / Had better</h3>
+    <table>
+      <tr><th>Form</th><th>Use</th><th>Example</th></tr>
+      <tr><td>prefer + -ing + to + -ing</td><td>general preference</td><td><em>I prefer reading to watching TV.</em></td></tr>
+      <tr><td>would prefer + inf + rather than + inf</td><td>specific preference</td><td><em>I'd prefer to stay rather than go.</em></td></tr>
+      <tr><td>would rather + bare inf</td><td>general/specific preference</td><td><em>I'd rather stay at home.</em></td></tr>
+      <tr><td>would rather + sb + past simple</td><td>preference about sb else</td><td><em>I'd rather you didn't smoke here.</em></td></tr>
+      <tr><td>had better + bare inf</td><td>advice / warning</td><td><em>You'd better see a doctor.</em></td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> We say <em>I prefer <strong>not to</strong></em> (not "I don't prefer").</div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Infinitives of Purpose</h3>
+    <p style="font-size:.9rem">Use these to express WHY someone does something:</p>
+    <ul style="margin:8px 0 0 18px;font-size:.92rem;line-height:1.8">
+      <li><strong>to</strong> + infinitive: <em>I went there <strong>to see</strong> him.</em></li>
+      <li><strong>in order to</strong> + inf: <em>I studied <strong>in order to pass</strong>.</em></li>
+      <li><strong>so as to</strong> + inf: <em>She left early <strong>so as to avoid</strong> traffic.</em></li>
+      <li><strong>in order not to / so as not to</strong> (negative): <em>I whispered <strong>so as not to wake</strong> them.</em></li>
+    </ul>
+  </div>
+
+  <!-- GERUND EXERCISES -->
+  <div class="exercise-card">
+    <h3>Exercise 1 — Circle the correct form <span class="tag">Ready for Advanced p.48</span></h3>
+    <div id="mcq-ger1"></div>
+    <div class="score-bar" id="score-ger1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 2 — Nouns followed by the infinitive: complete the gaps <span class="tag">Ready for Advanced p.48</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:10px">Use the words from the box: <em>effort • attempts • willingness • opportunity • capacity • ability • decision • determination • tendency • refusal</em></p>
+    <div id="fill-ger-nouns"></div>
+    <button class="btn-check" onclick="checkFill('fill-ger-nouns','score-ger-nouns')">Check Answers</button>
+    <div class="score-bar" id="score-ger-nouns"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 3 — Complete with the correct form of the verb in brackets <span class="tag">Destination B2 Unit 17</span></h3>
+    <div id="fill-ger2"></div>
+    <button class="btn-check" onclick="checkFill('fill-ger2','score-ger2')">Check Answers</button>
+    <div class="score-bar" id="score-ger2"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 4 — Common Problems: which sentence has the mistake? <span class="tag">Ready for Advanced p.48</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">In each pair, one sentence contains a gerund/infinitive error. Choose the sentence with the mistake.</p>
+    <div id="mcq-ger-problems"></div>
+    <div class="score-bar" id="score-ger-problems"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 5 — Same meaning? (✓ or ✗) <span class="tag">Destination B2 Unit 17</span></h3>
+    <div id="mcq-ger3"></div>
+    <div class="score-bar" id="score-ger3"></div>
+  </div>
+</div>
+
+<!-- ===================== REPORTED SPEECH ===================== -->
+<div id="page-reported" class="page">
+  <div class="section-title">Reported Speech</div>
+
+  <div class="rule-box">
+    <h3>Tense Changes (Backshift)</h3>
+    <table>
+      <tr><th>Direct Speech</th><th>Reported Speech</th></tr>
+      <tr><td>present simple: <em>I work here.</em></td><td>past simple: <em>She said she <strong>worked</strong> there.</em></td></tr>
+      <tr><td>present continuous: <em>I'm winning!</em></td><td>past continuous: <em>She said she <strong>was winning</strong>.</em></td></tr>
+      <tr><td>present perfect: <em>I've finished.</em></td><td>past perfect: <em>He said he <strong>had finished</strong>.</em></td></tr>
+      <tr><td>past simple: <em>We lost.</em></td><td>past perfect: <em>He said they <strong>had lost</strong>.</em></td></tr>
+      <tr><td>past continuous: <em>We were winning.</em></td><td>past perfect continuous: <em>She said they <strong>had been winning</strong>.</em></td></tr>
+      <tr><td>will: <em>I'll help.</em></td><td>would: <em>She said she <strong>would help</strong>.</em></td></tr>
+      <tr><td>can: <em>I can swim.</em></td><td>could: <em>She said she <strong>could</strong> swim.</em></td></tr>
+      <tr><td>must: <em>You must go.</em></td><td>had to / should: <em>She said I <strong>had to</strong> go.</em></td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> <em>could, would, should, ought to, had better, need</em> do NOT change. &nbsp;|&nbsp; No change needed when the fact is still true: <em>She said the Earth <strong>goes</strong> round the Sun.</em></div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Pronoun &amp; Determiner Changes</h3>
+    <table>
+      <tr><th>Direct</th><th>Reported</th></tr>
+      <tr><td>my</td><td>his/her</td></tr>
+      <tr><td>this/that + noun</td><td>the</td></tr>
+      <tr><td>these/those + noun</td><td>the</td></tr>
+      <tr><td>I / we / you</td><td>he/she/they (context-dependent)</td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Time &amp; Place Changes</h3>
+    <table>
+      <tr><th>Direct</th><th>Reported</th><th>Direct</th><th>Reported</th></tr>
+      <tr><td>now</td><td>then / at that moment</td><td>today</td><td>that day</td></tr>
+      <tr><td>tomorrow</td><td>the following day</td><td>yesterday</td><td>the day before</td></tr>
+      <tr><td>next week</td><td>the following week</td><td>last week</td><td>the week before</td></tr>
+      <tr><td>here</td><td>there</td><td>ago</td><td>before / previously</td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Reported Questions</h3>
+    <ul style="margin:8px 0 0 18px;font-size:.92rem;line-height:2">
+      <li>No question form: <em>She asked <strong>what time the match had started</strong>.</em></li>
+      <li>Yes/No questions → <strong>if / whether</strong>: <em>She asked <strong>if we wanted</strong> to play.</em></li>
+      <li>Wh- questions → keep wh-word: <em>He asked <strong>where I lived</strong>.</em></li>
+    </ul>
+    <div class="watch-out"><strong>Watch out!</strong> Question word + infinitive is common: <em>She asked me <strong>what to do</strong>.</em></div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Reporting Verbs &amp; Patterns</h3>
+    <table>
+      <tr><th>Pattern</th><th>Verbs</th><th>Example</th></tr>
+      <tr><td>verb + (that)</td><td>say, admit, claim, deny, announce, explain, reply</td><td><em>He <strong>admitted (that)</strong> he was wrong.</em></td></tr>
+      <tr><td>verb + sb + (that)</td><td>tell, remind, inform, warn, convince, assure</td><td><em>She <strong>told me (that)</strong> she was tired.</em></td></tr>
+      <tr><td>verb + sb + to-inf</td><td>tell, ask, order, beg, instruct, invite, remind, warn</td><td><em>He <strong>asked me to leave</strong>.</em></td></tr>
+      <tr><td>verb + -ing</td><td>admit, deny, suggest, recommend</td><td><em>He <strong>denied stealing</strong> it.</em></td></tr>
+      <tr><td>verb + prep + -ing</td><td>apologise for, insist on, accuse sb of</td><td><em>She <strong>apologised for being</strong> late.</em></td></tr>
+    </table>
+  </div>
+
+  <!-- REPORTED SPEECH EXERCISES -->
+  <div class="exercise-card">
+    <h3>Exercise 1 — Direct → Reported Speech <span class="tag">Ready for Advanced p.98</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">Use the reporting verbs from the box. Write no more than two words in each gap.</p>
+    <p style="font-size:.85rem;color:#666;margin-bottom:10px"><em>warned • announced • reminded • repeated • pointed out • predicted • conceded • admitted • stressed • concluded</em></p>
+    <div id="fill-rep1"></div>
+    <button class="btn-check" onclick="checkFill('fill-rep1','score-rep1')">Check Answers</button>
+    <div class="score-bar" id="score-rep1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 2 — Alternative verb patterns <span class="tag">Ready for Advanced p.98</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">Match each group of verbs A–D with the correct verb pattern (1–4).</p>
+    <div id="mcq-rep-patterns"></div>
+    <div class="score-bar" id="score-rep-patterns"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 3 — Verbs &amp; dependent prepositions <span class="tag">Ready for Advanced p.98</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">Complete each gap with the correct preposition. The same preposition is used for both gaps in each sentence.</p>
+    <div id="fill-rep-prep"></div>
+    <button class="btn-check" onclick="checkFill('fill-rep-prep','score-rep-prep')">Check Answers</button>
+    <div class="score-bar" id="score-rep-prep"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 4 — Circle correct form (both may be correct) <span class="tag">Destination C1 Unit 25</span></h3>
+    <div id="mcq-rep2"></div>
+    <div class="score-bar" id="score-rep2"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 5 — Complete reported time expressions <span class="tag">Destination C1 Unit 25</span></h3>
+    <div id="fill-rep3"></div>
+    <button class="btn-check" onclick="checkFill('fill-rep3','score-rep3')">Check Answers</button>
+    <div class="score-bar" id="score-rep3"></div>
+  </div>
+</div>
+
+<!-- ===================== WORD FORMATION ===================== -->
+<div id="page-wordform" class="page">
+  <div class="section-title">Word Formation</div>
+
+  <div class="rule-box">
+    <h3>Key Prefixes</h3>
+    <table>
+      <tr><th>Prefix</th><th>Meaning</th><th>Examples</th></tr>
+      <tr><td>un-</td><td>not / reverse</td><td>unhappy, unfamiliar, unexpected</td></tr>
+      <tr><td>in-/im-/ir-/il-</td><td>not</td><td>incorrect, impossible, irregular, illegal</td></tr>
+      <tr><td>dis-</td><td>not / opposite</td><td>disbelief, disappear, disconnect</td></tr>
+      <tr><td>re-</td><td>again</td><td>rewrite, reactivate</td></tr>
+      <tr><td>over-</td><td>too much</td><td>overweight, overtake</td></tr>
+      <tr><td>under-</td><td>too little</td><td>underestimate</td></tr>
+      <tr><td>mis-</td><td>wrongly</td><td>misunderstand, mislead</td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Key Suffixes</h3>
+    <table>
+      <tr><th>Suffix</th><th>Forms</th><th>Examples</th></tr>
+      <tr><td>-tion / -sion / -ation</td><td>noun (action/result)</td><td>connection, discussion, information, creation</td></tr>
+      <tr><td>-ness</td><td>noun (quality)</td><td>sweetness, thoroughness, awareness</td></tr>
+      <tr><td>-ity / -ty</td><td>noun (quality)</td><td>poverty, nationality, originality</td></tr>
+      <tr><td>-ment</td><td>noun (action/result)</td><td>improvement, excitement</td></tr>
+      <tr><td>-ance / -ence</td><td>noun</td><td>independence, entrance, freedom</td></tr>
+      <tr><td>-ful</td><td>adjective (having)</td><td>powerful, thoughtful, useful</td></tr>
+      <tr><td>-less</td><td>adjective (without)</td><td>painless, useless, powerless</td></tr>
+      <tr><td>-al / -ical</td><td>adjective</td><td>political, ecological, original</td></tr>
+      <tr><td>-ous / -ious</td><td>adjective</td><td>humorous, mysterious, ridiculous</td></tr>
+      <tr><td>-ive</td><td>adjective</td><td>communicative, creative</td></tr>
+      <tr><td>-ly</td><td>adverb</td><td>powerfully, thoroughly, safely</td></tr>
+      <tr><td>-er / -or / -ist</td><td>noun (person)</td><td>writer, director, journalist</td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Word Families to Know</h3>
+    <table>
+      <tr><th>Base</th><th>Noun</th><th>Verb</th><th>Adjective</th><th>Adverb</th></tr>
+      <tr><td>active</td><td>activity / activation</td><td>activate</td><td>active / inactive</td><td>actively</td></tr>
+      <tr><td>connect</td><td>connection</td><td>connect / disconnect</td><td>connected</td><td>—</td></tr>
+      <tr><td>depend</td><td>dependence / independence</td><td>depend</td><td>dependent / independent</td><td>independently</td></tr>
+      <tr><td>excite</td><td>excitement / excitation</td><td>excite</td><td>excited / exciting</td><td>excitedly</td></tr>
+      <tr><td>inform</td><td>information</td><td>inform</td><td>(un)informed / informative</td><td>—</td></tr>
+      <tr><td>journal</td><td>journalism / journalist</td><td>—</td><td>journalistic</td><td>—</td></tr>
+      <tr><td>power</td><td>power</td><td>empower</td><td>powerful / powerless</td><td>powerfully</td></tr>
+      <tr><td>ridicule</td><td>ridicule / ridiculousness</td><td>ridicule</td><td>ridiculous</td><td>ridiculously</td></tr>
+      <tr><td>safe</td><td>safety / saviour</td><td>save</td><td>safe / unsafe</td><td>safely / unsafely</td></tr>
+      <tr><td>origin</td><td>origin / originality</td><td>originate</td><td>original / unoriginal</td><td>originally</td></tr>
+      <tr><td>announce</td><td>announcement</td><td>announce</td><td>(un)announced</td><td>—</td></tr>
+      <tr><td>convince</td><td>conviction</td><td>convince</td><td>convinced / convincing / unconvincing</td><td>convincingly</td></tr>
+    </table>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 1 — Find the incorrectly spelt word <span class="tag">Ready for Advanced p.14 Ex.3</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">In each group of four words, find the incorrectly spelt word and type the correct spelling.</p>
+    <p style="font-size:.83rem;color:#888;margin-bottom:10px">Example (0): insistance → <strong>insistence</strong></p>
+    <div id="fill-wf-spell"></div>
+    <button class="btn-check" onclick="checkFill('fill-wf-spell','score-wf-spell')">Check Answers</button>
+    <div class="score-bar" id="score-wf-spell"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 2 — Adjectives &amp; Adverbs: use the correct suffix <span class="tag">Ready for Advanced p.34</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">Form the correct adjective/adverb using: <em>-ory / -less / -able / -ent / -ative / -ial / -ic / -ous / -y</em></p>
+    <div id="fill-wf-adj"></div>
+    <button class="btn-check" onclick="checkFill('fill-wf-adj','score-wf-adj')">Check Answers</button>
+    <div class="score-bar" id="score-wf-adj"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 3 — Word Formation: Adjective or Adverb <span class="tag">Ready for Advanced p.34</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">Use the word in capitals to form an adjective or adverb. A negative affix may be needed.</p>
+    <div id="fill-wf-adj2"></div>
+    <button class="btn-check" onclick="checkFill('fill-wf-adj2','score-wf-adj2')">Check Answers</button>
+    <div class="score-bar" id="score-wf-adj2"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 4 — Word Formation: Verbs <span class="tag">Ready for Advanced p.99</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">Form a word from the word in capitals at the end of each line.</p>
+    <div id="fill-wf-verbs"></div>
+    <button class="btn-check" onclick="checkFill('fill-wf-verbs','score-wf-verbs')">Check Answers</button>
+    <div class="score-bar" id="score-wf-verbs"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 5 — Use the word in capitals to form the correct word <span class="tag">B1 Word Formation</span></h3>
+    <div id="fill-wf1"></div>
+    <button class="btn-check" onclick="checkFill('fill-wf1','score-wf1')">Check Answers</button>
+    <div class="score-bar" id="score-wf1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 6 — Word Formation (WWF / nature text) <span class="tag">Destination C1</span></h3>
+    <div id="fill-wf2"></div>
+    <button class="btn-check" onclick="checkFill('fill-wf2','score-wf2')">Check Answers</button>
+    <div class="score-bar" id="score-wf2"></div>
+  </div>
+</div>
+
+<!-- ===================== CONNECTIVES ===================== -->
+<div id="page-connectives" class="page">
+  <div class="section-title">Connectives &amp; Linking Words</div>
+
+  <div class="rule-box">
+    <h3>Contrast</h3>
+    <table>
+      <tr><th>Word</th><th>Use</th><th>Example</th></tr>
+      <tr><td><strong>although / even though / though</strong></td><td>+ clause</td><td><em><strong>Although</strong> it rained, we enjoyed it.</em></td></tr>
+      <tr><td><strong>despite / in spite of</strong></td><td>+ noun / -ing</td><td><em><strong>Despite</strong> the rain, we enjoyed it.</em></td></tr>
+      <tr><td><strong>however / nevertheless</strong></td><td>start new sentence</td><td><em>It rained. <strong>However</strong>, we enjoyed it.</em></td></tr>
+      <tr><td><strong>while / whereas</strong></td><td>direct contrast in one sentence</td><td><em>I like tea <strong>while</strong> she prefers coffee.</em></td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Cause &amp; Result</h3>
+    <table>
+      <tr><th>Word</th><th>Use</th><th>Example</th></tr>
+      <tr><td><strong>because</strong></td><td>+ clause (reason)</td><td><em>I stayed home <strong>because</strong> I was ill.</em></td></tr>
+      <tr><td><strong>due to / because of</strong></td><td>+ noun/-ing</td><td><em>Cancelled <strong>due to</strong> fog.</em></td></tr>
+      <tr><td><strong>therefore / as a result / consequently</strong></td><td>result (new sentence)</td><td><em>It rained; <strong>therefore</strong> we stayed in.</em></td></tr>
+      <tr><td><strong>so</strong></td><td>+ clause (result)</td><td><em>It rained <strong>so</strong> we stayed in.</em></td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Condition</h3>
+    <table>
+      <tr><th>Word</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><strong>if / unless</strong></td><td>condition / except if</td><td><em><strong>Unless</strong> you hurry, we'll be late.</em></td></tr>
+      <tr><td><strong>as long as / provided (that)</strong></td><td>on condition that</td><td><em>You can go <strong>as long as</strong> you're back by 10.</em></td></tr>
+      <tr><td><strong>in case</strong></td><td>as a precaution</td><td><em>Take an umbrella <strong>in case</strong> it rains.</em></td></tr>
+      <tr><td><strong>even if</strong></td><td>regardless of condition</td><td><em><strong>Even if</strong> I study, I might fail.</em></td></tr>
+    </table>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise — Fill in the correct connective (from the list)</h3>
+    <p style="font-size:.85rem;color:#666;margin-bottom:10px">as long as • because • despite • due to • even though • however • in case • in spite of • nevertheless • therefore</p>
+    <div id="fill-conn1"></div>
+    <button class="btn-check" onclick="checkFill('fill-conn1','score-conn1')">Check Answers</button>
+    <div class="score-bar" id="score-conn1"></div>
+  </div>
+</div>
+
+<!-- ===================== WRITING SKILLS ===================== -->
+<div id="page-writing" class="page">
+  <div class="section-title">Writing Skills</div>
+
+  <div class="rule-box">
+    <h3>Essay Structure</h3>
+    <table>
+      <tr><th>Paragraph</th><th>Content</th></tr>
+      <tr><td><strong>Intro (§1)</strong></td><td>State the situation / topic. Give your general stance or introduce the debate.</td></tr>
+      <tr><td><strong>Arguments for (§2)</strong></td><td>1st reason + development. 2nd reason + development. Use: <em>Firstly… Secondly…</em></td></tr>
+      <tr><td><strong>Arguments against (§3)</strong></td><td>Counter-arguments. Use: <em>On the other hand… However… A further point is…</em></td></tr>
+      <tr><td><strong>Your view (§4)</strong></td><td>Your opinion + solution/suggestion.</td></tr>
+      <tr><td><strong>Conclusion (§5)</strong></td><td>Summary + final opinion. Use: <em>In conclusion… To sum up…</em></td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Formal Letter / Job Application</h3>
+    <ul style="margin:8px 0 0 18px;font-size:.92rem;line-height:2">
+      <li><strong>Opening:</strong> <em>I am writing in response to your advertisement in [paper] of [date] for [post].</em></li>
+      <li><strong>Interest:</strong> <em>I am very interested in the advertised post and believe I have the right experience…</em></li>
+      <li><strong>Experience:</strong> Describe relevant qualifications and experience concretely.</li>
+      <li><strong>Qualities:</strong> <em>I appreciate that the role requires… and I know I can bring…</em></li>
+      <li><strong>References:</strong> <em>References can be obtained from…</em></li>
+      <li><strong>Closing:</strong> <em>I hope you will give my application favourable consideration and look forward to hearing from you.</em></li>
+      <li><strong>Sign-off:</strong> <em>Yours sincerely</em> (named recipient) / <em>Yours faithfully</em> (Dear Sir/Madam)</li>
+    </ul>
+  </div>
+
+  <div class="rule-box">
+    <h3>Report / Scientific Report Structure</h3>
+    <ul style="margin:8px 0 0 18px;font-size:.92rem;line-height:2">
+      <li>Give a proper <strong>title</strong>.</li>
+      <li>Divide into <strong>sections with headings</strong>.</li>
+      <li>State aim at the beginning: <em>The aim/purpose of this report is to…</em></li>
+      <li>Avoid repeating the exact words of the question.</li>
+    </ul>
+    <h4 style="margin-top:12px;margin-bottom:6px;color:var(--blue)">Making Recommendations (formal → informal)</h4>
+    <ul style="margin:0 0 0 18px;font-size:.92rem;line-height:2">
+      <li><em>I recommend that the council <strong>should</strong> set up…</em></li>
+      <li><em>I would recommend <strong>setting up</strong>…</em></li>
+      <li><em>I suggest <strong>buying</strong> more equipment…</em></li>
+      <li><em>It would be a good idea <strong>for</strong> the council <strong>to provide</strong>…</em></li>
+      <li><em>Why not + bare infinitive: Why not <strong>phone</strong> one of your friends?</em></li>
+      <li><em>How about + -ing: How about <strong>meeting</strong> up after work?</em></li>
+      <li><em>Let's + bare infinitive: Let's <strong>ask</strong> everyone's opinion.</em></li>
+    </ul>
+  </div>
+
+  <!-- MODEL ESSAY -->
+  <div class="rule-box">
+    <h3>Model Essay — Annotated Example <span class="tag">How to structure a short essay.docx</span></h3>
+    <p style="font-size:.85rem;color:#888;margin-bottom:12px"><em>Question: "All young people should continue at school until at least the age of 18. Do you agree?"</em></p>
+
+    <div style="border-left:4px solid var(--blue);padding:8px 14px;margin-bottom:10px;background:#f0f4ff;border-radius:0 6px 6px 0">
+      <strong style="color:var(--blue);font-size:.8rem;text-transform:uppercase">§1 — Introduction: situation + stance</strong>
+      <p style="font-size:.9rem;margin-top:4px">Although in my country compulsory education finishes at the age of 16, I believe that young people should continue in education at least till they are 18.</p>
+    </div>
+
+    <div style="border-left:4px solid var(--green);padding:8px 14px;margin-bottom:10px;background:#f0fff4;border-radius:0 6px 6px 0">
+      <strong style="color:var(--green);font-size:.8rem;text-transform:uppercase">§2 — Arguments FOR (2 reasons)</strong>
+      <p style="font-size:.9rem;margin-top:4px">There are two good reasons for encouraging young people to stay at school. <strong>Firstly</strong>, because jobs are becoming more and more specialised and technical, it is almost impossible for 16-year-olds to find work. <strong>Secondly</strong>, if they stay at school, they will receive the education and training which will create opportunities for them in the future.</p>
+    </div>
+
+    <div style="border-left:4px solid var(--orange);padding:8px 14px;margin-bottom:10px;background:#fff8f0;border-radius:0 6px 6px 0">
+      <strong style="color:var(--orange);font-size:.8rem;text-transform:uppercase">§3 — Arguments AGAINST (counter-arguments)</strong>
+      <p style="font-size:.9rem;margin-top:4px"><strong>On the other hand</strong>, many students would like to leave school at 16. This is because they find school difficult or they do not enjoy studying. For that reason, they would prefer to be working and earning money rather than pursuing their studies.</p>
+    </div>
+
+    <div style="border-left:4px solid #7b1fa2;padding:8px 14px;margin-bottom:10px;background:#fdf0ff;border-radius:0 6px 6px 0">
+      <strong style="color:#7b1fa2;font-size:.8rem;text-transform:uppercase">§4 — My own view + solution</strong>
+      <p style="font-size:.9rem;margin-top:4px"><strong>A further point is that</strong> unmotivated students disrupt lessons, and this causes problems for students who do prefer to study. <strong>Therefore</strong>, after 16 they should only study technical or practical subjects that interest them.</p>
+    </div>
+
+    <div style="border-left:4px solid #00796b;padding:8px 14px;background:#f0fffe;border-radius:0 6px 6px 0">
+      <strong style="color:#00796b;font-size:.8rem;text-transform:uppercase">§5 — Conclusion: summary + final opinion</strong>
+      <p style="font-size:.9rem;margin-top:4px"><strong>In conclusion</strong>, I believe it is a mistake for people to leave soon, because they will miss opportunities which may arise in the future. <strong>More importantly</strong>, they will never find out who they might truly be in terms of fulfilling their dreams and truly thriving.</p>
+    </div>
+  </div>
+
+  <!-- MODEL FORMAL LETTERS -->
+  <div class="rule-box">
+    <h3>Model Letter 1 — Response to Advertisement <span class="tag">job application.docx</span></h3>
+    <p style="font-size:.85rem;color:#888;margin-bottom:10px"><em>Key phrases highlighted — study these for the exam.</em></p>
+    <div style="background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:.88rem;line-height:1.9">
+      <p>6 August 2025<br>Mr. James Hamilton, Human Resources Manager</p>
+      <p style="margin-top:8px">Dear Mr. Hamilton,</p>
+      <p style="margin-top:8px"><span class="watch-out" style="display:inline;border:none;padding:0;background:none"><strong>I am writing in response to your advertisement</strong></span> in the Guardian of 5 August 2025 for a temporary nursery assistant in your firm's crèche. <strong>I am very interested in the advertised post and think that I have the right experience and personality for the job.</strong></p>
+      <p style="margin-top:8px">I am used to dealing with young children and intend to make teaching my long-term career. I have just left school and am taking a year out before taking up a place at Neath Teachers' Training College next autumn.</p>
+      <p style="margin-top:8px"><strong>I appreciate that the role of nursery assistant requires</strong> great energy, enthusiasm, initiative and patience <strong>and I know I can bring all these qualities to the post.</strong></p>
+      <p style="margin-top:8px"><strong>References can be obtained from</strong> the head teacher of my school, Mr. Peter Sharp, and from Mrs. Jean Adamson. Their details are included in my CV.</p>
+      <p style="margin-top:8px"><strong>I hope you will give my application favourable consideration and I look forward to hearing from you.</strong></p>
+      <p style="margin-top:8px"><strong>Yours sincerely,</strong><br>Elina Shaw</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Model Letter 2 — Speculative Application <span class="tag">job application.docx</span></h3>
+    <div style="background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:.88rem;line-height:1.9">
+      <p>7 February 2026<br>Ms. Esther Martin, Editorial Director</p>
+      <p style="margin-top:8px">Dear Ms. Martin,</p>
+      <p style="margin-top:8px"><strong>I am actively seeking a post in the publishing industry.</strong> Although I would welcome the opportunity to work in any aspect of publishing, my preference is the editorial area. <strong>I am about to graduate from</strong> Glasbugh University with Honours in English Language.</p>
+      <p style="margin-top:8px">Most of my family work in the publishing industry and it has been my ambition, since before I left school, to make it my career too. With that aim in mind, I have had various temporary jobs and periods of work experience involving books, as you will see from my CV, which I enclose.</p>
+      <p style="margin-top:8px"><strong>I feel that with this accumulated experience I have the right background to fit in well</strong> in an editorial department. I am a good communicator and work well under pressure.</p>
+      <p style="margin-top:8px"><strong>I look forward to hearing from you.</strong></p>
+      <p style="margin-top:8px"><strong>Yours sincerely,</strong><br>Candidate</p>
+    </div>
+    <div class="watch-out" style="margin-top:10px"><strong>Key difference:</strong> Speculative = you contact them without a job ad. Still use formal register. Open with what you're seeking, not "I am writing in response to…"</div>
+  </div>
+
+  <!-- MODEL REPORT -->
+  <div class="rule-box">
+    <h3>Model Report — Annotated Example <span class="tag">propasalsample.docx</span></h3>
+    <p style="font-size:.85rem;color:#888;margin-bottom:10px"><em>Task: You studied abroad as part of an exchange. Why did you do it? What did you like/dislike? Make recommendations.</em></p>
+
+    <div style="border-left:4px solid var(--blue);padding:8px 14px;margin-bottom:10px;background:#f0f4ff;border-radius:0 6px 6px 0">
+      <strong style="color:var(--blue);font-size:.8rem;text-transform:uppercase">Title + Introduction</strong>
+      <p style="font-size:.9rem;margin-top:4px"><strong>Pegasus Educational Exchange Programme</strong><br>
+      <strong>The purpose of this report is to outline</strong> my reasons for doing the exchange, the positive and negative aspects of the experience and to make recommendations for improvements.</p>
+    </div>
+
+    <div style="border-left:4px solid var(--green);padding:8px 14px;margin-bottom:10px;background:#f0fff4;border-radius:0 6px 6px 0">
+      <strong style="color:var(--green);font-size:.8rem;text-transform:uppercase">Section: Reasons for doing the exchange</strong>
+      <p style="font-size:.9rem;margin-top:4px">I have been in New Zealand as part of the Pegasus programme for the last nine months. I participated in the exchange <strong>in order to</strong> do an MSc in Environmental Science. <strong>At the same time</strong>, I had the opportunity to improve my English.</p>
+    </div>
+
+    <div style="border-left:4px solid var(--orange);padding:8px 14px;margin-bottom:10px;background:#fff8f0;border-radius:0 6px 6px 0">
+      <strong style="color:var(--orange);font-size:.8rem;text-transform:uppercase">Section: Positive and negative aspects</strong>
+      <p style="font-size:.9rem;margin-top:4px">I think that <strong>the benefits of doing this exchange far outweigh the disadvantages.</strong> The main professional advantage is the opportunity to exchange ideas with teachers and students from another part of the world. <strong>As a result</strong>, I believe that I will return to my country with innovative solutions to local problems. <strong>In addition</strong>, I have acquired improved language skills.<br><br>
+      <strong>The negative aspect</strong> from my point of view is that the programme does not receive enough financial support and, <strong>as a result</strong>, it has been very expensive. This is a problem which is likely to discourage prospective exchange students.</p>
+    </div>
+
+    <div style="border-left:4px solid #00796b;padding:8px 14px;background:#f0fffe;border-radius:0 6px 6px 0">
+      <strong style="color:#00796b;font-size:.8rem;text-transform:uppercase">Section: Recommendations</strong>
+      <p style="font-size:.9rem;margin-top:4px"><strong>I would recommend</strong> that the programme increases its financial support for students. <strong>It would also be a good idea</strong> to provide a dedicated coordinator for each exchange student during their first month abroad.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MIXED EXERCISES ===================== -->
+<div id="page-exercises" class="page">
+  <div class="section-title">Mixed Exercises</div>
+
+  <div class="exercise-card">
+    <h3>Vocabulary in Contrast — The Media <span class="tag">Unit 8 B2</span></h3>
+    <div id="mcq-med1"></div>
+    <div class="score-bar" id="score-med1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Articles — Write a/an/the or dash (–) <span class="tag">Unit 7 B2</span></h3>
+    <div id="fill-art1"></div>
+    <button class="btn-check" onclick="checkFill('fill-art1','score-art1')">Check Answers</button>
+    <div class="score-bar" id="score-art1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Word Formation — Sentences <span class="tag">B1/B2</span></h3>
+    <div id="fill-wfs1"></div>
+    <button class="btn-check" onclick="checkFill('fill-wfs1','score-wfs1')">Check Answers</button>
+    <div class="score-bar" id="score-wfs1"></div>
+  </div>
+
+</div>
+
+<script>
+// ==============================
+// NAVIGATION
+// ==============================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ==============================
+// MCQ ENGINE
+// ==============================
+function buildMCQ(containerId, scoreId, questions) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  let html = '';
+  questions.forEach((q, i) => {
+    html += `<div class="q-item" id="${containerId}-q${i}">
+      <label>${i+1}. ${q.text}</label>
+      <div class="mcq-options">`;
+    q.options.forEach(opt => {
+      html += `<button onclick="selectMCQ('${containerId}',${i},'${opt}',${JSON.stringify(q.answer)})">${opt}</button>`;
+    });
+    html += `</div><div class="feedback" id="${containerId}-fb${i}"></div></div>`;
+  });
+  c.innerHTML = html;
+}
+
+function selectMCQ(cid, idx, chosen, answer) {
+  const answers = Array.isArray(answer) ? answer : [answer];
+  const qDiv = document.getElementById(cid + '-q' + idx);
+  qDiv.querySelectorAll('button').forEach(b => {
+    b.className = '';
+    if (answers.includes(b.textContent)) b.classList.add('reveal-ok');
+  });
+  const btns = qDiv.querySelectorAll('button');
+  btns.forEach(b => { if (b.textContent === chosen) {
+    b.classList.add(answers.includes(chosen) ? 'selected-ok' : 'selected-err');
+  }});
+  const fb = document.getElementById(cid + '-fb' + idx);
+  if (answers.includes(chosen)) {
+    fb.textContent = '✓ Correct!';
+    fb.className = 'feedback show ok';
+  } else {
+    fb.textContent = '✗ Answer: ' + answers.join(' / ');
+    fb.className = 'feedback show err';
+  }
+}
+
+// ==============================
+// FILL-IN ENGINE
+// ==============================
+function buildFill(containerId, items) {
+  // items: [{before, answer, after, hint}]
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  let html = '';
+  items.forEach((it, i) => {
+    const hint = it.hint ? ` <span style="color:#999;font-size:.82rem">(${it.hint})</span>` : '';
+    html += `<div class="q-item">
+      <label>${i+1}. ${it.before || ''} <input type="text" id="${containerId}-a${i}" placeholder="..." autocomplete="off"> ${it.after || ''}${hint}</label>
+      <div class="feedback" id="${containerId}-fb${i}"></div>
+    </div>`;
+  });
+  c.innerHTML = html;
+}
+
+function checkFill(containerId, scoreId) {
+  let total = 0, correct = 0;
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.querySelectorAll('input[type="text"]').forEach((inp, i) => {
+    total++;
+    const answerEl = document.getElementById(containerId + '-fb' + i);
+    // get answer from data stored on input
+    const ans = inp.dataset.answer ? inp.dataset.answer.split('|') : [];
+    const val = inp.value.trim().toLowerCase();
+    const match = ans.some(a => a.toLowerCase() === val);
+    inp.className = match ? 'correct' : 'wrong';
+    if (match) {
+      correct++;
+      answerEl.textContent = '✓ Correct!';
+      answerEl.className = 'feedback show ok';
+    } else {
+      answerEl.textContent = '✗ ' + (ans.join(' / ') || '?');
+      answerEl.className = 'feedback show err';
+    }
+  });
+  const sb = document.getElementById(scoreId);
+  if (sb) sb.textContent = `Score: ${correct} / ${total}`;
+}
+
+function setFillAnswers(containerId, answers) {
+  answers.forEach((ans, i) => {
+    const inp = document.getElementById(containerId + '-a' + i);
+    if (inp) inp.dataset.answer = Array.isArray(ans) ? ans.join('|') : ans;
+  });
+}
+
+// ==============================
+// DATA & BUILD
+// ==============================
+
+// --- GERUND / INFINITIVE ---
+// Exercise 1: Ready for Advanced p.48 — Language Focus 2
+buildMCQ('mcq-ger1', 'score-ger1', [
+  {text:"The best way to prepare for an interview is _____ to the company's website.", options:["going","to go"], answer:"to go"},
+  {text:"Can't you see you've done your homework?", options:["going","to go"], answer:"going"},  // skipped: context-dependent, kept as filler
+  {text:"I put on my best suit _____ me that confidence.", options:["giving","to give"], answer:"to give"},
+  {text:"I think I managed _____ it.", options:["hiding","to hide"], answer:"to hide"},
+  {text:"It's advisable _____ the interviewer in the bath.", options:["avoiding meeting","to avoid meeting"], answer:"to avoid meeting"},
+  {text:"I really don't feel like _____ out tonight.", options:["going","to go"], answer:"going"},
+  {text:"We discussed _____ the attic into a spare bedroom.", options:["turning","to turn"], answer:"turning"},
+  {text:"She wasn't able _____ very clearly after her accident.", options:["speaking","to speak"], answer:"to speak"},
+  {text:"They're going to postpone _____ a decision until next month.", options:["making","to make"], answer:"making"},
+  {text:"Are you planning _____ a new DVD player?", options:["getting","to get"], answer:"to get"},
+  {text:"I'm really looking forward _____ on the cruise.", options:["to going","to go"], answer:"to going"},
+]);
+
+// Exercise 2: Nouns followed by the infinitive (Ready for Advanced p.48)
+buildFill('fill-ger-nouns', [
+  {before:"It's very obvious that he really wants to get on in the company and he's done a lot to get over his shyness. He has shown a clear", after:"to make progress.", hint:"willingness / determination / capacity / ability"},
+  {before:"She usually thinks it's her fault if work doesn't get done on time, even though I've tried to tell her several times it's not her", after:"to blame herself.", hint:"tendency / refusal"},
+  {before:"He never misses a chance to become a better salesman and what I admire most is that he doesn't get fed up if things aren't going well. He takes advantage of every", after:"to develop as a salesman.", hint:"opportunity / attempt"},
+  {before:"He also doesn't seem very capable of controlling his feelings when he's right in front of a class. Furthermore, he seems to lack the", after:"to leave the teaching profession.", hint:"willingness / decision / determination / refusal"},
+  {before:"Her greatest strengths are her", after:"to accept new challenges and cope with pressure.", hint:"ability / willingness / capacity"},
+]);
+setFillAnswers('fill-ger-nouns', [
+  ['willingness','determination','capacity','ability'],
+  ['tendency'],
+  ['opportunity'],
+  ['willingness','determination','refusal','decision'],
+  ['ability','willingness','capacity'],
+]);
+
+buildFill('fill-ger2', [
+  {before:"I'll never forgive June for", after:"(lie) to me like that.", hint:"LIE"},
+  {before:"Daniel's not very good at", after:"(make) friends.", hint:"MAKE"},
+  {before:"I can't resist", after:"(buy) things when they're in the sales.", hint:"BUY"},
+  {before:"We've got to encourage students", after:"(study), not blame them.", hint:"STUDY"},
+  {before:"I don't know how you managed", after:"(persuade) the bank manager to lend you so much money!", hint:"PERSUADE"},
+  {before:"Do you deny", after:"(steal) the money? Yes or no?", hint:"STEAL"},
+  {before:"I refuse", after:"(accept) that there's no alternative.", hint:"ACCEPT"},
+  {before:"He only just escaped", after:"(send) to prison. Next time, the judge won't be so forgiving.", hint:"SEND"},
+  {before:"He expected", after:"(give) a brand new computer for Christmas, but all he got was a second-hand watch!", hint:"GIVE"},
+]);
+setFillAnswers('fill-ger2', [
+  'lying','making','buying','to study','to persuade','stealing','to accept','being sent','to be given'
+]);
+
+// Exercise 4: Common Problems — Section B (Ready for Advanced p.48)
+buildMCQ('mcq-ger-problems', 'score-ger-problems', [
+  {text:"a) I tried to explain to her why I had been so upset. / b) I tried explaining to her why I had been so upset.", options:["a) has the mistake","b) has the mistake","Both are correct"], answer:"Both are correct"},
+  {text:"a) He seemed to enjoy playing the guitar when he was young. / b) He seemed enjoying playing the guitar when he was young.", options:["a) has the mistake","b) has the mistake"], answer:"b) has the mistake"},
+  {text:"a) She offered helping me with my project. / b) She offered to help me with my project.", options:["a) has the mistake","b) has the mistake"], answer:"a) has the mistake"},
+  {text:"a) I remember to post the letter — I did it this morning. / b) I remember posting the letter — I did it this morning.", options:["a) has the mistake","b) has the mistake"], answer:"a) has the mistake"},
+  {text:"a) He stopped to smoke last year and feels much better now. / b) He stopped smoking last year and feels much better now.", options:["a) has the mistake","b) has the mistake"], answer:"a) has the mistake"},
+  {text:"a) I'd rather to stay at home tonight. / b) I'd rather stay at home tonight.", options:["a) has the mistake","b) has the mistake"], answer:"a) has the mistake"},
+  {text:"a) She denied to steal the money. / b) She denied stealing the money.", options:["a) has the mistake","b) has the mistake"], answer:"a) has the mistake"},
+  {text:"a) I'm really looking forward to seeing you next week. / b) I'm really looking forward to see you next week.", options:["a) has the mistake","b) has the mistake"], answer:"b) has the mistake"},
+]);
+
+// Exercise 5: Same meaning — Destination B2 Unit 17
+buildMCQ('mcq-ger3', 'score-ger3', [
+  {text:"a) I can't bear being tickled! / b) I can't bear to be tickled!", options:["✓ Same","✗ Different"], answer:"✓ Same"},
+  {text:"a) My boss went on saying he was proud of us. / b) My boss went on to say he was proud of us.", options:["✓ Same","✗ Different"], answer:"✗ Different"},
+  {text:"a) Have you stopped having lunch yet? / b) Have you stopped to have lunch yet?", options:["✓ Same","✗ Different"], answer:"✗ Different"},
+  {text:"a) Have you started having lunch yet? / b) Have you started to have lunch yet?", options:["✓ Same","✗ Different"], answer:"✓ Same"},
+  {text:"a) They continued climbing the mountain. / b) They continued to climb the mountain.", options:["✓ Same","✗ Different"], answer:"✓ Same"},
+  {text:"a) We all saw the reporter interviewing the witness. / b) We all saw the reporter interview the witness.", options:["✓ Same","✗ Different"], answer:"✗ Different"},
+  {text:"a) I love playing practical jokes on my younger brother. / b) I love to play practical jokes on my younger brother.", options:["✓ Same","✗ Different"], answer:"✓ Same"},
+  {text:"a) Why don't you try holding your breath for a minute? / b) Why don't you try to hold your breath for a minute?", options:["✓ Same","✗ Different"], answer:"✗ Different"},
+  {text:"a) I hate being cheated by taxi drivers. / b) I hate to be cheated by taxi drivers.", options:["✓ Same","✗ Different"], answer:"✓ Same"},
+]);
+
+// --- REPORTED SPEECH (Ready for Advanced p.98) ---
+// Exercise 1: Direct → Reported with verb box
+buildFill('fill-rep1', [
+  {before:"'Yes, I do accept the situation is critical, but let me say once again that we are doing our best to find a solution.' The Prime Minister considered that the situation was critical, but", after:"that the government was doing its best to find a solution.", hint:"repeated / stressed"},
+  {before:"'I still sell the stolen paintings, but I would like to mention that I have given all the proceeds to charity.' The defendant", after:"that he had given all the proceeds to the court.", hint:"admitted / conceded"},
+  {before:"'There will be more than 250,000 taking part in the protest. There might be some violent activists — be careful!' The police", after:"that there might be some violent activists and urged them to be careful.", hint:"warned / predicted"},
+  {before:"'The result of all this is that we must increase profits. Remember — if we don't, the company will go bankrupt.' The Managing Director", after:"that they had to increase profits and that the company would go bankrupt if they didn't.", hint:"concluded / warned / stressed"},
+  {before:"'I'd just like to tell everyone that I intend to resign at the end of this season. I should emphasise that I have not been asked to leave.' The manager", after:"that he intended to resign and that he had not been asked to leave.", hint:"announced / stressed / repeated"},
+]);
+setFillAnswers('fill-rep1', [
+  ['repeated','stressed'],
+  ['admitted','conceded'],
+  ['warned','predicted'],
+  ['concluded','warned','stressed'],
+  ['announced','stressed'],
+]);
+
+// Exercise 2: Verb patterns (MCQ matching)
+buildMCQ('mcq-rep-patterns', 'score-rep-patterns', [
+  {text:"Pattern 1: doing something. Which group fits? (urge / warn / remind / caution)", options:["A","B","C","D"], answer:"A"},
+  {text:"Pattern 2: to do something. Which group fits? (suggest / recommend / deny / admit)", options:["A","B","C","D"], answer:"C"},
+  {text:"Pattern 3: someone to do something. Which group fits? (promise / agree / refuse)", options:["A","B","C","D"], answer:"B"},
+  {text:"Pattern 4: (that) someone should do something. Which group fits? (insist / suggest / recommend)", options:["A","B","C","D"], answer:"D"},
+]);
+
+// Exercise 3: Dependent prepositions (Ready for Advanced p.98)
+buildFill('fill-rep-prep', [
+  {before:"I apologised ___ arriving late, but she thanked me ___ turning up at all.", hint:"for / for"},
+  {before:"He congratulated me ___ passing my driving test and insisted ___ buying me a drink.", hint:"on / on"},
+  {before:"She accused him ___ deception and spoke ___ reporting him to the police.", hint:"of / about"},
+  {before:"The union protested ___ the decision to sack him, but his colleagues supported the move and argued ___ reinstating him.", hint:"about/against / for/against"},
+  {before:"She consented ___ the interview but objected ___ being photographed.", hint:"to / to"},
+]);
+setFillAnswers('fill-rep-prep', [
+  'for','on','of','about','to'
+]);
+
+// Exercise 4: Circle correct form — Destination C1 Unit 25
+buildMCQ('mcq-rep2', 'score-rep2', [
+  {text:"When I told Mr Peters that the dog _____ eaten my homework, he didn't believe me.", options:["has","had"], answer:["has","had"]},
+  {text:"Adam told me that his girlfriend _____ eat meat at all.", options:["doesn't","didn't"], answer:["doesn't","didn't"]},
+  {text:"Roger told me his team _____ doing well in the first rounds, but it all _____ wrong.", options:["were / all went","had been / had all gone"], answer:["were / all went","had been / had all gone"]},
+  {text:"Did Galileo say that the Earth _____ round the sun?", options:["goes","went"], answer:"goes"},
+  {text:"Babs announced to us all last night that she _____ finally giving up smoking.", options:["is","was"], answer:"was"},
+  {text:"I told Brian last week that the office _____ opening on Tuesday.", options:["isn't","wasn't"], answer:["isn't","wasn't"]},
+]);
+
+// Exercise 5: Time expressions — Destination C1 Unit 25
+buildFill('fill-rep3', [
+  {before:"Seamus asked Marios what he was doing at that", after:".", hint:"moment"},
+  {before:"Marios replied that right", after:"he was not doing anything much.", hint:"then"},
+  {before:"Seamus mentioned a conversation they'd had the", after:"week.", hint:"previous"},
+  {before:"Marios admitted that he'd been to the gym two days", after:".", hint:"before / previously / earlier"},
+  {before:"Marios told Seamus he was taking part in the London Marathon the following", after:".", hint:"month"},
+  {before:"Marios told Seamus that he had been planning to call him the day", after:".", hint:"before"},
+]);
+setFillAnswers('fill-rep3', [
+  ['moment','time'],['then'],['previous'],['before','previously','earlier'],['month'],['before']
+]);
+
+// --- WORD FORMATION ---
+// Exercise 1: Find incorrectly spelt word (Ready for Advanced p.14 Ex.3)
+buildFill('fill-wf-spell', [
+  {before:"(1) apparent | pleasent | different | independent — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(2) occasion | accountant | netcessary | accident — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(3) publically | optimistically | scientifically | dramatically — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(4) separate | desperate | immediate | definate — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(5) unreasonable | irresponsable | irritable | indispensable — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(6) chefs | roofs | safes | leafs — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(7) exceeding | succeeding | proceeding | preceeding — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(8) embarrassment | accommodation | bussiness | committee — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(9) unnatural | unknown | dissapointed | dissatisfied — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(10) believe | recieve | seize | commercial — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(11) financial | influencial | weird | beneficial — The misspelt word is:", after:"", hint:"one of these four words"},
+  {before:"(12) cemetery | factery | bakery | surgery — The misspelt word is:", after:"", hint:"one of these four words"},
+]);
+setFillAnswers('fill-wf-spell', [
+  'pleasent','netcessary','publically','definate','irresponsable','leafs','preceeding','bussiness','dissapointed','recieve','influencial','factery'
+]);
+
+// Exercise 2: Adjectives & Adverbs suffixes (Ready for Advanced p.34)
+buildFill('fill-wf-adj', [
+  {before:"approach (+ suffix from box) →", after:"", hint:"-able / -ory / -ive / -ent / -ous / -ic / -ial / -less"},
+  {before:"argument →", after:"", hint:"argumentative"},
+  {before:"administer →", after:"", hint:"administrative"},
+  {before:"contradict →", after:"", hint:"contradictory"},
+  {before:"chat →", after:"", hint:"chatty"},
+  {before:"mud →", after:"", hint:"muddy"},
+  {before:"luxury →", after:"", hint:"luxurious"},
+  {before:"mystery →", after:"", hint:"mysterious"},
+  {before:"monster →", after:"", hint:"monstrous"},
+  {before:"end →", after:"", hint:"endless"},
+  {before:"price →", after:"", hint:"priceless"},
+  {before:"sleep →", after:"", hint:"sleepy"},
+  {before:"persist →", after:"", hint:"persistent"},
+  {before:"appear →", after:"", hint:"apparent"},
+  {before:"obey →", after:"", hint:"obedient"},
+  {before:"manager →", after:"", hint:"managerial"},
+  {before:"secretary →", after:"", hint:"secretarial"},
+  {before:"territory →", after:"", hint:"territorial"},
+]);
+setFillAnswers('fill-wf-adj', [
+  'approachable','argumentative','administrative','contradictory','chatty','muddy','luxurious','mysterious','monstrous','endless','priceless','sleepy','persistent','apparent','obedient','managerial','secretarial','territorial'
+]);
+
+// Exercise 3: Adjective/Adverb with negative affixes (Ready for Advanced p.34)
+buildFill('fill-wf-adj2', [
+  {before:"Her work has been acclaimed for its sensitivity of style and _____ use of imagery.", after:"", hint:"IMAGINE → imaginative"},
+  {before:"Her performance at work was considered _____ and her contract was not renewed.", after:"", hint:"SATISFY → unsatisfactory"},
+  {before:"It is becoming _____ difficult for artists to obtain public funding.", after:"", hint:"INCREASE → increasingly"},
+  {before:"The assistants in Gamidges are unhelpful and _____. I shall shop elsewhere!", after:"", hint:"COURTESY → discourteous"},
+  {before:"My grandfather was extremely _____ about astronomy; the planets were his great passion.", after:"", hint:"KNOWLEDGE → knowledgeable"},
+  {before:"We strayed from the path at some point and got _____ lost.", after:"", hint:"HOPE → hopelessly"},
+  {before:"Although several companies made _____ losses, the market as a whole was buoyant.", after:"", hint:"SUBSTANCE → substantial"},
+  {before:"The bookcase was placed _____ near the door to hide a huge crack in the wall.", after:"", hint:"STRATEGY → strategically"},
+]);
+setFillAnswers('fill-wf-adj2', [
+  'imaginative','unsatisfactory','increasingly','discourteous','knowledgeable','hopelessly','substantial','strategically'
+]);
+
+// Exercise 4: Word Formation Verbs (Ready for Advanced p.99)
+buildFill('fill-wf-verbs', [
+  {before:"Each employee's performance is _____ at least once a year.", after:"", hint:"VALUE → valued / evaluated"},
+  {before:"We could barely hear ourselves speak above the _____ roar of the sea.", after:"", hint:"DEAF → deafening"},
+  {before:"He was fined £500 and _____ from driving for three years.", after:"", hint:"QUALIFY → disqualified"},
+  {before:"They lost the battle, despite _____ the enemy by two to one.", after:"", hint:"NUMBER → outnumbering"},
+  {before:"I spent my first two weeks back at work _____ myself with all the new procedures.", after:"", hint:"FAMILIAR → familiarising"},
+  {before:"Arnold died in 1953; his wife, who _____ him by almost half a century, passed away on the last day of the millennium.", after:"", hint:"LIVE → outlived"},
+  {before:"Before enrolling on a course, you should first ensure that it has been _____ by an officially recognised body.", after:"", hint:"VALID → validated"},
+  {before:"New 'Deluxe' moisturising cream smooths out wrinkles and _____ that your skin stays young-looking.", after:"", hint:"SURE → ensures"},
+]);
+setFillAnswers('fill-wf-verbs', [
+  ['valued','evaluated'],'deafening','disqualified','outnumbering','familiarising','outlived','validated','ensures'
+]);
+
+// Exercise 5: B1 Word Formation sentences
+buildFill('fill-wf1', [
+  {before:"You must _____ your account before you can write posts.", after:"", hint:"ACTIVE"},
+  {before:"The _____ of the film brought all his favourite actors together.", after:"", hint:"DIRECT"},
+  {before:"I had an _____ visit from a colleague.", after:"", hint:"EXPECT"},
+  {before:"The doctor _____ my dad to stay at home.", after:"", hint:"ADVICE"},
+  {before:"The internet _____ became weaker and weaker.", after:"", hint:"CONNECT"},
+  {before:"The treatment was completely _____.", after:"", hint:"PAIN"},
+  {before:"It was an _____ sound from the forest.", after:"", hint:"FAMILIAR"},
+  {before:"Singapore became _____ from Great Britain after WWII.", after:"", hint:"DEPEND"},
+  {before:"In her _____ she dropped a glass.", after:"", hint:"EXCITE"},
+  {before:"Trains are very _____. They are never on time.", after:"", hint:"RELY"},
+  {before:"Almost 30% live below the _____ line.", after:"", hint:"POOR"},
+  {before:"My first _____ was that he seemed serious.", after:"", hint:"IMPRESS"},
+  {before:"Students of all _____ come to the university.", after:"", hint:"NATION"},
+  {before:"Although only a few pounds _____, the doctor told him to exercise.", after:"", hint:"WEIGHT"},
+]);
+setFillAnswers('fill-wf1', [
+  'activate','director','unexpected','advised','connection','painless','unfamiliar','independent',
+  'excitement','unreliable','poverty','impression','nationalities','overweight'
+]);
+
+// Exercise 6: WWF nature text — Destination C1
+buildFill('fill-wf2', [
+  {before:"The WWF has been involved in (1) _____ since 1961.", after:"", hint:"CONSERVE"},
+  {before:"Its (2) _____ has always been to protect (3) _____ life.", after:"", hint:"INTEND / WILD"},
+  {before:"Working with expert (4) _____ and local people.", after:"", hint:"ECOLOGY"},
+  {before:"To help animals (5) _____ by destruction of habitats.", after:"", hint:"THREAT"},
+  {before:"Some species face (6) _____.", after:"", hint:"EXTINCT"},
+  {before:"(7) _____, the WWF work hard to ensure animals will (8) _____ survive.", after:"", hint:"FORTUNE / PROBABLE"},
+  {before:"Working tirelessly on a (9) _____ list of projects.", after:"", hint:"MOUNT"},
+  {before:"All of which help protect (10) _____ life on Earth.", after:"", hint:"SEEM"},
+]);
+setFillAnswers('fill-wf2', [
+  'conservation','intention','wildlife','ecologists','threatened','extinction',
+  'fortunately','probably','mounting','seemingly'
+]);
+
+// --- CONNECTIVES (from take my camera in case.docx) ---
+buildFill('fill-conn1', [
+  {before:"Take your camera with you, just _____ mine doesn't work.", hint:"in case"},
+  {before:"_____ having muscle problems, the defender was able to play.", hint:"Despite"},
+  {before:"Bring an umbrella with you _____ it rains tomorrow.", hint:"in case"},
+  {before:"Skiing is a safe sport _____ you obey the rules on the slope.", hint:"as long as"},
+  {before:"All flights to and from London have been cancelled _____ fog.", hint:"due to"},
+  {before:"They arrived in time for the meeting _____ having to travel in bad weather.", hint:"despite"},
+  {before:"I like travelling by underground, _____ it gets pretty crowded during rush hours.", hint:"even though / although"},
+  {before:"She has been living in the country her whole life. _____, she has decided she wants a change.", hint:"Nevertheless"},
+  {before:"We had a wonderful time in Barcelona. _____, transport workers were on strike so we couldn't use the underground.", hint:"However"},
+  {before:"_____ life was hard during the war, we managed to survive.", hint:"Even though / Although"},
+  {before:"_____ heavy traffic on the motorway, we couldn't make it in time.", hint:"Due to"},
+  {before:"_____ of the low temperatures during the winter, Moscow is always worth visiting.", hint:"In spite"},
+  {before:"I can't come now _____ the children are ill, and I have to look after them.", hint:"because"},
+  {before:"The economy collapsed, _____ the government had to resign.", hint:"therefore"},
+  {before:"You may go out with your friends tonight, _____ you never go alone and stay with them.", hint:"as long as / provided that"},
+]);
+setFillAnswers('fill-conn1', [
+  'in case','despite','in case',['as long as','provided that'],'due to','despite',
+  ['even though','although'],'nevertheless','however',
+  ['even though','although'],'due to','in spite','because','therefore',
+  ['as long as','provided that']
+]);
+
+// --- MEDIA (MIXED) ---
+buildMCQ('mcq-med1', 'score-med1', [
+  {text:"John Sanders, MP, _____ any involvement in the scandal.", options:["denied","refused"], answer:"denied"},
+  {text:"The politician _____ to say more when questioned.", options:["denied","refused"], answer:"refused"},
+  {text:"Johnny Depp rarely _____ invitations to do interviews.", options:["agrees","accepts"], answer:"accepts"},
+  {text:"Johnny Depp _____ to appear at a press conference.", options:["agreed","accepted"], answer:"agreed"},
+  {text:"Did you see the newspaper _____ this morning?", options:["heading","headline"], answer:"headline"},
+  {text:"Living Today has a special _____ on healthy diets.", options:["feature","article"], answer:"feature"},
+  {text:"I generally trust the news, but rarely believe what I read in the _____.", options:["press","media"], answer:"press"},
+  {text:"We interrupt this programme to bring you an urgent _____.", options:["bulletin","newsflash"], answer:"newsflash"},
+]);
+
+// --- ARTICLES (MIXED) ---
+buildFill('fill-art1', [
+  {before:"We went to _____ theatre last night and saw _____ great play, although some of _____ acting was a bit poor.", hint:"the / a / the"},
+  {before:"Give me _____ ring tomorrow before I go to _____ work and we'll arrange to meet at _____ office.", hint:"a / – / the"},
+  {before:"_____ Prime Minister told _____ reporter that _____ government wanted to pass _____ law banning hunting.", hint:"The / a / the / a"},
+  {before:"I asked _____ hotel manager where _____ pool was and she directed me to _____ seventh floor.", hint:"the / the / the"},
+]);
+setFillAnswers('fill-art1', [
+  ['the a the'],['a – the'],['the a the a'],['the the the']
+]);
+
+// --- WORD FORMATION SENTENCES (C1 Chance and Nature) ---
+buildFill('fill-wfs1', [
+  {before:"The chances against this kind of unusual _____ are very high.", after:"", hint:"OCCUR"},
+  {before:"I'm not convinced there's a _____ link between pollution and global warming.", after:"", hint:"CAUSE"},
+  {before:"The _____ of the cliffs by the sea has completely changed the landscape.", after:"", hint:"ERODE"},
+  {before:"Female animals have an _____ need to protect their young.", after:"", hint:"INSTINCT"},
+  {before:"The police are investigating the _____ disappearance from the zoo of a number of animals.", after:"", hint:"MYSTERY"},
+  {before:"We knew that getting between the whale and the ship was _____, but it was the only way to stop them hunting.", after:"", hint:"RISK"},
+  {before:"What's your _____ of the situation?", after:"", hint:"ASSESS"},
+  {before:"We have to wait for _____ conditions to launch the boat.", after:"", hint:"FAVOUR"},
+  {before:"The expedition travelled miles in search of the _____ mountain gorilla.", after:"", hint:"ELUDE"},
+  {before:"Following the _____ of the volcano, hundreds of villages were destroyed.", after:"", hint:"ERUPT"},
+]);
+setFillAnswers('fill-wfs1', [
+  'occurrence','causal','erosion','instinctive','mysterious','risky','assessment','favourable','elusive','eruption'
+]);
+
+
+</script>
+</body>
+</html>
