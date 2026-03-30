@@ -654,11 +654,21 @@ function buildMCQ(containerId, scoreId, questions) {
       <label>${i+1}. ${q.text}</label>
       <div class="mcq-options">`;
     q.options.forEach(opt => {
-      html += `<button onclick="selectMCQ('${containerId}',${i},'${opt}',${JSON.stringify(q.answer)})">${opt}</button>`;
+      html += `<button data-cid="${containerId}" data-idx="${i}" data-opt="${opt.replace(/"/g,'&quot;')}">${opt}</button>`;
     });
     html += `</div><div class="feedback" id="${containerId}-fb${i}"></div></div>`;
   });
   c.innerHTML = html;
+  // store answers on the container element
+  c._mcqAnswers = questions.map(q => q.answer);
+  c.addEventListener('click', function(e) {
+    const btn = e.target.closest('button[data-cid]');
+    if (!btn) return;
+    const cid = btn.dataset.cid;
+    const idx = parseInt(btn.dataset.idx);
+    const chosen = btn.dataset.opt;
+    selectMCQ(cid, idx, chosen, document.getElementById(cid)._mcqAnswers[idx]);
+  });
 }
 
 function selectMCQ(cid, idx, chosen, answer) {
