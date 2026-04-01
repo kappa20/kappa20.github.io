@@ -59,6 +59,19 @@
   .verb-chip.both { background:#fff3e0; }
   .progress-wrap { height:8px; background:#dce3f5; border-radius:4px; overflow:hidden; margin-bottom:16px; }
   .progress-bar { height:100%; background:var(--blue); border-radius:4px; transition:.5s; }
+  /* Verb Sort Game */
+  .sort-verb-chip { display:inline-block; padding:6px 14px; border-radius:20px; font-size:.88rem; font-weight:600; background:#dce3f5; color:var(--blue); border:2px solid transparent; cursor:pointer; user-select:none; transition:.15s; }
+  .sort-verb-chip:hover { border-color:var(--blue); }
+  .sort-verb-chip.selected { border-color:var(--blue); background:var(--blue); color:white; }
+  .sort-verb-chip.placed-ing { background:#e8f5e9; color:var(--green); border-color:#a5d6a7; }
+  .sort-verb-chip.placed-full { background:#e3f2fd; color:#1565c0; border-color:#90caf9; }
+  .sort-verb-chip.placed-bare { background:#fce4ec; color:#b71c1c; border-color:#f48fb1; }
+  .sort-verb-chip.correct-chip { border-color:var(--correct) !important; }
+  .sort-verb-chip.wrong-chip { border-color:var(--wrong) !important; background:#ffebee !important; color:var(--wrong) !important; }
+  .sort-col { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .sort-col-title { padding:8px 12px; font-size:.9rem; font-weight:600; text-align:center; }
+  .sort-drop-zone { min-height:80px; padding:8px; display:flex; flex-wrap:wrap; gap:6px; align-content:flex-start; cursor:pointer; transition:.15s; }
+  .sort-drop-zone.drag-over { background:#f0f4ff; }
 </style>
 </head>
 <body>
@@ -75,6 +88,9 @@
   <button onclick="showPage('connectives')">Connectives</button>
   <button onclick="showPage('writing')">Writing Skills</button>
   <button onclick="showPage('exercises')">Mixed Exercises</button>
+  <button onclick="showPage('comparative')">Comparative &amp; Superlative</button>
+  <button onclick="showPage('inversion')">Inversion</button>
+  <button onclick="showPage('perfectvspast')">Present Perfect vs Past Simple</button>
 </nav>
 
 <!-- ===================== GERUND & INFINITIVE ===================== -->
@@ -210,6 +226,34 @@
     <h3>Exercise 5 — Same meaning? (✓ or ✗) <span class="tag">Destination B2 Unit 17</span></h3>
     <div id="mcq-ger3"></div>
     <div class="score-bar" id="score-ger3"></div>
+  </div>
+
+  <!-- VERB SORTING GAME -->
+  <div class="exercise-card">
+    <h3>Exercise 6 — Verb Sorting Game: drag each verb into the correct category</h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:14px">Sort each verb into the right column. Click a verb, then click a column — or drag and drop.</p>
+    <div id="verb-sort-game">
+      <div id="verb-bank" style="display:flex;flex-wrap:wrap;gap:8px;min-height:44px;margin-bottom:16px;padding:10px;border:2px dashed var(--border);border-radius:10px;background:#fafbfd;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div class="sort-col" id="col-ing" data-cat="ing">
+          <div class="sort-col-title" style="background:#e8f5e9;color:var(--green)">Verb + <strong>-ing</strong></div>
+          <div class="sort-drop-zone" id="zone-ing"></div>
+        </div>
+        <div class="sort-col" id="col-full" data-cat="full">
+          <div class="sort-col-title" style="background:#e3f2fd;color:#1565c0">Verb + <strong>to</strong> (full inf.)</div>
+          <div class="sort-drop-zone" id="zone-full"></div>
+        </div>
+        <div class="sort-col" id="col-bare" data-cat="bare">
+          <div class="sort-col-title" style="background:#fce4ec;color:#b71c1c">Verb + bare inf.<br><span style="font-size:.78rem;font-weight:400">(no "to")</span></div>
+          <div class="sort-drop-zone" id="zone-bare"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap;">
+        <button class="btn-check" onclick="checkVerbSort()">Check Answers</button>
+        <button class="btn-check" style="background:#666;" onclick="resetVerbSort()">Reset</button>
+        <div class="score-bar" id="score-verb-sort" style="margin-top:0;flex:1;"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -631,6 +675,201 @@
 
 </div>
 
+<!-- ===================== COMPARATIVE & SUPERLATIVE (Destination B2 Unit 11) ===================== -->
+<div id="page-comparative" class="page">
+  <div class="section-title">Comparative &amp; Superlative <span style="font-size:.9rem;font-weight:400;color:#555">(Destination B2 – Unit 11)</span></div>
+
+  <div class="rule-box">
+    <h3>Forming Comparative &amp; Superlative Adjectives</h3>
+    <table>
+      <tr><th>Type</th><th>Adjective</th><th>Comparative</th><th>Superlative</th></tr>
+      <tr><td>1 syllable</td><td>tall, fast</td><td>taller, faster</td><td>the tallest, the fastest</td></tr>
+      <tr><td>1 syll. ending CVC</td><td>big, hot</td><td>bigger, hotter</td><td>the biggest, the hottest</td></tr>
+      <tr><td>2 syllables, -y</td><td>happy, easy</td><td>happier, easier</td><td>the happiest, the easiest</td></tr>
+      <tr><td>2+ syllables</td><td>careful, modern</td><td>more careful, more modern</td><td>the most careful, the most modern</td></tr>
+      <tr><td>Irregular</td><td>good / bad / far / little / much</td><td>better / worse / farther-further / less / more</td><td>the best / the worst / the farthest-furthest / the least / the most</td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> <em>elder / eldest</em> refer to people in a family (not things). <em>further</em> also means "additional": <em>further details</em>.</div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Comparative Adverbs</h3>
+    <table>
+      <tr><th>Adverb</th><th>Comparative</th><th>Superlative</th></tr>
+      <tr><td>fast, hard, late</td><td>faster, harder, later</td><td>the fastest, the hardest, the latest</td></tr>
+      <tr><td>carefully, slowly</td><td>more carefully, more slowly</td><td>the most carefully, the most slowly</td></tr>
+      <tr><td>well / badly</td><td>better / worse</td><td>the best / the worst</td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Key Structures: <em>as … as</em>, <em>so</em>, <em>such</em>, <em>enough</em>, <em>too</em></h3>
+    <table>
+      <tr><th>Structure</th><th>Form</th><th>Example</th></tr>
+      <tr><td><strong>as … as</strong> (equality)</td><td>as + adj/adv + as</td><td><em>She's <strong>as tall as</strong> her brother.</em></td></tr>
+      <tr><td><strong>not as/so … as</strong> (inequality)</td><td>not as/so + adj + as</td><td><em>He's <strong>not as fast as</strong> you.</em></td></tr>
+      <tr><td><strong>so</strong></td><td>so + adj/adv</td><td><em>It was <strong>so cold</strong> that we stayed in.</em></td></tr>
+      <tr><td><strong>such</strong></td><td>such + (a/an) + adj + noun</td><td><em>It was <strong>such a cold day</strong> that we stayed in.</em></td></tr>
+      <tr><td><strong>enough</strong></td><td>adj/adv + enough + to-inf</td><td><em>She's <strong>old enough to drive</strong>.</em></td></tr>
+      <tr><td><strong>too</strong></td><td>too + adj/adv + to-inf</td><td><em>It's <strong>too hot to eat</strong>.</em></td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> <em>so</em> + adj/adv (no noun) | <em>such</em> + noun phrase. <em>enough</em> comes <strong>after</strong> the adjective but <strong>before</strong> the noun: <em>enough time</em>.</div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Intensifiers: <em>far, much, a lot, a bit, slightly, even, just, nearly, quite</em></h3>
+    <table>
+      <tr><th>Intensifier</th><th>Use</th><th>Example</th></tr>
+      <tr><td>far / much / a lot / even</td><td>big difference (comparative)</td><td><em>She's <strong>far more</strong> experienced than him.</em></td></tr>
+      <tr><td>a bit / slightly / a little</td><td>small difference</td><td><em>It's <strong>a bit colder</strong> today.</em></td></tr>
+      <tr><td>just / nearly / quite</td><td>similarity (<em>as … as</em>)</td><td><em>He's <strong>nearly as tall as</strong> his father.</em></td></tr>
+      <tr><td>by far</td><td>with superlatives</td><td><em>She's <strong>by far the best</strong> student.</em></td></tr>
+    </table>
+  </div>
+
+  <!-- Exercises -->
+  <div class="exercise-card">
+    <h3>Exercise 1 — Choose the correct option <span class="tag">Destination B2 U11 p.66</span></h3>
+    <div id="mcq-comp1"></div>
+    <div class="score-bar" id="score-comp1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 2 — Complete the sentences (comparative / superlative) <span class="tag">Destination B2 U11 p.67</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:10px">Type the correct comparative or superlative form.</p>
+    <div id="fill-comp2"></div>
+    <button class="btn-check" onclick="checkFill('fill-comp2','score-comp2')">Check Answers</button>
+    <div class="score-bar" id="score-comp2"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 3 — Complete using the comparative forms of the words in brackets <span class="tag">Destination B2 U11 p.68</span></h3>
+    <div id="fill-comp3"></div>
+    <button class="btn-check" onclick="checkFill('fill-comp3','score-comp3')">Check Answers</button>
+    <div class="score-bar" id="score-comp3"></div>
+  </div>
+</div>
+
+<!-- ===================== INVERSION (Destination B2 Unit 27) ===================== -->
+<div id="page-inversion" class="page">
+  <div class="section-title">Inversion <span style="font-size:.9rem;font-weight:400;color:#555">(Destination B2 – Unit 27)</span></div>
+
+  <div class="rule-box">
+    <h3>Inversion with Negative / Restrictive Adverbials</h3>
+    <p style="font-size:.9rem;margin-bottom:8px">When certain negative or restrictive adverbs/phrases are placed at the <strong>beginning</strong> of a sentence for emphasis, the subject and auxiliary are inverted (question word order).</p>
+    <table>
+      <tr><th>Adverbial phrase</th><th>Normal word order</th><th>Inverted (emphatic)</th></tr>
+      <tr><td><strong>Never</strong></td><td>I have never seen such a mess.</td><td><em><strong>Never have I</strong> seen such a mess.</em></td></tr>
+      <tr><td><strong>Rarely / Seldom</strong></td><td>She rarely complains.</td><td><em><strong>Rarely does she</strong> complain.</em></td></tr>
+      <tr><td><strong>Hardly … when</strong></td><td>We had hardly arrived when it started raining.</td><td><em><strong>Hardly had we</strong> arrived when it started raining.</em></td></tr>
+      <tr><td><strong>Scarcely … when</strong></td><td>She had scarcely sat down when the phone rang.</td><td><em><strong>Scarcely had she</strong> sat down when the phone rang.</em></td></tr>
+      <tr><td><strong>No sooner … than</strong></td><td>He had no sooner left than it began to snow.</td><td><em><strong>No sooner had he</strong> left than it began to snow.</em></td></tr>
+      <tr><td><strong>Not until</strong></td><td>I didn't realise until later.</td><td><em><strong>Not until</strong> later did I realise.</em></td></tr>
+      <tr><td><strong>Not only … but also</strong></td><td>She not only sings but also dances.</td><td><em><strong>Not only does she</strong> sing but she also dances.</em></td></tr>
+      <tr><td><strong>Only then</strong></td><td>I understood only then.</td><td><em><strong>Only then did I</strong> understand.</em></td></tr>
+      <tr><td><strong>Only when / if</strong></td><td>Only when you leave, you will understand.</td><td><em><strong>Only when you leave will you</strong> understand.</em></td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> If there is no auxiliary verb, use <em>do/does/did</em> for inversion: <em>Rarely <strong>does he</strong> go out.</em></div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Inversion with Possessives <em>nor / neither / so / such</em></h3>
+    <table>
+      <tr><th>Structure</th><th>Example</th></tr>
+      <tr><td><strong>Nor / Neither + aux + subject</strong></td><td><em>I don't smoke. <strong>Nor/Neither do I.</strong></em></td></tr>
+      <tr><td><strong>So + aux + subject</strong> (agreement – positive)</td><td><em>She can swim. <strong>So can I.</strong></em></td></tr>
+      <tr><td><strong>Such + be + subject</strong></td><td><em><strong>Such was</strong> her anger that she left.</em></td></tr>
+    </table>
+  </div>
+
+  <div class="rule-box">
+    <h3>Other Inversions</h3>
+    <table>
+      <tr><th>Structure</th><th>Example</th></tr>
+      <tr><td><strong>Little</strong> (negative meaning)</td><td><em><strong>Little did he know</strong> what was about to happen.</em></td></tr>
+      <tr><td><strong>Under no circumstances</strong></td><td><em><strong>Under no circumstances should you</strong> open that door.</em></td></tr>
+      <tr><td><strong>At no time</strong></td><td><em><strong>At no time were</strong> passengers informed of the delay.</em></td></tr>
+      <tr><td><strong>On no account</strong></td><td><em><strong>On no account must you</strong> leave early.</em></td></tr>
+      <tr><td><strong>In no way</strong></td><td><em><strong>In no way is</strong> this my fault.</em></td></tr>
+    </table>
+  </div>
+
+  <!-- Exercises -->
+  <div class="exercise-card">
+    <h3>Exercise 1 — Rewrite the sentences using inversion (fill in the inverted form) <span class="tag">Destination B2 U27</span></h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:10px">Type the missing auxiliary + subject to complete the inverted sentence.</p>
+    <div id="fill-inv1"></div>
+    <button class="btn-check" onclick="checkFill('fill-inv1','score-inv1')">Check Answers</button>
+    <div class="score-bar" id="score-inv1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 2 — Choose the correct inverted sentence <span class="tag">Destination B2 U27</span></h3>
+    <div id="mcq-inv2"></div>
+    <div class="score-bar" id="score-inv2"></div>
+  </div>
+</div>
+
+<!-- ===================== PRESENT PERFECT VS PAST SIMPLE ===================== -->
+<div id="page-perfectvspast" class="page">
+  <div class="section-title">Present Perfect Simple vs Past Simple</div>
+
+  <div class="rule-box">
+    <h3>Present Perfect Simple (have / has + past participle)</h3>
+    <table>
+      <tr><th>Use</th><th>Signal words</th><th>Example</th></tr>
+      <tr><td>Finished action with present relevance</td><td>just, already, yet, recently, lately</td><td><em>I <strong>have just finished</strong> my homework.</em></td></tr>
+      <tr><td>Life experience (unspecified time)</td><td>ever, never, before, once, twice</td><td><em>Have you <strong>ever been</strong> to Japan?</em></td></tr>
+      <tr><td>Action in an unfinished time period</td><td>today, this week, this year, so far</td><td><em>She <strong>has written</strong> three emails today.</em></td></tr>
+      <tr><td>Action starting in past, continuing now</td><td>for, since, how long</td><td><em>I <strong>have lived</strong> here for ten years.</em></td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> Use <em>for</em> + duration: <em>for two days</em>. Use <em>since</em> + point in time: <em>since Monday</em>.</div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Past Simple</h3>
+    <table>
+      <tr><th>Use</th><th>Signal words</th><th>Example</th></tr>
+      <tr><td>Completed action at a specific past time</td><td>yesterday, last week, in 2010, ago, when, then</td><td><em>She <strong>moved</strong> to Paris in 2015.</em></td></tr>
+      <tr><td>Series of completed actions in the past</td><td>first, then, after that, finally</td><td><em>He <strong>woke up</strong>, <strong>showered</strong> and <strong>left</strong>.</em></td></tr>
+      <tr><td>Past habit or state (no longer true)</td><td>used to, would, always</td><td><em>We <strong>used to visit</strong> every summer.</em></td></tr>
+    </table>
+    <div class="watch-out"><strong>Watch out!</strong> Never use past simple with <em>since</em>, <em>ever</em>, <em>yet</em>, <em>already</em>, <em>just</em> (in British English).</div>
+  </div>
+
+  <div class="rule-box">
+    <h3>Key Contrast Table</h3>
+    <table>
+      <tr><th>Present Perfect</th><th>Past Simple</th></tr>
+      <tr><td><em>I <strong>have seen</strong> that film.</em> (life experience, no time given)</td><td><em>I <strong>saw</strong> that film <strong>last night</strong>.</em> (specific time)</td></tr>
+      <tr><td><em>She <strong>has lived</strong> here for 5 years.</em> (still lives here)</td><td><em>She <strong>lived</strong> there for 5 years.</em> (no longer lives there)</td></tr>
+      <tr><td><em>Have you <strong>done</strong> your homework <strong>yet</strong>?</em></td><td><em>Did you do your homework <strong>last night</strong>?</em></td></tr>
+      <tr><td><em>It <strong>has snowed</strong> a lot <strong>this winter</strong>.</em> (winter not over)</td><td><em>It <strong>snowed</strong> a lot <strong>last winter</strong>.</em> (winter over)</td></tr>
+    </table>
+  </div>
+
+  <!-- Exercises -->
+  <div class="exercise-card">
+    <h3>Exercise 1 — Choose: Present Perfect or Past Simple? <span class="tag">Grammar</span></h3>
+    <div id="mcq-pp1"></div>
+    <div class="score-bar" id="score-pp1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 2 — Complete with the correct tense of the verb in brackets</h3>
+    <div id="fill-pp2"></div>
+    <button class="btn-check" onclick="checkFill('fill-pp2','score-pp2')">Check Answers</button>
+    <div class="score-bar" id="score-pp2"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Exercise 3 — Spot the error: which sentence is wrong?</h3>
+    <p style="font-size:.85rem;color:#555;margin-bottom:8px">In each pair, one sentence is incorrect. Click the wrong one.</p>
+    <div id="mcq-pp3"></div>
+    <div class="score-bar" id="score-pp3"></div>
+  </div>
+</div>
+
 <script>
 // ==============================
 // NAVIGATION
@@ -817,6 +1056,220 @@ buildMCQ('mcq-ger3', 'score-ger3', [
   {text:"a) Why don't you try holding your breath for a minute? / b) Why don't you try to hold your breath for a minute?", options:["✓ Same","✗ Different"], answer:"✗ Different"},
   {text:"a) I hate being cheated by taxi drivers. / b) I hate to be cheated by taxi drivers.", options:["✓ Same","✗ Different"], answer:"✓ Same"},
 ]);
+
+// Exercise 6: Verb Sorting Game
+(function() {
+  const VERBS = [
+    // ing
+    {verb:"admit",       cat:"ing"},
+    {verb:"appreciate",  cat:"ing"},
+    {verb:"avoid",       cat:"ing"},
+    {verb:"can't help",  cat:"ing"},
+    {verb:"delay",       cat:"ing"},
+    {verb:"deny",        cat:"ing"},
+    {verb:"detest",      cat:"ing"},
+    {verb:"discuss",     cat:"ing"},
+    {verb:"dislike",     cat:"ing"},
+    {verb:"enjoy",       cat:"ing"},
+    {verb:"escape",      cat:"ing"},
+    {verb:"face",        cat:"ing"},
+    {verb:"fancy",       cat:"ing"},
+    {verb:"feel like",   cat:"ing"},
+    {verb:"finish",      cat:"ing"},
+    {verb:"give up",     cat:"ing"},
+    {verb:"involve",     cat:"ing"},
+    {verb:"keep (on)",   cat:"ing"},
+    {verb:"mention",     cat:"ing"},
+    {verb:"mind",        cat:"ing"},
+    {verb:"miss",        cat:"ing"},
+    {verb:"postpone",    cat:"ing"},
+    {verb:"practise",    cat:"ing"},
+    {verb:"put off",     cat:"ing"},
+    {verb:"resist",      cat:"ing"},
+    {verb:"risk",        cat:"ing"},
+    {verb:"suggest",     cat:"ing"},
+    {verb:"understand",  cat:"ing"},
+    // full infinitive
+    {verb:"able",        cat:"full"},
+    {verb:"afford",      cat:"full"},
+    {verb:"agree",       cat:"full"},
+    {verb:"appear",      cat:"full"},
+    {verb:"arrange",     cat:"full"},
+    {verb:"ask",         cat:"full"},
+    {verb:"attempt",     cat:"full"},
+    {verb:"beg",         cat:"full"},
+    {verb:"choose",      cat:"full"},
+    {verb:"decide",      cat:"full"},
+    {verb:"encourage",   cat:"full"},
+    {verb:"expect",      cat:"full"},
+    {verb:"fail",        cat:"full"},
+    {verb:"happen",      cat:"full"},
+    {verb:"help",        cat:"full"},
+    {verb:"hope",        cat:"full"},
+    {verb:"manage",      cat:"full"},
+    {verb:"offer",       cat:"full"},
+    {verb:"plan",        cat:"full"},
+    {verb:"pleased",     cat:"full"},
+    {verb:"prepare",     cat:"full"},
+    {verb:"pretend",     cat:"full"},
+    {verb:"promise",     cat:"full"},
+    {verb:"refuse",      cat:"full"},
+    {verb:"seem",        cat:"full"},
+    {verb:"tend",        cat:"full"},
+    {verb:"want",        cat:"full"},
+    {verb:"wish",        cat:"full"},
+    {verb:"would like",  cat:"full"},
+    // bare infinitive
+    {verb:"feel",        cat:"bare"},
+    {verb:"hear",        cat:"bare"},
+    {verb:"let",         cat:"bare"},
+    {verb:"make",        cat:"bare"},
+    {verb:"notice",      cat:"bare"},
+    {verb:"see",         cat:"bare"},
+    {verb:"watch",       cat:"bare"},
+  ];
+
+  // shuffle helper
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  let selectedChip = null;   // currently selected chip element
+  let placements = {};       // verb -> cat placed by user
+
+  function buildGame() {
+    const bank = document.getElementById('verb-bank');
+    const zoneIng  = document.getElementById('zone-ing');
+    const zoneFull = document.getElementById('zone-full');
+    const zoneBare = document.getElementById('zone-bare');
+    if (!bank || !zoneIng || !zoneFull || !zoneBare) return;
+
+    bank.innerHTML = '';
+    zoneIng.innerHTML = '';
+    zoneFull.innerHTML = '';
+    zoneBare.innerHTML = '';
+    placements = {};
+    selectedChip = null;
+    const sb = document.getElementById('score-verb-sort');
+    if (sb) sb.textContent = '';
+
+    const shuffled = shuffle([...VERBS]);
+    shuffled.forEach(({verb, cat}) => {
+      const chip = document.createElement('span');
+      chip.className = 'sort-verb-chip';
+      chip.textContent = verb;
+      chip.dataset.verb = verb;
+      chip.dataset.answer = cat;
+      chip.draggable = true;
+
+      // click to select then click column
+      chip.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (chip.dataset.placed) {
+          // return to bank
+          bank.appendChild(chip);
+          delete placements[verb];
+          delete chip.dataset.placed;
+          chip.className = 'sort-verb-chip';
+          if (selectedChip === chip) { selectedChip = null; }
+          return;
+        }
+        if (selectedChip && selectedChip !== chip) {
+          selectedChip.classList.remove('selected');
+        }
+        if (selectedChip === chip) {
+          chip.classList.remove('selected');
+          selectedChip = null;
+        } else {
+          chip.classList.add('selected');
+          selectedChip = chip;
+        }
+      });
+
+      // drag events
+      chip.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', verb);
+        setTimeout(() => chip.style.opacity = '0.4', 0);
+      });
+      chip.addEventListener('dragend', function() {
+        chip.style.opacity = '';
+      });
+
+      bank.appendChild(chip);
+    });
+
+    // zone click (for click-mode placement)
+    ['ing','full','bare'].forEach(cat => {
+      const zone = document.getElementById('zone-' + cat);
+      zone.addEventListener('click', function() {
+        if (!selectedChip) return;
+        placeChip(selectedChip, cat);
+        selectedChip.classList.remove('selected');
+        selectedChip = null;
+      });
+
+      // drag-over / drop
+      zone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        zone.classList.add('drag-over');
+      });
+      zone.addEventListener('dragleave', function() {
+        zone.classList.remove('drag-over');
+      });
+      zone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        zone.classList.remove('drag-over');
+        const verb = e.dataTransfer.getData('text/plain');
+        const chip = document.querySelector(`.sort-verb-chip[data-verb="${verb}"]`);
+        if (chip) placeChip(chip, cat);
+      });
+    });
+  }
+
+  function placeChip(chip, cat) {
+    const zone = document.getElementById('zone-' + cat);
+    const verb = chip.dataset.verb;
+    // remove from previous zone if placed elsewhere
+    delete chip.dataset.placed;
+    zone.appendChild(chip);
+    chip.dataset.placed = cat;
+    placements[verb] = cat;
+    chip.className = 'sort-verb-chip placed-' + cat;
+  }
+
+  window.checkVerbSort = function() {
+    let total = 0, correct = 0;
+    document.querySelectorAll('.sort-verb-chip').forEach(chip => {
+      if (!chip.dataset.placed) return; // not placed — skip
+      total++;
+      const isCorrect = chip.dataset.placed === chip.dataset.answer;
+      if (isCorrect) {
+        correct++;
+        chip.classList.add('correct-chip');
+        chip.classList.remove('wrong-chip');
+      } else {
+        chip.classList.add('wrong-chip');
+        chip.classList.remove('correct-chip');
+      }
+    });
+    const placed = Object.keys(placements).length;
+    const unplaced = VERBS.length - placed;
+    const sb = document.getElementById('score-verb-sort');
+    if (sb) {
+      sb.textContent = `Score: ${correct} / ${VERBS.length}` +
+        (unplaced > 0 ? ` (${unplaced} not placed yet)` : '');
+    }
+  };
+
+  window.resetVerbSort = function() { buildGame(); };
+
+  // init when DOM ready (script runs at bottom)
+  buildGame();
+})();
 
 // --- REPORTED SPEECH (Ready for Advanced p.98) ---
 // Exercise 1: Direct → Reported with verb box
@@ -1037,6 +1490,107 @@ buildFill('fill-art1', [
 ]);
 setFillAnswers('fill-art1', [
   ['the a the'],['a – the'],['the a the a'],['the the the']
+]);
+
+// ===================== COMPARATIVE & SUPERLATIVE =====================
+buildMCQ('mcq-comp1', 'score-comp1', [
+  {text:"She is _____ student in the class.", options:["the most intelligent","the intelligenter","most intelligent"], answer:"the most intelligent"},
+  {text:"Today is _____ than yesterday.", options:["more hot","hotter","hoter"], answer:"hotter"},
+  {text:"This is _____ film I've ever seen!", options:["the worse","the worst","the most bad"], answer:"the worst"},
+  {text:"He drives _____ than his sister.", options:["more careful","more carefully","carefullier"], answer:"more carefully"},
+  {text:"She is _____ singer of the three.", options:["the best","the most good","the better"], answer:"the best"},
+  {text:"The problem is _____ more serious than we thought.", options:["far","very","so"], answer:"far"},
+  {text:"He's _____ old enough to vote.", options:["just","very","too"], answer:"just"},
+  {text:"The bag is _____ heavy for me to carry.", options:["enough","too","so"], answer:"too"},
+  {text:"It was _____ a difficult exam that many students failed.", options:["so","such","too"], answer:"such"},
+  {text:"She runs _____ fast as her brother.", options:["so","as","more"], answer:"as"},
+]);
+
+buildFill('fill-comp2', [
+  {before:"This exercise is much _____ (easy) than the last one.", hint:"easier"},
+  {before:"Mount Everest is _____ (high) mountain in the world.", hint:"the highest"},
+  {before:"She spoke _____ (quietly) than usual so as not to wake anyone.", hint:"more quietly"},
+  {before:"I feel _____ (bad) today than I did yesterday.", hint:"worse"},
+  {before:"This is _____ (far) I've ever travelled from home.", hint:"the furthest / the farthest"},
+  {before:"He had _____ (little) patience of all the teachers.", hint:"the least"},
+  {before:"The new design is _____ (good) than the old one.", hint:"better"},
+  {before:"She's _____ (tall) girl in her year.", hint:"the tallest"},
+]);
+setFillAnswers('fill-comp2', [
+  'easier','the highest',['more quietly','more quietly than usual'],'worse',['the furthest','the farthest'],'the least','better','the tallest'
+]);
+
+buildFill('fill-comp3', [
+  {before:"The concert was _____ (entertaining). I expected it to be boring!", hint:"more entertaining than expected"},
+  {before:"It was _____ (good) meal I have ever had.", hint:"the best"},
+  {before:"He arrived _____ (early) than anyone else.", hint:"earlier"},
+  {before:"She works _____ (hard) in the group — everyone agrees.", hint:"the hardest"},
+  {before:"The journey took _____ (long) than we planned.", hint:"longer"},
+  {before:"That was _____ (frightening) film I've ever watched.", hint:"the most frightening"},
+]);
+setFillAnswers('fill-comp3', [
+  ['more entertaining','more entertaining than expected'],'the best','earlier','the hardest','longer','the most frightening'
+]);
+
+// ===================== INVERSION =====================
+buildFill('fill-inv1', [
+  {before:"Never _____ (I / see) such beautiful scenery.", hint:"have I seen"},
+  {before:"Hardly _____ (we / sit down) when the alarm went off.", hint:"had we sat down"},
+  {before:"No sooner _____ (she / arrive) than the meeting started.", hint:"had she arrived"},
+  {before:"Not only _____ (he / speak) French, but he also speaks Arabic.", hint:"does he speak"},
+  {before:"Rarely _____ (the team / lose) a match at home.", hint:"does the team lose"},
+  {before:"Only then _____ (I / realise) my mistake.", hint:"did I realise"},
+  {before:"Under no circumstances _____ (you / open) this door.", hint:"should you open"},
+  {before:"Little _____ (he / know) what was about to happen.", hint:"did he know"},
+]);
+setFillAnswers('fill-inv1', [
+  'have i seen','had we sat down','had she arrived','does he speak','does the team lose','did i realise','should you open','did he know'
+]);
+
+buildMCQ('mcq-inv2', 'score-inv2', [
+  {text:"_____ had we left the house when it began to snow.", options:["Hardly","Scarcely","No sooner"], answer:"Hardly"},
+  {text:"Not only _____ late, but he also forgot his report.", options:["he arrived","did he arrive","he did arrive"], answer:"did he arrive"},
+  {text:"_____ should you leave without telling someone.", options:["Under no circumstances","Not until","Rarely"], answer:"Under no circumstances"},
+  {text:"No sooner had she opened the letter _____ she burst into tears.", options:["when","than","that"], answer:"than"},
+  {text:"_____ did I realise how important it was.", options:["Only then","Not only","Scarcely"], answer:"Only then"},
+  {text:"I can't speak Spanish. _____ can my brother.", options:["So","Neither","Not only"], answer:"Neither"},
+  {text:"Little _____ what trouble he was causing.", options:["he knew","knew he","did he know"], answer:"did he know"},
+]);
+
+// ===================== PRESENT PERFECT VS PAST SIMPLE =====================
+buildMCQ('mcq-pp1', 'score-pp1', [
+  {text:"I _____ him at the airport two days ago.", options:["have seen","saw"], answer:"saw"},
+  {text:"She _____ never been to Australia.", options:["has","had"], answer:"has"},
+  {text:"We _____ this company in 1998.", options:["have founded","founded"], answer:"founded"},
+  {text:"Have you _____ your keys yet?", options:["find","found"], answer:"found"},
+  {text:"He _____ here since 2015.", options:["lived","has lived"], answer:"has lived"},
+  {text:"I _____ a lot of coffee this morning. (morning is not over)", options:["drank","have drunk"], answer:"have drunk"},
+  {text:"They _____ three goals before half time. (match is finished)", options:["scored","have scored"], answer:"scored"},
+  {text:"_____ you ever tried sushi?", options:["Did","Have"], answer:"Have"},
+  {text:"She _____ when I phoned. (specific past time)", options:["has just left","had just left","left"], answer:"had just left"},
+  {text:"I _____ in London for two years when I was a student.", options:["have lived","lived"], answer:"lived"},
+]);
+
+buildFill('fill-pp2', [
+  {before:"I _____ (not / see) that film yet.", hint:"haven't seen"},
+  {before:"She _____ (move) to Paris in 2015.", hint:"moved"},
+  {before:"We _____ (know) each other since we were children.", hint:"have known"},
+  {before:"_____ you _____ (finish) your homework last night?", hint:"Did / finish"},
+  {before:"He _____ (just / send) me an email.", hint:"has just sent"},
+  {before:"I _____ (travel) to six different countries so far this year.", hint:"have travelled / have traveled"},
+  {before:"They _____ (win) the championship three times in the 1990s.", hint:"won"},
+  {before:"How long _____ you _____ (live) in this city?", hint:"have / lived"},
+]);
+setFillAnswers('fill-pp2', [
+  "haven't seen","moved","have known",["did finish","did you finish"],"has just sent",["have travelled","have traveled"],"won",["have lived","have you lived"]
+]);
+
+buildMCQ('mcq-pp3', 'score-pp3', [
+  {text:"Which sentence is WRONG?", options:["I have seen him yesterday.","I saw him yesterday."], answer:"I have seen him yesterday."},
+  {text:"Which sentence is WRONG?", options:["She has lived here since 2010.","She has lived here for 2010."], answer:"She has lived here for 2010."},
+  {text:"Which sentence is WRONG?", options:["Did you ever visit Rome?","Have you ever visited Rome?"], answer:"Did you ever visit Rome?"},
+  {text:"Which sentence is WRONG?", options:["We have founded the company in 1998.","We founded the company in 1998."], answer:"We have founded the company in 1998."},
+  {text:"Which sentence is WRONG?", options:["I haven't finished yet.","I didn't finish yet."], answer:"I didn't finish yet."},
 ]);
 
 // --- WORD FORMATION SENTENCES (C1 Chance and Nature) ---
