@@ -91,6 +91,7 @@
   <button onclick="showPage('comparative')">Comparative &amp; Superlative</button>
   <button onclick="showPage('inversion')">Inversion</button>
   <button onclick="showPage('perfectvspast')">Present Perfect vs Past Simple</button>
+  <button onclick="showPage('exam')" style="background:#e65100;color:white;">Full Exam</button>
 </nav>
 
 <!-- ===================== GERUND & INFINITIVE ===================== -->
@@ -870,6 +871,40 @@
   </div>
 </div>
 
+<!-- ===================== FULL EXAM ===================== -->
+<div id="page-exam" class="page">
+  <div class="section-title">Full Exam</div>
+  <p style="color:#555;font-size:.93rem;margin-bottom:6px">Covers: Gerund &amp; Infinitive · Reported Speech · Word Formation · Comparative &amp; Superlative · Inversion · Present Perfect vs Past Simple</p>
+
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap;">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 20px;font-size:1rem;">
+      Score: <strong id="exam-score-live">0</strong> / <strong id="exam-total-live">0</strong>
+      &nbsp;|&nbsp; Time: <strong id="exam-timer">00:00</strong>
+    </div>
+    <button class="btn-check" onclick="startExam()" id="exam-start-btn">Start Exam</button>
+    <button class="btn-check" onclick="submitExam()" id="exam-submit-btn" style="display:none;background:var(--green)">Submit &amp; See Results</button>
+    <button class="btn-check" onclick="resetExam()" id="exam-reset-btn" style="display:none;background:#888">Reset</button>
+  </div>
+
+  <div id="exam-intro" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:18px;">
+    <h3 style="color:var(--blue);margin-bottom:10px">Instructions</h3>
+    <ul style="padding-left:20px;font-size:.93rem;line-height:1.8">
+      <li>45 questions across all grammar topics (excluding Connectives &amp; Writing Skills).</li>
+      <li>Mix of multiple-choice and fill-in-the-blank questions.</li>
+      <li>The timer starts when you click <strong>Start Exam</strong>.</li>
+      <li>Click <strong>Submit &amp; See Results</strong> when done, or let the timer run out.</li>
+    </ul>
+  </div>
+
+  <div id="exam-questions" style="display:none"></div>
+
+  <div id="exam-results" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:18px;">
+    <h3 style="color:var(--blue);margin-bottom:10px">Results</h3>
+    <div id="exam-final-score" style="font-size:1.2rem;font-weight:700;margin-bottom:12px"></div>
+    <div id="exam-breakdown"></div>
+  </div>
+</div>
+
 <script>
 // ==============================
 // NAVIGATION
@@ -1592,6 +1627,220 @@ buildMCQ('mcq-pp3', 'score-pp3', [
   {text:"Which sentence is WRONG?", options:["We have founded the company in 1998.","We founded the company in 1998."], answer:"We have founded the company in 1998."},
   {text:"Which sentence is WRONG?", options:["I haven't finished yet.","I didn't finish yet."], answer:"I didn't finish yet."},
 ]);
+
+// ==============================
+// FULL EXAM
+// ==============================
+const EXAM_QUESTIONS = [
+  // --- GERUND & INFINITIVE (8 questions) ---
+  {section:"Gerund & Infinitive", type:"mcq", text:"The best way to prepare for an interview is _____ to the company's website.", options:["going","to go"], answer:"to go"},
+  {section:"Gerund & Infinitive", type:"mcq", text:"I can't resist _____ things when they're in the sales.", options:["to buy","buying"], answer:"buying"},
+  {section:"Gerund & Infinitive", type:"mcq", text:"She wasn't able _____ very clearly after her accident.", options:["speaking","to speak"], answer:"to speak"},
+  {section:"Gerund & Infinitive", type:"mcq", text:"He only just escaped _____ to prison.", options:["to send","being sent"], answer:"being sent"},
+  {section:"Gerund & Infinitive", type:"mcq", text:"I'm really looking forward _____ on the cruise.", options:["to going","to go"], answer:"to going"},
+  {section:"Gerund & Infinitive", type:"mcq", text:"She denied _____ the money.", options:["to steal","stealing"], answer:"stealing"},
+  {section:"Gerund & Infinitive", type:"fill", text:"I'll never forgive June for _____ (LIE) to me like that.", answer:["lying"]},
+  {section:"Gerund & Infinitive", type:"fill", text:"I refuse _____ (ACCEPT) that there's no alternative.", answer:["to accept"]},
+
+  // --- REPORTED SPEECH (8 questions) ---
+  {section:"Reported Speech", type:"mcq", text:"'I am tired.' → She said she _____ tired.", options:["is","was","were"], answer:"was"},
+  {section:"Reported Speech", type:"mcq", text:"'I have finished.' → She said she _____ finished.", options:["has","had","would have"], answer:"had"},
+  {section:"Reported Speech", type:"mcq", text:"'I will help you.' → He said he _____ help me.", options:["will","would","should"], answer:"would"},
+  {section:"Reported Speech", type:"mcq", text:"'Don't open the window!' → She told me _____ the window.", options:["don't open","not to open","to not open"], answer:"not to open"},
+  {section:"Reported Speech", type:"mcq", text:"'Where do you live?' → He asked me where I _____.", options:["live","lived","was living"], answer:"lived"},
+  {section:"Reported Speech", type:"mcq", text:"'I saw her yesterday.' → She said she _____ her the day before.", options:["saw","had seen","has seen"], answer:"had seen"},
+  {section:"Reported Speech", type:"fill", text:"'Can you swim?' → He asked me if I _____ swim.", answer:["could"]},
+  {section:"Reported Speech", type:"fill", text:"'We are leaving now.' → They said they _____ leaving then.", answer:["were"]},
+
+  // --- WORD FORMATION (7 questions) ---
+  {section:"Word Formation", type:"fill", text:"The chances against this kind of unusual _____ are very high. (OCCUR)", answer:["occurrence"]},
+  {section:"Word Formation", type:"fill", text:"The _____ of the cliffs by the sea has changed the landscape. (ERODE)", answer:["erosion"]},
+  {section:"Word Formation", type:"fill", text:"Female animals have an _____ need to protect their young. (INSTINCT)", answer:["instinctive"]},
+  {section:"Word Formation", type:"fill", text:"The police are investigating the _____ disappearance of animals from the zoo. (MYSTERY)", answer:["mysterious"]},
+  {section:"Word Formation", type:"fill", text:"What's your _____ of the situation? (ASSESS)", answer:["assessment"]},
+  {section:"Word Formation", type:"fill", text:"Following the _____ of the volcano, hundreds of villages were destroyed. (ERUPT)", answer:["eruption"]},
+  {section:"Word Formation", type:"fill", text:"The expedition travelled miles in search of the _____ mountain gorilla. (ELUDE)", answer:["elusive"]},
+
+  // --- COMPARATIVE & SUPERLATIVE (7 questions) ---
+  {section:"Comparative & Superlative", type:"mcq", text:"He drives _____ than his sister.", options:["more careful","more carefully","carefullier"], answer:"more carefully"},
+  {section:"Comparative & Superlative", type:"mcq", text:"She is _____ singer of the three.", options:["the best","the most good","the better"], answer:"the best"},
+  {section:"Comparative & Superlative", type:"mcq", text:"The bag is _____ heavy for me to carry.", options:["enough","too","so"], answer:"too"},
+  {section:"Comparative & Superlative", type:"mcq", text:"It was _____ a difficult exam that many students failed.", options:["so","such","too"], answer:"such"},
+  {section:"Comparative & Superlative", type:"fill", text:"This exercise is much _____ (EASY) than the last one.", answer:["easier"]},
+  {section:"Comparative & Superlative", type:"fill", text:"Mount Everest is _____ (HIGH) mountain in the world.", answer:["the highest"]},
+  {section:"Comparative & Superlative", type:"fill", text:"I feel _____ (BAD) today than I did yesterday.", answer:["worse"]},
+
+  // --- INVERSION (8 questions) ---
+  {section:"Inversion", type:"mcq", text:"_____ had we left the house when it began to snow.", options:["Hardly","No sooner","Little"], answer:"Hardly"},
+  {section:"Inversion", type:"mcq", text:"Not only _____ late, but he also forgot his report.", options:["he arrived","did he arrive","he did arrive"], answer:"did he arrive"},
+  {section:"Inversion", type:"mcq", text:"No sooner had she opened the letter _____ she burst into tears.", options:["when","than","that"], answer:"than"},
+  {section:"Inversion", type:"mcq", text:"I can't speak Spanish. _____ can my brother.", options:["So","Neither","Not only"], answer:"Neither"},
+  {section:"Inversion", type:"fill", text:"Never _____ (I / SEE) such beautiful scenery. (have I seen)", answer:["have i seen"]},
+  {section:"Inversion", type:"fill", text:"Hardly _____ (WE / SIT DOWN) when the alarm went off. (had we sat down)", answer:["had we sat down"]},
+  {section:"Inversion", type:"fill", text:"Not only _____ (HE / SPEAK) French, but he also speaks Arabic. (does he speak)", answer:["does he speak"]},
+  {section:"Inversion", type:"fill", text:"Under no circumstances _____ (YOU / OPEN) this door. (should you open)", answer:["should you open"]},
+
+  // --- PRESENT PERFECT VS PAST SIMPLE (7 questions) ---
+  {section:"Present Perfect vs Past Simple", type:"mcq", text:"I _____ him at the airport two days ago.", options:["have seen","saw"], answer:"saw"},
+  {section:"Present Perfect vs Past Simple", type:"mcq", text:"He _____ here since 2015.", options:["lived","has lived"], answer:"has lived"},
+  {section:"Present Perfect vs Past Simple", type:"mcq", text:"_____ you ever tried sushi?", options:["Did","Have"], answer:"Have"},
+  {section:"Present Perfect vs Past Simple", type:"mcq", text:"They _____ three goals before half time. (match is finished)", options:["scored","have scored"], answer:"scored"},
+  {section:"Present Perfect vs Past Simple", type:"fill", text:"I _____ (NOT / SEE) that film yet. (haven't seen)", answer:["haven't seen","have not seen"]},
+  {section:"Present Perfect vs Past Simple", type:"fill", text:"We _____ (KNOW) each other since we were children. (have known)", answer:["have known"]},
+  {section:"Present Perfect vs Past Simple", type:"fill", text:"They _____ (WIN) the championship three times in the 1990s. (won)", answer:["won"]},
+];
+
+let examTimer = null;
+let examSeconds = 0;
+let examStarted = false;
+let examAnswers = {}; // idx -> chosen value
+
+function startExam() {
+  document.getElementById('exam-intro').style.display = 'none';
+  document.getElementById('exam-start-btn').style.display = 'none';
+  document.getElementById('exam-submit-btn').style.display = '';
+  document.getElementById('exam-reset-btn').style.display = '';
+  document.getElementById('exam-questions').style.display = 'block';
+  examStarted = true;
+  examAnswers = {};
+  examSeconds = 0;
+  updateExamTimer();
+  examTimer = setInterval(() => {
+    examSeconds++;
+    updateExamTimer();
+  }, 1000);
+
+  // Build questions
+  let html = '';
+  EXAM_QUESTIONS.forEach((q, i) => {
+    const secLabel = `<span class="tag">${q.section}</span>`;
+    if (q.type === 'mcq') {
+      html += `<div class="exercise-card" id="exam-q${i}">
+        <div class="q-item">
+          <label style="font-size:.95rem;font-weight:600">${i+1}. ${q.text} ${secLabel}</label>
+          <div class="mcq-options" style="margin-top:8px">`;
+      q.options.forEach(opt => {
+        html += `<button onclick="examSelectMCQ(${i}, this)" data-opt="${opt.replace(/"/g,'&quot;')}">${opt}</button>`;
+      });
+      html += `</div><div class="feedback" id="exam-fb${i}"></div></div></div>`;
+    } else {
+      html += `<div class="exercise-card" id="exam-q${i}">
+        <div class="q-item">
+          <label style="font-size:.95rem;font-weight:600">${i+1}. ${q.text} ${secLabel}</label>
+          <div style="margin-top:6px"><input type="text" id="exam-fill${i}" placeholder="..." autocomplete="off" oninput="examFillInput(${i})" style="width:220px;padding:5px 10px;border:2px solid #ccc;border-radius:6px;font-size:.93rem;outline:none"></div>
+          <div class="feedback" id="exam-fb${i}"></div>
+        </div></div>`;
+    }
+  });
+  document.getElementById('exam-questions').innerHTML = html;
+  document.getElementById('exam-total-live').textContent = EXAM_QUESTIONS.length;
+  document.getElementById('exam-score-live').textContent = '0';
+}
+
+function updateExamTimer() {
+  const m = String(Math.floor(examSeconds / 60)).padStart(2,'0');
+  const s = String(examSeconds % 60).padStart(2,'0');
+  document.getElementById('exam-timer').textContent = `${m}:${s}`;
+}
+
+function examSelectMCQ(idx, btn) {
+  if (!examStarted) return;
+  const card = document.getElementById('exam-q' + idx);
+  card.querySelectorAll('.mcq-options button').forEach(b => b.classList.remove('selected-ok','selected-err','reveal-ok'));
+  btn.classList.add('selected-ok');
+  examAnswers[idx] = btn.dataset.opt;
+  updateLiveScore();
+}
+
+function examFillInput(idx) {
+  examAnswers[idx] = document.getElementById('exam-fill' + idx).value;
+  updateLiveScore();
+}
+
+function updateLiveScore() {
+  let filled = Object.keys(examAnswers).filter(k => examAnswers[k] && examAnswers[k].trim() !== '').length;
+  document.getElementById('exam-score-live').textContent = filled;
+}
+
+function submitExam() {
+  if (!examStarted) return;
+  clearInterval(examTimer);
+  examStarted = false;
+  document.getElementById('exam-submit-btn').style.display = 'none';
+
+  let total = EXAM_QUESTIONS.length;
+  let correct = 0;
+  const sectionStats = {};
+
+  EXAM_QUESTIONS.forEach((q, i) => {
+    const sec = q.section;
+    if (!sectionStats[sec]) sectionStats[sec] = {correct:0, total:0};
+    sectionStats[sec].total++;
+
+    const card = document.getElementById('exam-q' + i);
+    const fb = document.getElementById('exam-fb' + i);
+    let isCorrect = false;
+
+    if (q.type === 'mcq') {
+      const chosen = examAnswers[i] || '';
+      const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
+      card.querySelectorAll('.mcq-options button').forEach(b => {
+        b.classList.remove('selected-ok','selected-err','reveal-ok');
+        if (answers.includes(b.dataset.opt)) b.classList.add('reveal-ok');
+      });
+      const selectedBtn = Array.from(card.querySelectorAll('.mcq-options button')).find(b => b.dataset.opt === chosen);
+      if (selectedBtn) {
+        isCorrect = answers.includes(chosen);
+        selectedBtn.classList.add(isCorrect ? 'selected-ok' : 'selected-err');
+      }
+      fb.textContent = isCorrect ? '✓ Correct!' : ('✗ Answer: ' + answers.join(' / '));
+      fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'err');
+    } else {
+      const inp = document.getElementById('exam-fill' + i);
+      const val = (inp ? inp.value.trim().toLowerCase() : '');
+      const answers = q.answer.map(a => a.toLowerCase());
+      isCorrect = answers.includes(val);
+      if (inp) inp.className = isCorrect ? 'correct' : 'wrong';
+      fb.textContent = isCorrect ? '✓ Correct!' : ('✗ Answer: ' + q.answer.join(' / '));
+      fb.className = 'feedback show ' + (isCorrect ? 'ok' : 'err');
+    }
+
+    if (isCorrect) { correct++; sectionStats[sec].correct++; }
+  });
+
+  const pct = Math.round(correct / total * 100);
+  const grade = pct >= 90 ? 'Excellent!' : pct >= 75 ? 'Good job!' : pct >= 60 ? 'Keep practising.' : 'Needs more work.';
+  document.getElementById('exam-final-score').textContent = `${correct} / ${total} (${pct}%) — ${grade}`;
+  document.getElementById('exam-score-live').textContent = correct;
+
+  let bdHtml = '<table style="width:100%;border-collapse:collapse;font-size:.92rem"><tr><th style="text-align:left;padding:6px 10px;background:#eef1f8;border:1px solid var(--border)">Topic</th><th style="padding:6px 10px;background:#eef1f8;border:1px solid var(--border)">Score</th></tr>';
+  Object.entries(sectionStats).forEach(([sec, st]) => {
+    const p = Math.round(st.correct / st.total * 100);
+    const color = p >= 75 ? 'var(--correct)' : p >= 50 ? 'var(--orange)' : 'var(--wrong)';
+    bdHtml += `<tr><td style="padding:6px 10px;border:1px solid var(--border)">${sec}</td><td style="padding:6px 10px;border:1px solid var(--border);color:${color};font-weight:700">${st.correct}/${st.total} (${p}%)</td></tr>`;
+  });
+  bdHtml += '</table>';
+  document.getElementById('exam-breakdown').innerHTML = bdHtml;
+  document.getElementById('exam-results').style.display = 'block';
+  document.getElementById('exam-results').scrollIntoView({behavior:'smooth'});
+}
+
+function resetExam() {
+  clearInterval(examTimer);
+  examStarted = false;
+  examAnswers = {};
+  examSeconds = 0;
+  document.getElementById('exam-timer').textContent = '00:00';
+  document.getElementById('exam-score-live').textContent = '0';
+  document.getElementById('exam-total-live').textContent = '0';
+  document.getElementById('exam-questions').innerHTML = '';
+  document.getElementById('exam-questions').style.display = 'none';
+  document.getElementById('exam-results').style.display = 'none';
+  document.getElementById('exam-intro').style.display = 'block';
+  document.getElementById('exam-start-btn').style.display = '';
+  document.getElementById('exam-submit-btn').style.display = 'none';
+  document.getElementById('exam-reset-btn').style.display = 'none';
+}
 
 // --- WORD FORMATION SENTENCES (C1 Chance and Nature) ---
 buildFill('fill-wfs1', [
