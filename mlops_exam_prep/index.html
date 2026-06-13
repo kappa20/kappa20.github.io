@@ -190,10 +190,72 @@ h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
 .btn-danger { background: transparent; border: 2px solid var(--error); color: var(--error); font-size: .85rem; padding: 8px 16px; }
 .btn-danger:hover { background: rgba(198,40,40,.06); }
 
+/* ── Revision screen ── */
+.rev-tabs { display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap; }
+.rev-tab {
+  padding: 9px 20px; border-radius: 8px; border: 2px solid var(--border);
+  background: var(--card); cursor: pointer; font-weight: 600; font-size: .88rem;
+  font-family: inherit; transition: all .15s;
+}
+.rev-tab:hover { border-color: #aaa; }
+.rev-tab.rt-active-1 { border-color: var(--primary); background: rgba(21,101,192,.09); color: var(--primary); }
+.rev-tab.rt-active-2 { border-color: var(--secondary); background: rgba(0,172,193,.09); color: #00838f; }
+.rev-tab.rt-active-3 { border-color: var(--accent); background: rgba(245,124,0,.09); color: #e65100; }
+.rev-tab.rt-active-4 { border-color: #7b1fa2; background: rgba(123,31,162,.09); color: #7b1fa2; }
+
+.rev-body { line-height: 1.6; }
+.rev-section { margin-bottom: 28px; }
+.rev-section h3 {
+  font-size: .95rem; font-weight: 700; margin-bottom: 12px;
+  padding: 6px 12px; border-radius: 6px; display: inline-block;
+}
+.rev-h-1 { background: rgba(21,101,192,.1); color: var(--primary); }
+.rev-h-2 { background: rgba(0,172,193,.1); color: #00838f; }
+.rev-h-3 { background: rgba(245,124,0,.1); color: #e65100; }
+.rev-h-4 { background: rgba(123,31,162,.1); color: #7b1fa2; }
+
+.def-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 10px; margin: 8px 0 4px; }
+.def-card { padding: 12px 14px; border-radius: 8px; background: #f7f9fc; border-left: 4px solid var(--primary); }
+.def-card.dc2 { border-color: var(--secondary); }
+.def-card.dc3 { border-color: var(--accent); }
+.def-card.dc4 { border-color: #7b1fa2; }
+.def-term { font-weight: 700; font-size: .85rem; margin-bottom: 4px; }
+.def-body { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+.rev-table { width: 100%; border-collapse: collapse; font-size: .83rem; margin: 8px 0; border-radius: 8px; overflow: hidden; }
+.rev-table th { background: var(--primary); color: #fff; padding: 9px 12px; text-align: left; font-weight: 600; }
+.rev-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.rev-table tr:last-child td { border-bottom: none; }
+.rev-table tr:nth-child(even) td { background: #f7f9fc; }
+.rev-table .cell-key { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+.rev-list { list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 8px 0; padding: 0; }
+.rev-list li { display: flex; gap: 10px; font-size: .87rem; align-items: flex-start; }
+.rev-list li .bullet { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 700; color: #fff; background: var(--primary); margin-top: 1px; }
+.rev-list li .bullet.b2 { background: var(--secondary); }
+.rev-list li .bullet.b3 { background: var(--accent); }
+.rev-list li .bullet.b4 { background: #7b1fa2; }
+.rev-list li .bullet.bdot { background: var(--muted); font-size: .6rem; }
+
+.pyramid { display: flex; flex-direction: column; gap: 3px; margin: 10px auto; max-width: 420px; }
+.pyr-level { padding: 8px 14px; border-radius: 6px; font-size: .82rem; font-weight: 600; text-align: center; }
+
+.pill { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: .75rem; font-weight: 700; margin: 2px 3px; }
+.pill-ok { background: rgba(46,125,50,.12); color: #2e7d32; }
+.pill-no { background: rgba(198,40,40,.12); color: #c62828; }
+
+.cycle-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 10px 0; font-size: .83rem; }
+.cycle-step { padding: 5px 12px; border-radius: 20px; background: rgba(21,101,192,.1); color: var(--primary); font-weight: 600; }
+.cycle-arrow { color: var(--muted); font-size: 1rem; }
+
+.rev-footer { margin-top: 28px; padding-top: 20px; border-top: 2px solid var(--border); display: flex; gap: 12px; flex-wrap: wrap; }
+
 @media (max-width: 520px) {
   .card { padding: 20px 16px; }
   .header h1 { font-size: 1.35rem; }
   .chapter-grid { grid-template-columns: 1fr; }
+  .rev-tabs { gap: 6px; }
+  .rev-tab { padding: 7px 14px; font-size: .82rem; }
 }
 </style>
 </head>
@@ -243,6 +305,7 @@ h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
       </div>
       <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
         <button class="btn btn-primary" onclick="startQuiz()">Commencer le quiz ▶</button>
+        <button class="btn btn-secondary" onclick="showRevise(1)">📖 Réviser</button>
         <button class="btn btn-secondary" onclick="showHistory()" style="font-size:.9rem;">Historique</button>
       </div>
     </div>
@@ -290,6 +353,18 @@ h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
         <button class="btn btn-secondary" onclick="backToStart()">Changer chapitres</button>
         <button class="btn btn-secondary" onclick="showHistory()">Voir l'historique</button>
       </div>
+    </div>
+  </div>
+
+  <!-- REVISE SCREEN -->
+  <div id="revise-screen" class="screen">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <button class="btn btn-secondary" onclick="backToStart()" style="padding:8px 18px;font-size:.88rem;">← Retour</button>
+        <h2 style="margin:0;">Fiches de révision</h2>
+      </div>
+      <div class="rev-tabs" id="rev-tabs"></div>
+      <div class="rev-body" id="rev-content"></div>
     </div>
   </div>
 
@@ -1656,7 +1731,7 @@ function shuffle(arr) {
 }
 
 function show(id) {
-  ['start-screen','quiz-screen','result-screen','history-screen'].forEach(s => {
+  ['start-screen','quiz-screen','result-screen','history-screen','revise-screen'].forEach(s => {
     document.getElementById(s).classList.toggle('active', s === id);
   });
 }
@@ -1817,6 +1892,663 @@ function retryQuiz() {
 }
 
 function backToStart() { show('start-screen'); }
+
+// ── Revision ──
+const REV_CHAPTERS = [
+  { id: 1, label: 'CH1 — Fondamentaux' },
+  { id: 2, label: 'CH2 — Pipelines & Orchestration' },
+  { id: 3, label: 'CH3 — Qualité & Tests' },
+  { id: 4, label: 'Certification DataKitchen' }
+];
+
+let currentRevCh = 1;
+
+function showRevise(ch) {
+  currentRevCh = ch || 1;
+  renderRevTabs();
+  renderRevContent();
+  show('revise-screen');
+  document.getElementById('revise-screen').scrollTop = 0;
+}
+
+function renderRevTabs() {
+  document.getElementById('rev-tabs').innerHTML = REV_CHAPTERS.map(c =>
+    `<button class="rev-tab${currentRevCh === c.id ? ' rt-active-'+c.id : ''}" onclick="switchRevCh(${c.id})">${c.label}</button>`
+  ).join('') + `<button class="btn btn-primary" style="margin-left:auto;padding:8px 18px;font-size:.86rem;" onclick="startQuiz()">Commencer le quiz ▶</button>`;
+}
+
+function switchRevCh(ch) {
+  currentRevCh = ch;
+  renderRevTabs();
+  renderRevContent();
+  document.querySelector('#revise-screen .card').scrollTop = 0;
+}
+
+function renderRevContent() {
+  document.getElementById('rev-content').innerHTML = REV_CONTENT[currentRevCh] || '';
+}
+
+const REV_CONTENT = {
+
+1: `
+<div class="rev-section">
+  <h3 class="rev-h-1">📌 Les 3 disciplines & leurs auteurs clés</h3>
+  <div class="def-grid">
+    <div class="def-card">
+      <div class="def-term">DevOps <span style="color:var(--muted);font-weight:400">(Jabbari, 2016)</span></div>
+      <div class="def-body">Combinaison de philosophies culturelles, pratiques et outils visant à améliorer la <strong>collaboration Dev/Ops</strong> pour livrer des logiciels de haute qualité plus rapidement. Fondé sur : CI/CD, IaC, monitoring, culture blameless.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">DataOps Manifesto <span style="color:var(--muted);font-weight:400">(Bergh, 2017)</span></div>
+      <div class="def-body">Combinaison du développement <strong>Agile + DevOps + Lean Manufacturing</strong> appliquée à la gestion de la donnée. Publié par DataKitchen. 18 principes fondamentaux.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">DataOps <span style="color:var(--muted);font-weight:400">(Atwal, 2019)</span></div>
+      <div class="def-body">Alignement des <strong>Personnes</strong> (culture, collaboration), <strong>Processus</strong> (Agile, Lean) et <strong>Technologie</strong> (outils, automatisation) pour améliorer qualité, vitesse et collaboration autour de la donnée.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">MLOps <span style="color:var(--muted);font-weight:400">(Gift & Deza, 2021)</span></div>
+      <div class="def-body">Processus de prendre un modèle ML d'un <em>laptop à un environnement de production</em>. Couvre tout le cycle : entraînement → validation → déploiement → surveillance → réentraînement.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">AIOps <span style="color:var(--muted);font-weight:400">(Gartner, 2017)</span></div>
+      <div class="def-body">Application de l'IA aux <strong>opérations IT</strong> (infrastructure, réseau, logs). Détecte anomalies, corrèle événements, automatise les réponses. <strong>≠ MLOps</strong> (qui concerne les modèles applicatifs).</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">LLMOps <span style="color:var(--muted);font-weight:400">(Databricks, 2023)</span></div>
+      <div class="def-body">Extension du MLOps aux <strong>grands modèles de langage</strong>. Couvre : fine-tuning, RAG, prompt engineering, évaluation, versionnement et surveillance spécifiques aux LLMs.</div>
+    </div>
+  </div>
+  <div style="background:#fff8e1;border-left:4px solid #f57c00;padding:12px 14px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>⚠️ Formule à mémoriser :</strong> <strong>MLOps = DataOps + DevOps + ML Model</strong><br>
+    La <strong>donnée est un actif vivant</strong> — elle évolue, se dégrade, doit être versionnée, testée et monitorée comme du logiciel.
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-1">📊 Tableau comparatif DevOps / DataOps / MLOps</h3>
+  <table class="rev-table">
+    <thead><tr><th>Dimension</th><th>DevOps</th><th>DataOps</th><th>MLOps</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Objet principal</td><td>Applications logicielles</td><td>Pipelines de données</td><td>Modèles ML</td></tr>
+      <tr><td class="cell-key">Finalité</td><td>Livraison continue et fiable de logiciels</td><td>Données de qualité livrées rapidement</td><td>Modèles ML performants maintenus en prod</td></tr>
+      <tr><td class="cell-key">Artefacts</td><td>Code, images Docker, APIs</td><td>Datasets, pipelines ETL/ELT</td><td>Modèles, datasets, métriques, features</td></tr>
+      <tr><td class="cell-key">Risque clé</td><td>Bugs de déploiement</td><td>Drift de données</td><td>Dégradation silencieuse du modèle</td></tr>
+      <tr><td class="cell-key">Pratiques phares</td><td>CI/CD, tests unitaires, IaC</td><td>Data quality, lineage, tests données</td><td>Monitoring modèle, réentraînement auto</td></tr>
+      <tr><td class="cell-key">Temporalité</td><td>Déploiements fréquents</td><td>Pipelines continus</td><td>Continue + réentraînement périodique</td></tr>
+      <tr><td class="cell-key">Collaboration</td><td>Dev + Ops</td><td>Data Eng + Analytics + Métier</td><td>Data Scientists + MLOps Eng + Ops</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-1">🔺 Pyramide des besoins MLOps — bas → haut</h3>
+  <div class="pyramid">
+    <div class="pyr-level" style="background:rgba(123,31,162,.12);color:#7b1fa2;border-left:4px solid #7b1fa2;">🏛️ <strong>Gouvernance</strong> — règles, rôles, conformité RGPD, audit, explainability</div>
+    <div class="pyr-level" style="background:rgba(0,172,193,.12);color:#00838f;border-left:4px solid var(--secondary);">📡 <strong>Monitoring</strong> — performances, alertes, détection de dérives (data drift & concept drift)</div>
+    <div class="pyr-level" style="background:rgba(245,124,0,.12);color:#e65100;border-left:4px solid var(--accent);">⚙️ <strong>Automation</strong> — réentraînement auto, CI/CD ML, déclencheurs basés sur la dérive</div>
+    <div class="pyr-level" style="background:rgba(21,101,192,.12);color:var(--primary);border-left:4px solid var(--primary);">🖥️ <strong>ML Platform</strong> — model registry, feature store, experiment tracking (MLflow)</div>
+    <div class="pyr-level" style="background:rgba(46,125,50,.12);color:#2e7d32;border-left:4px solid #2e7d32;">🗄️ <strong>Data Engineering</strong> — pipelines fiables, qualité de données, versionnement</div>
+    <div class="pyr-level" style="background:rgba(21,101,192,.2);color:var(--primary);border-left:4px solid var(--primary);font-size:.9rem;">🧱 <strong>Base DevOps</strong> — versionnement (Git), CI/CD, tests auto, conteneurisation ← FONDATION OBLIGATOIRE</div>
+  </div>
+  <p style="font-size:.82rem;color:var(--muted);text-align:center;margin-top:6px;">Sans Base DevOps solide, aucune des couches supérieures ne peut tenir. C'est le prérequis absolu.</p>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-1">🔁 Cycle de vie MLOps — 5 phases & 8 étapes détaillées</h3>
+  <p style="font-size:.84rem;margin-bottom:10px;"><strong>Cycle continu (5 phases) :</strong></p>
+  <div class="cycle-flow">
+    <span class="cycle-step">1. Entraîner</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">2. Valider</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">3. Déployer</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">4. Surveiller</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">5. Réentraîner</span><span class="cycle-arrow">↩</span>
+  </div>
+  <p style="font-size:.84rem;margin: 14px 0 8px;"><strong>Cycle de vie ML complet (8 étapes dans l'ordre) :</strong></p>
+  <table class="rev-table">
+    <thead><tr><th>#</th><th>Étape</th><th>Ce qui se passe</th><th>Artefact produit</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="cell-key">Collecte</td><td>Identifier et ingérer les données sources</td><td>Dataset brut</td></tr>
+      <tr><td>2</td><td class="cell-key">Exploration (EDA)</td><td>Analyser distributions, anomalies, corrélations</td><td>Notebook d'analyse</td></tr>
+      <tr><td>3</td><td class="cell-key">Préparation</td><td>Nettoyage, feature engineering, train/test split</td><td>Dataset préparé</td></tr>
+      <tr><td>4</td><td class="cell-key">Modélisation</td><td>Sélection algorithmes, entraînement, hyperparameter tuning</td><td>Modèle entraîné</td></tr>
+      <tr><td>5</td><td class="cell-key">Évaluation</td><td>Métriques de performance, validation croisée, comparaison modèles</td><td>Rapport de métriques</td></tr>
+      <tr><td>6</td><td class="cell-key">Déploiement</td><td>Packaging (Docker), mise en prod (API REST, batch, edge)</td><td>Modèle en service</td></tr>
+      <tr><td>7</td><td class="cell-key">Monitoring</td><td>Surveillance performances, détection de data drift / concept drift</td><td>Dashboard, alertes</td></tr>
+      <tr><td>8</td><td class="cell-key">Réentraînement</td><td>Déclenchement auto si dérive détectée ou nouvelles données</td><td>Nouveau modèle versionné</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-1">🏚️ Le Fossé d'Industrialisation & les 4 problèmes</h3>
+  <p style="font-size:.87rem;line-height:1.7;margin-bottom:12px;">Le <strong>fossé d'industrialisation</strong> est l'écart entre un prototype fonctionnel (notebook Jupyter avec 90% de précision sur les données de test) et un système ML <em>robuste, scalable et maintenable en production</em>. C'est l'objet central du MLOps : combler cet écart.</p>
+  <table class="rev-table">
+    <thead><tr><th>Problème</th><th>Manifestation concrète</th><th>Solution MLOps</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">1. Données instables</td><td>Le schéma source change sans prévenir, les valeurs dérivent, les volumes explosent</td><td>Tests de données, monitoring de drift, versionnement DVC</td></tr>
+      <tr><td class="cell-key">2. Processus manuels</td><td>Réentraînement fait à la main par un data scientist, déploiement par copie de fichier</td><td>Pipelines automatisés, CI/CD ML, orchestration (Airflow)</td></tr>
+      <tr><td class="cell-key">3. Déploiement fragile</td><td>"Ça marchait sur mon laptop" — dépendances non versionnées, Python 3.7 dev vs 3.9 prod</td><td>Docker, Conda, IaC, model registry (MLflow)</td></tr>
+      <tr><td class="cell-key">4. Absence de monitoring</td><td>Le modèle dérive silencieusement pendant 3 mois sans que personne le sache</td><td>Monitoring de performance, alertes automatiques, drift detection</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-1">🔑 Trio fondamental : Reproductibilité / Traçabilité / Gouvernance</h3>
+  <div class="def-grid">
+    <div class="def-card">
+      <div class="def-term">♻️ Reproductibilité</div>
+      <div class="def-body">Capacité à réexécuter une expérience dans <strong>les mêmes conditions</strong> et obtenir un résultat <strong>cohérent</strong>. Nécessite : même code (Git) + mêmes données (DVC) + même environnement (Docker).<br><br><em>Question clé : «Puis-je reproduire ce résultat demain, sur une autre machine ?»</em></div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">🔍 Traçabilité</div>
+      <div class="def-body">Capacité à <strong>remonter à l'origine</strong> de chaque résultat. Qui a modifié quoi, quand, avec quelles données, quel code, quels paramètres ? C'est l'audit trail complet du pipeline.<br><br><em>Question clé : «D'où vient ce résultat ?»</em></div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">🏛️ Gouvernance</div>
+      <div class="def-body">Ensemble des <strong>règles, rôles, responsabilités et mécanismes</strong> qui encadrent l'utilisation des données et des modèles. Qui peut accéder à quoi, avec quelles autorisations, selon quels processus d'approbation ?<br><br><em>Question clé : «Qui décide quoi, selon quelles règles ?»</em></div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">📦 Data Product</div>
+      <div class="def-body">La donnée traitée comme un <strong>produit logiciel</strong> : avec un propriétaire (data owner), un SLA de qualité, un versionnement, de la documentation et des utilisateurs identifiés. C'est la métaphore centrale du DataOps moderne.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-1">🤖 Distinguer AIOps / MLOps / LLMOps</h3>
+  <table class="rev-table">
+    <thead><tr><th>Discipline</th><th>Auteur & date</th><th>Cible principale</th><th>Problème résolu</th><th>Exemple concret</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">AIOps</td><td>Gartner, 2017</td><td>Opérations IT (infra, réseau, logs)</td><td>Trop d'alertes, incidents manuels, MTTR élevé</td><td>Détection auto d'anomalie réseau à 3h du matin</td></tr>
+      <tr><td class="cell-key">MLOps</td><td>Gift & Deza, 2021</td><td>Modèles ML applicatifs</td><td>Modèles qui restent dans les notebooks, dégradation silencieuse</td><td>Pipeline auto de réentraînement d'un modèle anti-fraude</td></tr>
+      <tr><td class="cell-key">LLMOps</td><td>Databricks, 2023</td><td>Grands modèles de langage (GPT, Llama…)</td><td>Coût de fine-tuning, hallucinations, latence, RAG, évaluation</td><td>Déploiement d'un LLM custom avec RAG sur docs internes</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:var(--muted);margin-top:8px;">⚠️ AIOps ≠ MLOps. AIOps = IA pour les opérations IT. MLOps = opérations pour les modèles ML. Ne pas confondre à l'examen.</p>
+</div>`,
+
+2: `
+<div class="rev-section">
+  <h3 class="rev-h-2">📌 Définition & 4 propriétés d'un pipeline de données</h3>
+  <p style="font-size:.86rem;margin-bottom:12px;">Un <strong>pipeline de données</strong> est une séquence structurée d'étapes automatisées qui déplace, transforme et livre des données d'une source à une destination. Il doit respecter 4 propriétés fondamentales :</p>
+  <table class="rev-table">
+    <thead><tr><th>Propriété</th><th>Définition formelle</th><th>Pourquoi c'est essentiel</th><th>Violation concrète</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Idempotent</td><td>f(f(x)) = f(x) — réexécuter N fois donne le même résultat que l'exécuter 1 fois</td><td>Permet les reprises sur erreur sans dupliquer ou corrompre les données</td><td>Réexécuter après une panne insère deux fois les mêmes lignes en base</td></tr>
+      <tr><td class="cell-key">Traçable</td><td>Chaque étape est loggée avec horodatage, entrées, sorties et statut</td><td>Audit, débogage rapide, conformité réglementaire, SLA</td><td>Une transformation échoue à 3h du matin et aucun log ne dit pourquoi</td></tr>
+      <tr><td class="cell-key">Déclenchable</td><td>Peut être lancé par événement, schedule ou CI/CD — pas uniquement à la main</td><td>Automatisation complète, réactivité aux données, intégration CI/CD</td><td>Un data engineer doit se connecter chaque nuit pour lancer le pipeline</td></tr>
+      <tr><td class="cell-key">Testable</td><td>Chaque transformation peut être vérifiée isolément avec des assertions automatisées</td><td>Détection précoce des erreurs, confiance dans les sorties</td><td>Impossible de tester une transformation sans exécuter les 50 étapes qui précèdent</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">📖 Agile dans le DataOps (Atwal, 2019)</h3>
+  <p style="font-size:.86rem;line-height:1.7;margin-bottom:10px;">Atwal (2019) définit l'Agile dans DataOps comme la capacité à <strong>livrer de la valeur en petits incréments</strong>, recueillir du feedback rapidement et <strong>s'adapter continuellement</strong> — en opposition aux approches en cascade (waterfall) qui livrent tout après 6-12 mois.</p>
+  <div class="def-grid">
+    <div class="def-card dc2">
+      <div class="def-term">Petits incréments</div>
+      <div class="def-body">Livrer une feature data fonctionnelle toutes les 2 semaines plutôt qu'un grand projet après 6 mois. Le feedback est rapide et les corrections sont bon marché. Chaque sprint produit quelque chose de potentiellement déployable.</div>
+    </div>
+    <div class="def-card dc2">
+      <div class="def-term">Feedback continu</div>
+      <div class="def-body">Les utilisateurs valident chaque livraison. Les erreurs de compréhension sont détectées tôt — pas en fin de projet quand tout doit être refait. Le sprint review est essentiel en DataOps.</div>
+    </div>
+    <div class="def-card dc2">
+      <div class="def-term">Adaptation continue</div>
+      <div class="def-body">Si les besoins métier changent (et ils changent toujours), le pipeline s'adapte sans tout refaire. La flexibilité est une valeur, pas une faiblesse. C'est le principe de l'empirisme agile.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">⚡ Lean Thinking — 5 principes & 7 gaspillages</h3>
+  <p style="font-size:.85rem;margin-bottom:10px;"><strong>5 principes Lean (Womack & Jones) appliqués au DataOps :</strong></p>
+  <table class="rev-table">
+    <thead><tr><th>#</th><th>Principe</th><th>Application DataOps concrète</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="cell-key">Définir la valeur</td><td>Du point de vue du consommateur de données. Ce qui n'est pas demandé n'a pas de valeur, même si c'est techniquement impressionnant.</td></tr>
+      <tr><td>2</td><td class="cell-key">Identifier le flux de valeur</td><td>Cartographier toutes les étapes du pipeline source → décision. Identifier les étapes qui n'apportent aucune valeur (gaspillages).</td></tr>
+      <tr><td>3</td><td class="cell-key">Créer le flux continu</td><td>Éliminer les interruptions, les attentes et les transferts manuels entre équipes. Les données doivent circuler sans friction.</td></tr>
+      <tr><td>4</td><td class="cell-key">Établir le Pull</td><td>Ne produire et livrer des données que lorsqu'elles sont demandées (demand-driven). Évite la surproduction de données inutilisées.</td></tr>
+      <tr><td>5</td><td class="cell-key">Poursuivre la perfection</td><td>Amélioration continue (Kaizen). Chaque cycle rend le pipeline un peu plus efficace, plus fiable et plus rapide.</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;margin: 16px 0 8px;"><strong>7 gaspillages Lean en DataOps :</strong></p>
+  <table class="rev-table">
+    <thead><tr><th>Gaspillage</th><th>Définition</th><th>Exemple DataOps concret</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Surproduction</td><td>Produire plus que ce qui est consommé</td><td>50 rapports hebdomadaires dont 40 ne sont jamais consultés</td></tr>
+      <tr><td class="cell-key">Attente ⭐</td><td>Données bloquées en attente d'une action humaine</td><td>Dataset en quarantaine 3 jours en attente de validation manuelle</td></tr>
+      <tr><td class="cell-key">Transport ⭐</td><td>Déplacer des données sans valeur ajoutée</td><td>Copier manuellement des datasets de dev → staging → prod</td></tr>
+      <tr><td class="cell-key">Surtraitement</td><td>Plus de précision ou de qualité que nécessaire</td><td>Agréger à la seconde une métrique consultée uniquement à la journée</td></tr>
+      <tr><td class="cell-key">Stocks</td><td>Données intermédiaires non utilisées qui s'accumulent</td><td>1 To de tables tmp_xxx_ jamais consommées stockées dans S3</td></tr>
+      <tr><td class="cell-key">Mouvements</td><td>Changements d'outils inutiles</td><td>Changer d'orchestrateur tous les 6 mois sans raison technique</td></tr>
+      <tr><td class="cell-key">Défauts</td><td>Données incorrectes qui se propagent dans tout le pipeline</td><td>Un champ de date mal parsé pollue 3 mois de données analytiques</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">📜 DataOps Manifesto — 18 Principes (DataKitchen, 2021)</h3>
+  <p style="font-size:.85rem;margin-bottom:10px;">Les 18 principes sont organisés autour de la collaboration, la qualité, l'automatisation et l'amélioration continue. Voici les plus importants à l'examen :</p>
+  <table class="rev-table">
+    <thead><tr><th>Principe</th><th>Ce que ça signifie concrètement</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Satisfaire le client en continu</td><td>Livrer des données de qualité de façon continue, pas en gros lots rares après de longs projets waterfall</td></tr>
+      <tr><td class="cell-key">Petits incréments fréquents</td><td>Itérations courtes, feedback rapide, réduction du batch size — comme en développement Agile</td></tr>
+      <tr><td class="cell-key">⭐ P7 — Réduire l'héroïsme</td><td>Remplacer les interventions manuelles d'urgence par des processus <strong>automatisés et robustes</strong>. Le système ne doit pas dépendre d'un seul expert qui "sauve la mise" à 2h du matin.</td></tr>
+      <tr><td class="cell-key">Tests automatisés à chaque étape</td><td>Chaque transformation est testée automatiquement. Pas de données non validées en production.</td></tr>
+      <tr><td class="cell-key">Amélioration continue (Kaizen)</td><td>Mesurer, analyser et améliorer les processus à chaque cycle — jamais considérer que c'est "assez bien"</td></tr>
+      <tr><td class="cell-key">Collaboration inter-équipes</td><td>Casser les silos entre équipes data engineering, analytics et business — communication quotidienne</td></tr>
+    </tbody>
+  </table>
+  <div style="background:#e3f2fd;border-left:4px solid var(--secondary);padding:12px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>Automatisation progressive :</strong> On ne peut automatiser que ce qu'on comprend. Automatiser un processus mal compris <strong>amplifie les erreurs à grande vitesse</strong>. Maîtriser d'abord manuellement, puis automatiser progressivement.
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">📦 Versionnement étendu MLOps</h3>
+  <table class="rev-table">
+    <thead><tr><th>Artefact</th><th>Outil</th><th>Ce que ça permet concrètement</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Code source</td><td>Git (GitHub/GitLab)</td><td>Historique complet, branches, revues de code, déclenchement CI/CD</td></tr>
+      <tr><td class="cell-key">Données volumineuses</td><td>DVC (Data Version Control)</td><td>Versionnement de datasets binaires (pointeurs Git → S3/GCS), sans stocker dans Git</td></tr>
+      <tr><td class="cell-key">Données transactionnelles</td><td>Delta Lake</td><td>Time travel, ACID sur data lake, rollback de tables entières</td></tr>
+      <tr><td class="cell-key">Contrats de schéma</td><td>Great Expectations</td><td>Définir et exécuter des "expectations" de qualité automatiquement dans le CI</td></tr>
+      <tr><td class="cell-key">Modèles & expériences</td><td>MLflow</td><td>Tracking paramètres, métriques, artefacts. Model registry avec versions et stages</td></tr>
+      <tr><td class="cell-key">Environnements d'exécution</td><td>Docker / Conda</td><td>Reproductibilité complète : OS + librairies + versions Python figés dans une image immuable</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.83rem;color:var(--muted);margin-top:8px;"><strong>Niveaux de reproductibilité (croissant) :</strong> requirements.txt → venv/conda → Image Docker (niveau maximal — encapsule TOUT)</p>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">🔄 DAG & Orchestrateurs — Comparaison</h3>
+  <div class="def-grid">
+    <div class="def-card dc2">
+      <div class="def-term">DAG — Directed Acyclic Graph</div>
+      <div class="def-body">Graphe <strong>orienté sans cycle</strong>. Noeuds = tâches. Arêtes = dépendances. Garantit un ordre d'exécution déterministe. Pas de boucle = pas d'exécution infinie.<br><em>Exemple : Task A → Task B + Task C → Task D</em></div>
+    </div>
+    <div class="def-card dc2">
+      <div class="def-term">Avantage orchestrateur vs cron</div>
+      <div class="def-body">Un orchestrateur apporte : <strong>DAG</strong> (gestion des dépendances), <strong>retry auto</strong>, <strong>monitoring</strong> centralisé, <strong>logs</strong> détaillés, <strong>alertes</strong>. Un cron job est aveugle : il ne sait pas si la tâche a échoué.</div>
+    </div>
+  </div>
+  <table class="rev-table" style="margin-top:12px;">
+    <thead><tr><th>Orchestrateur</th><th>Points forts</th><th>À savoir pour l'examen</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Apache Airflow ⭐</td><td>Le plus répandu en production. DAGs en Python, UI riche, large écosystème de connecteurs</td><td>Le plus utilisé — savoir pourquoi on le choisit</td></tr>
+      <tr><td class="cell-key">Prefect</td><td>Python natif, meilleure UX que Airflow, moins de configuration</td><td>Nouvelle génération, cloud-native</td></tr>
+      <tr><td class="cell-key">Dagster</td><td>Asset-oriented, observabilité native, type-safe, test-friendly</td><td>Idéal pour data assets typés</td></tr>
+      <tr><td class="cell-key">Metaflow</td><td>Conçu pour ML, intégration AWS native (créé par Netflix)</td><td>Spécialisé ML</td></tr>
+      <tr><td class="cell-key">Kubeflow</td><td>Kubernetes-native, distribué, scalable, multi-tenant</td><td>ML à grande échelle</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">⚙️ Workflow CI/CD pour les données</h3>
+  <div class="cycle-flow">
+    <span class="cycle-step">Push Git</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">Lint</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">Tests unitaires</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">Tests transformation</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">Data Validation</span><span class="cycle-arrow">→</span>
+    <span class="cycle-step">Build artefact</span>
+  </div>
+  <table class="rev-table" style="margin-top:12px;">
+    <thead><tr><th>Étape</th><th>Ce qu'elle vérifie</th><th>Outil typique</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Lint</td><td>Style de code, conventions PEP8, imports inutilisés</td><td>flake8, black, ruff</td></tr>
+      <tr><td class="cell-key">Tests unitaires</td><td>Logique des fonctions Python isolées avec données mockées</td><td>pytest</td></tr>
+      <tr><td class="cell-key">Tests de transformation ⭐</td><td>Que chaque étape ETL produit le résultat attendu avec fixtures de données</td><td>pytest + fixtures</td></tr>
+      <tr><td class="cell-key">Data Validation</td><td>Schéma, types, nullité, cohérence sur données réelles ou de test</td><td>Great Expectations, dbt tests</td></tr>
+      <tr><td class="cell-key">Build artefact</td><td>Création de l'image Docker ou du package Python déployable</td><td>Docker build, Poetry</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.83rem;color:var(--muted);margin-top:8px;"><strong>SRP (Single Responsibility Principle) :</strong> chaque module de transformation a <em>une seule responsabilité</em> — testable isolément, lisible, maintenable.</p>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-2">🏭 3 Pipelines DataKitchen & Architecture de référence</h3>
+  <div class="def-grid">
+    <div class="def-card dc2">
+      <div class="def-term">1. Environment Pipeline</div>
+      <div class="def-body">Provisionne l'infrastructure, les outils et les environnements. Principal <strong>goulot d'étranglement</strong> des équipes. Sans environnements reproductibles et automatisés, tout le reste est fragile et lent.</div>
+    </div>
+    <div class="def-card dc2">
+      <div class="def-term">2. Development/Innovation Pipeline</div>
+      <div class="def-body">Construit, teste et valide les analytics. Principe : <strong>données fixes</strong> + <strong>code changeant</strong>. On valide que le nouveau code fonctionne correctement sur des données connues.</div>
+    </div>
+    <div class="def-card dc2">
+      <div class="def-term">3. Production/Value Pipeline</div>
+      <div class="def-body">Livre les analytics aux consommateurs finaux. Principe : <strong>code fixe</strong> + <strong>nouvelles données</strong>. On valide que les nouvelles données entrantes respectent les contrats de qualité.</div>
+    </div>
+  </div>
+  <p style="font-size:.84rem;margin-top:12px;"><strong>Architecture de référence MLOps :</strong></p>
+  <div class="cycle-flow">
+    <span class="cycle-step" style="background:rgba(46,125,50,.1);color:#2e7d32;">Git (code)</span>
+    <span class="cycle-arrow">+</span>
+    <span class="cycle-step" style="background:rgba(0,172,193,.1);color:#00838f;">DVC (données)</span>
+    <span class="cycle-arrow">+</span>
+    <span class="cycle-step" style="background:rgba(245,124,0,.1);color:#e65100;">Orchestrateur (DAGs)</span>
+    <span class="cycle-arrow">+</span>
+    <span class="cycle-step" style="background:rgba(21,101,192,.1);color:var(--primary);">CI/CD (tests auto)</span>
+  </div>
+</div>`,
+
+3: `
+<div class="rev-section">
+  <h3 class="rev-h-3">📌 Fondements de la qualité des données</h3>
+  <div class="def-grid">
+    <div class="def-card dc3">
+      <div class="def-term">Fitness for use (Wang & Strong, 1996)</div>
+      <div class="def-body">La qualité des données = <strong>aptitude à l'usage</strong>. Des données parfaitement propres pour un usage (ex. dashboard) peuvent être de mauvaise qualité pour un autre (ex. modèle ML). La qualité est <em>contextuelle</em>, pas absolue.</div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Qualité ML = f(Code, Données)</div>
+      <div class="def-body">La qualité d'un modèle ML dépend autant de la qualité du <strong>code</strong> que de la qualité des <strong>données</strong>. <em>Garbage In, Garbage Out</em> : les meilleures architectures échouent sur des données pourries.</div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Disponibilité ≠ Fiabilité ⭐</div>
+      <div class="def-body">Une donnée <strong>disponible</strong> (accessible techniquement) peut être <strong>non fiable</strong> (incorrecte, obsolète, incohérente). Ce sont deux dimensions <em>indépendantes</em> — ne pas confondre à l'examen.</div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Data Confidence (Atwal, 2019)</div>
+      <div class="def-body">Mesure dans laquelle les équipes peuvent <strong>faire confiance aux données</strong> pour prendre des décisions. Sans confiance, même les meilleures analyses seront ignorées ou remises en question par le management.</div>
+    </div>
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-3">📈 Les 3 niveaux de maturité des données</h3>
+  <div class="cycle-flow">
+    <span class="cycle-step" style="background:rgba(198,40,40,.1);color:#c62828;">1. Disponible</span>
+    <span class="cycle-arrow">→</span>
+    <span class="cycle-step" style="background:rgba(245,124,0,.1);color:#e65100;">2. Exploitable</span>
+    <span class="cycle-arrow">→</span>
+    <span class="cycle-step" style="background:rgba(46,125,50,.1);color:#2e7d32;">3. Fiable ✓</span>
+  </div>
+  <table class="rev-table" style="margin-top:12px;">
+    <thead><tr><th>Niveau</th><th>Définition</th><th>Exemple</th><th>Problème restant</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">1. Disponible</td><td>La donnée existe et est techniquement accessible</td><td>Un fichier CSV est stocké dans S3</td><td>Peut être vide, mal formaté, corrompu, obsolète</td></tr>
+      <tr><td class="cell-key">2. Exploitable</td><td>Correctement structurée, schéma connu, parsable et lisible</td><td>CSV parsé en DataFrame avec types détectés</td><td>Peut contenir des erreurs, doublons, valeurs nulles</td></tr>
+      <tr><td class="cell-key">3. Fiable</td><td>Exacte, cohérente, validée, conforme aux règles métier, de confiance pour décider</td><td>Dataset certifié par Great Expectations</td><td>— (c'est l'objectif final du pipeline qualité)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-3">📐 Les 10 Dimensions de qualité — Définitions & Tests</h3>
+  <table class="rev-table">
+    <thead><tr><th>#</th><th>Dimension</th><th>Définition précise</th><th>Test typique</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="cell-key">Complétude</td><td>Degré de présence des valeurs attendues (non nulles, champs requis renseignés)</td><td><code>df['col'].isna().sum() == 0</code></td></tr>
+      <tr><td>2</td><td class="cell-key">Validité</td><td>Respect du format, type et domaine autorisé (pattern email, plage de valeurs, enum)</td><td><code>df['status'].isin(['actif','inactif']).all()</code></td></tr>
+      <tr><td>3</td><td class="cell-key">Cohérence</td><td>Absence de contradiction entre valeurs (au sein d'un dataset ou entre datasets liés)</td><td><code>(df['date_fin'] >= df['date_debut']).all()</code></td></tr>
+      <tr><td>4</td><td class="cell-key">Unicité</td><td>Absence de doublons sur des clés qui doivent être uniques</td><td><code>df['order_id'].nunique() == len(df)</code></td></tr>
+      <tr><td>5</td><td class="cell-key">Exactitude</td><td>Correspondance fidèle des valeurs avec la réalité du monde réel</td><td>Comparaison avec source de référence officielle</td></tr>
+      <tr><td>6</td><td class="cell-key">Fraîcheur</td><td>Données suffisamment récentes par rapport au SLA défini (timeliness)</td><td><code>df['updated_at'].max() > today - timedelta(1)</code></td></tr>
+      <tr><td>7</td><td class="cell-key">Intégrité</td><td>Clés étrangères valides, relations entre tables cohérentes, pas d'orphelins</td><td><code>df['cust_id'].isin(customers['id']).all()</code></td></tr>
+      <tr><td>8</td><td class="cell-key">Traçabilité</td><td>Origine et parcours de chaque donnée retraçables (data lineage)</td><td>Audit trail complet dans les métadonnées du pipeline</td></tr>
+      <tr><td>9</td><td class="cell-key">Uniformité</td><td>Mêmes unités, formats et conventions dans tous les systèmes</td><td>Contrôle de cohérence format entre systèmes A et B</td></tr>
+      <tr><td>10</td><td class="cell-key">Documentation</td><td>Métadonnées disponibles et à jour décrivant la donnée</td><td>Vérification que le data catalog est renseigné</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-3">🗂️ Les 3 Types de métadonnées & Data Lineage</h3>
+  <div class="def-grid">
+    <div class="def-card dc3">
+      <div class="def-term">Métadonnées descriptives</div>
+      <div class="def-body">Décrivent le <strong>contexte métier</strong> : noms humains des colonnes, définitions dans le glossaire d'entreprise, description de l'usage prévu, relations sémantiques entre datasets.<br><em>Question : «Que signifie cette donnée pour le business ?»</em></div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Métadonnées structurelles</div>
+      <div class="def-body">Décrivent la <strong>structure interne</strong> : schémas, types de colonnes (INTEGER, VARCHAR, DATE), contraintes (NOT NULL, UNIQUE), clés primaires et étrangères, relations entre tables.<br><em>Question : «Comment cette donnée est-elle organisée ?»</em></div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Métadonnées administratives</div>
+      <div class="def-body">Décrivent la <strong>gouvernance</strong> : propriétaire (data owner), classification de sensibilité (PII, public), droits d'accès par rôle, date de création/modification, politique de rétention, conformité RGPD.<br><em>Question : «Qui gère cette donnée et comment ?»</em></div>
+    </div>
+  </div>
+  <div style="background:#fce4ec;border-left:4px solid var(--accent);padding:12px 14px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>Data Lineage :</strong> traçabilité <em>complète</em> du parcours d'une donnée — de sa source d'origine, à travers toutes les transformations (qui, quand, quel code), jusqu'à son utilisation finale. Essentiel pour l'audit, le débogage et la conformité réglementaire.<br><br>
+    <strong>DAMA-DMBOK2 :</strong> Data Management Body of Knowledge (2e éd.) — framework de référence mondial pour la gouvernance, la qualité, l'architecture et le cycle de vie des données d'entreprise.
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-3">🧪 Taxonomie des tests : 3 catégories & 8 types</h3>
+  <p style="font-size:.85rem;margin-bottom:10px;"><strong>Les 3 catégories de tests de données :</strong></p>
+  <div class="def-grid">
+    <div class="def-card dc3">
+      <div class="def-term">Tests de Schéma</div>
+      <div class="def-body">Structure de la donnée : colonnes présentes, types corrects, contraintes NOT NULL / UNIQUE respectées. C'est la première ligne de défense — si le schéma est cassé, rien d'autre ne peut fonctionner.</div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Tests de Contenu</div>
+      <div class="def-body">Valeurs dans la donnée : nullité (champs obligatoires), unicité (doublons), domaines autorisés, anomalies statistiques. Vérifie ce qu'il y a dans les cellules.</div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">Tests Métier</div>
+      <div class="def-body">Logique et règles métier : cohérence temporelle, intégrité référentielle, SLA de fraîcheur. Ces tests nécessitent de comprendre le domaine métier, pas seulement la structure technique.</div>
+    </div>
+  </div>
+  <table class="rev-table" style="margin-top:14px;">
+    <thead><tr><th>Type de test</th><th>Catégorie</th><th>Assertion Python typique</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Schéma</td><td>Schéma</td><td><code>assert 'user_id' in df.columns</code></td></tr>
+      <tr><td class="cell-key">Nullité</td><td>Contenu</td><td><code>assert df['email'].isna().sum() == 0</code></td></tr>
+      <tr><td class="cell-key">Unicité</td><td>Contenu</td><td><code>assert df['order_id'].nunique() == len(df)</code></td></tr>
+      <tr><td class="cell-key">Intégrité</td><td>Métier</td><td><code>assert df['customer_id'].isin(customers['id']).all()</code></td></tr>
+      <tr><td class="cell-key">Cohérence métier</td><td>Métier</td><td><code>assert (df['date_fin'] >= df['date_debut']).all()</code></td></tr>
+      <tr><td class="cell-key">Domaine</td><td>Contenu</td><td><code>assert df['status'].isin(['actif','inactif','suspendu']).all()</code></td></tr>
+      <tr><td class="cell-key">Fraîcheur</td><td>Métier</td><td><code>assert df['updated_at'].max() > datetime.now() - timedelta(1)</code></td></tr>
+      <tr><td class="cell-key">Anomalie</td><td>Contenu</td><td><code>assert df['amount'].mean() &lt; historical_mean * 3</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-3">🎯 Shift Left, Règle d'or & GIGO</h3>
+  <div class="def-grid">
+    <div class="def-card dc3">
+      <div class="def-term">⬅️ Shift Left</div>
+      <div class="def-body">Appliquer les contrôles qualité le <strong>plus tôt possible</strong> dans le pipeline — dès l'ingestion. Coût de correction :<br>• Détectée à l'ingestion : <strong>1x</strong><br>• Détectée en transformation : <strong>10x</strong><br>• Détectée en production : <strong>100x+</strong><br><em>Détecter tôt = corriger bon marché.</em></div>
+    </div>
+    <div class="def-card dc3">
+      <div class="def-term">🏆 Règle d'or des tests</div>
+      <div class="def-body">Les tests de données doivent être :<br>1. <strong>Versionnés dans Git</strong> (comme du code)<br>2. <strong>Exécutés automatiquement</strong> dans le CI/CD<br>3. <strong>Capables de bloquer</strong> le pipeline si anomalie<br><em>Aucune dégradation ne doit atteindre la production.</em></div>
+    </div>
+  </div>
+  <div style="background:#e8f5e9;border-left:4px solid #2e7d32;padding:12px 14px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>Points clés à retenir pour l'examen :</strong><br>
+    • <strong>Garbage In, Garbage Out</strong> : données non fiables → modèles ML défaillants → mauvaises décisions<br>
+    • <strong>Les tests DOIVENT arrêter la chaîne de production</strong> quand des erreurs sont détectées (c'est intentionnel)<br>
+    • <strong>Nullité + Unicité</strong> = base des Tests de Contenu — toujours tester ces deux dimensions en premier
+  </div>
+</div>`,
+
+4: `
+<div class="rev-section">
+  <h3 class="rev-h-4">📌 DataOps = Agile + DevOps + Lean — Pourquoi ces 3 ?</h3>
+  <table class="rev-table">
+    <thead><tr><th>Composante</th><th>Ce qu'elle apporte</th><th>Principe clé à retenir</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Agile</td><td>Livraison en petits incréments, feedback rapide, adaptation continue aux besoins changeants</td><td>Itérations courtes, collaboration quotidienne, flexibilité face au changement</td></tr>
+      <tr><td class="cell-key">DevOps</td><td>Automatisation du déploiement, CI/CD, collaboration Dev/Ops, monitoring, infrastructure as code</td><td>Automatiser tout ce qui peut l'être, mesurer tout, supprimer les silos</td></tr>
+      <tr><td class="cell-key">Lean Manufacturing</td><td>Élimination des 7 gaspillages, flux continu, amélioration continue (Kaizen), focus valeur client</td><td>Éliminer tout ce qui n'apporte pas de valeur au consommateur final</td></tr>
+    </tbody>
+  </table>
+  <div style="background:#f3e5f5;border-left:4px solid #7b1fa2;padding:12px 14px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>🎯 Défis actuels qui justifient DataOps :</strong> des mois pour livrer de nouveaux insights · taux d'erreur élevés · trop de temps en correction d'erreurs · toolchains fragmentées · équipes en silos · manque de confiance dans les données. DataOps répond à <strong>tous ces défis simultanément</strong>.
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-4">✅ Objectifs & Ce que DataOps N'EST PAS</h3>
+  <div class="def-grid">
+    <div class="def-card dc4">
+      <div class="def-term">✅ Objectifs DataOps (DataKitchen)</div>
+      <div class="def-body">
+        <ul style="margin:0;padding-left:16px;font-size:.83rem;line-height:1.7;">
+          <li>Réduire le <strong>cycle de livraison</strong> (insights plus rapides)</li>
+          <li>Réduire les <strong>taux d'erreur</strong> (données plus fiables)</li>
+          <li>Augmenter la <strong>collaboration</strong> inter-équipes</li>
+          <li>Mesurer les processus pour <strong>augmenter la productivité</strong></li>
+        </ul>
+      </div>
+    </div>
+    <div class="def-card dc4">
+      <div class="def-term">❌ Ce que DataOps N'est PAS</div>
+      <div class="def-body">
+        <ul style="margin:0;padding-left:16px;font-size:.83rem;line-height:1.7;">
+          <li><strong>Un outil spécifique</strong> — DataOps est tool-agnostic</li>
+          <li><strong>Des tests manuels</strong> — les tests sont automatisés et multi-purpose</li>
+          <li><strong>Des déploiements manuels prudents</strong> — c'est l'opposé</li>
+          <li><strong>Uniquement pour les grandes entreprises</strong> — any team can start</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-4">🏭 Les 3 Pipelines DataKitchen — Vue détaillée</h3>
+  <table class="rev-table">
+    <thead><tr><th>Pipeline</th><th>Rôle principal</th><th>Données</th><th>Code</th><th>Goulot typique</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">1. Environment Pipeline</td><td>Provisionne l'infra, les outils et les environnements de travail</td><td>—</td><td>—</td><td>Provisionnement = principal goulot des équipes data</td></tr>
+      <tr><td class="cell-key">2. Development Pipeline</td><td>Construit, teste et valide les analytics</td><td><strong>Fixes</strong> (connues, stables)</td><td><strong>Changeant</strong></td><td>Tests insuffisants → erreurs en prod</td></tr>
+      <tr><td class="cell-key">3. Production Pipeline</td><td>Livre les analytics aux consommateurs finaux</td><td><strong>Nouvelles</strong> (inconnues)</td><td><strong>Fixe</strong> (stable, validé)</td><td>Données de mauvaise qualité → alertes SLA</td></tr>
+    </tbody>
+  </table>
+  <div style="background:#f3e5f5;border-left:4px solid #7b1fa2;padding:12px 14px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>⭐ Rôle dual des tests — la règle la plus importante :</strong><br>
+    • En <strong>développement</strong> : données <em>fixes</em> + code <em>changeant</em> → valider que le <strong>code est correct</strong><br>
+    • En <strong>production</strong> : code <em>fixe</em> + données <em>nouvelles</em> → valider que les <strong>données sont correctes</strong><br><br>
+    Cette dualité est ce qui distingue le DataOps du DevOps classique.
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-4">🔧 Termes techniques certifiés — Définitions complètes</h3>
+  <table class="rev-table">
+    <thead><tr><th>Terme</th><th>Définition DataKitchen officielle</th><th>Exemple concret</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">Data pipeline</td><td><strong>Data workflow</strong> — séquence d'étapes qui déplace, transforme et livre des données d'une source à une destination</td><td>ETL qui ingère des ventes CSV → nettoie → charge en data warehouse</td></tr>
+      <tr><td class="cell-key">DAG</td><td>Un graphe de steps dans un workflow (Directed Acyclic Graph)</td><td>Tâche A → Tâche B et C en parallèle → Tâche D</td></tr>
+      <tr><td class="cell-key">Statistical Process Control ⭐</td><td>Méthode de <strong>mesure des tendances</strong> pour identifier les instances qui sont <em>hors des limites acceptables</em></td><td>Si le taux d'erreur dépasse la limite de contrôle → alerte automatique</td></tr>
+      <tr><td class="cell-key">Meta-orchestration ⭐</td><td>Brancher des outils existants dans des pipelines, automatiser leurs connexions et surveiller leurs performances dans plusieurs pipelines. <em>Un DAG de DAGs.</em></td><td>Airflow qui orchestre Spark + dbt + Great Expectations comme un tout</td></tr>
+      <tr><td class="cell-key">Safety Culture ⭐</td><td>Environnement d'entreprise où les contributeurs se sentent <strong>à l'aise pour signaler les problèmes</strong> sans crainte de blâme</td><td>Post-mortem blameless après un incident data en production</td></tr>
+      <tr><td class="cell-key">Value Pipeline</td><td>Un flux de production qui livre de la valeur analytique aux consommateurs finaux</td><td>Pipeline qui alimente un dashboard Tableau pour les commerciaux</td></tr>
+      <tr><td class="cell-key">Location Balance tests</td><td>Vérifient que <strong>les mêmes données</strong> restent cohérentes <strong>quand elles transitent</strong> à travers l'ensemble du système</td><td>Même total de lignes avant et après la transformation dans le DW</td></tr>
+      <tr><td class="cell-key">Historical Balance tests</td><td>Vérifient que les données sont <strong>à jour</strong> (fraîcheur) par rapport à l'historique attendu</td><td>Le fichier de ventes d'hier est bien présent et complet ce matin</td></tr>
+      <tr><td class="cell-key">Self Service Team</td><td>Groupe de professionnels de la donnée qui livrent des insights rapidement avec un <strong>support minimal</strong></td><td>Équipe analytics autonome qui déploie ses propres pipelines en production</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-4">🌍 Environnements DataOps — Principes & Bonnes pratiques</h3>
+  <p style="font-size:.85rem;margin-bottom:10px;"><strong>Pourquoi l'Environment Pipeline est critique ?</strong> Le provisionnement d'environnements est <em>le principal goulot d'étranglement</em> qui impacte l'agilité des équipes. Les environnements sont les fondations de tous les pipelines.</p>
+  <div class="def-grid">
+    <div class="def-card dc4">
+      <div class="def-term">✅ Principes pour les environnements</div>
+      <div class="def-body">
+        <ul style="margin:0;padding-left:16px;font-size:.83rem;line-height:1.8;">
+          <li><strong>Reproductibles</strong> — même résultat à chaque construction</li>
+          <li><strong>Jetables (disposable)</strong> — créer/détruire en un clic</li>
+          <li><strong>Création automatisée</strong> — zéro étape manuelle</li>
+        </ul>
+      </div>
+    </div>
+    <div class="def-card dc4">
+      <div class="def-term">❌ Anti-patterns à éviter</div>
+      <div class="def-body">
+        <ul style="margin:0;padding-left:16px;font-size:.83rem;line-height:1.8;">
+          <li><strong>Construire manuellement</strong> les environnements</li>
+          <li><strong>Supprimer les données</strong> de gestion d'environnement</li>
+          <li><strong>Environnements statiques</strong> = "ça marche en dev, pas en prod"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:.84rem;margin-top:12px;"><strong>Composantes d'un environnement analytique :</strong>
+    <span class="pill pill-ok">Test data sets</span>
+    <span class="pill pill-ok">Hardware &amp; software versions</span>
+    <span class="pill pill-ok">Hardware &amp; network configs</span>
+    <span class="pill pill-ok">Code branch</span>
+    <span class="pill pill-ok">Tools</span>
+  </p>
+  <p style="font-size:.84rem;margin-top:8px;">❌ <strong>N'est PAS un composant d'un env de dev :</strong> «Fixed code and changing data» — c'est l'inverse. En dev : données FIXES + code CHANGEANT.</p>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-4">📁 Version Control & Ce qu'il faut (ou non) versionner</h3>
+  <div class="def-grid">
+    <div class="def-card dc4">
+      <div class="def-term">✅ À mettre sous version control</div>
+      <div class="def-body">
+        <ul style="margin:0;padding-left:16px;font-size:.83rem;line-height:1.8;">
+          <li><strong>Data analytics work</strong> (code SQL, notebooks, scripts)</li>
+          <li><strong>Deployment processes</strong> (scripts CI, pipelines IaC)</li>
+          <li><strong>Tool settings</strong> (configurations, paramètres)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="def-card dc4">
+      <div class="def-term">❌ À NE PAS versionner</div>
+      <div class="def-body">
+        <ul style="margin:0;padding-left:16px;font-size:.83rem;line-height:1.8;">
+          <li><strong>Sensitive tool credentials</strong> (mots de passe, tokens API)</li>
+          <li><strong>User logins</strong> (identifiants personnels)</li>
+          <li><strong>Secrets &amp; clés de chiffrement</strong></li>
+        </ul>
+        Les secrets → gestionnaire dédié (Vault, AWS Secrets Manager).
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rev-section">
+  <h3 class="rev-h-4">🚀 Démarrer DataOps — Roadmap en 5 étapes</h3>
+  <table class="rev-table">
+    <thead><tr><th>Étape</th><th>Action concrète</th><th>Pourquoi c'est la bonne approche</th></tr></thead>
+    <tbody>
+      <tr><td class="cell-key">⭐ 1. Démarrer</td><td><strong>Éliminer les erreurs en production</strong></td><td>Valeur immédiate et mesurable, construit le business case pour aller plus loin</td></tr>
+      <tr><td class="cell-key">2. Cibler</td><td>Trouver un <strong>petit projet</strong> pour un cas d'usage initial</td><td>Limiter le risque, apprendre vite, démontrer avant de scaler</td></tr>
+      <tr><td class="cell-key">3. Automatiser</td><td>Automatiser <strong>quelques tests</strong> en premier</td><td>Qualité immédiate sans réorganiser toute l'équipe</td></tr>
+      <tr><td class="cell-key">4. Démontrer</td><td>Démontrer et <strong>socialiser</strong> les succès</td><td>Créer l'adhésion interne, obtenir le budget pour étendre</td></tr>
+      <tr><td class="cell-key">5. Mesurer</td><td>Mesurer les <strong>bénéfices</strong> concrets (cycle time, error rate)</td><td>Justifier l'investissement, identifier les prochaines améliorations</td></tr>
+    </tbody>
+  </table>
+  <div style="background:#fce4ec;border-left:4px solid #c62828;padding:12px 14px;border-radius:6px;margin-top:12px;font-size:.84rem;">
+    <strong>❌ Anti-patterns absolus (réponses "NOT a best practice" à l'examen) :</strong><br>
+    • <strong>«Do everything at once»</strong> ← réponse correcte à "what NOT to do"<br>
+    • <strong>«Move everything to the cloud first»</strong> — le cloud n'est pas un prérequis DataOps<br>
+    • <strong>«Wait until next year»</strong> — les outils ne seront jamais parfaits, commencer maintenant<br>
+    • <strong>«Roll out to the entire enterprise»</strong> — commencer petit, prouver la valeur, puis étendre
+  </div>
+  <p style="font-size:.84rem;margin-top:12px;"><strong>Pourquoi mesurer les processus analytiques ?</strong></p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+    <span class="pill pill-ok">Production error rates</span>
+    <span class="pill pill-ok">Data provider error rates</span>
+    <span class="pill pill-ok">Test coverage</span>
+    <span class="pill pill-ok">SLAs met or missed</span>
+  </div>
+  <p style="font-size:.83rem;margin-top:8px;color:var(--muted);">La bonne réponse à "pourquoi mesurer ?" est <strong>All of the above</strong> : pour les équipes, pour le ROI, pour les insights temps réel, et pour l'amélioration continue.</p>
+</div>`
+
+};
+
 
 // ── History ──
 const HIST_KEY = 'quiz_mlops_history';
