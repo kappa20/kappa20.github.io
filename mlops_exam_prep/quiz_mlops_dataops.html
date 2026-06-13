@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz MLOps &amp; DataOps — Pr. AIT DAOUD</title>
+<style>
+:root {
+  --primary: #1565c0;
+  --primary-dark: #0d47a1;
+  --secondary: #00acc1;
+  --accent: #f57c00;
+  --success: #2e7d32;
+  --error: #c62828;
+  --bg: #f0f4f8;
+  --card: #ffffff;
+  --text: #1a2332;
+  --muted: #5c6b7a;
+  --border: #dde3ea;
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+.header {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--secondary) 100%);
+  color: #fff; padding: 28px 24px; text-align: center;
+}
+.header h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.3px; }
+.header p { margin-top: 6px; opacity: .85; font-size: .95rem; }
+
+.container { max-width: 780px; margin: 0 auto; padding: 32px 16px 64px; }
+
+/* ── Start screen ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+.card {
+  background: var(--card); border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08); padding: 32px;
+  margin-bottom: 20px;
+}
+
+.chapter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin: 20px 0; }
+.ch-btn {
+  border: 2px solid var(--border); border-radius: 10px; padding: 16px;
+  background: var(--card); cursor: pointer; text-align: left; transition: all .2s;
+  font-family: inherit;
+}
+.ch-btn.active-ch1 { border-color: var(--primary); background: rgba(21,101,192,.07); }
+.ch-btn.active-ch2 { border-color: var(--secondary); background: rgba(0,172,193,.07); }
+.ch-btn.active-ch3 { border-color: var(--accent); background: rgba(245,124,0,.07); }
+.ch-btn.active-ch4 { border-color: #7b1fa2; background: rgba(123,31,162,.07); }
+.ch-btn .ch-title { font-weight: 600; font-size: .95rem; margin-bottom: 4px; }
+.ch-btn .ch-count { font-size: .8rem; color: var(--muted); }
+
+.options-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin: 16px 0; }
+.toggle-label { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: .9rem; }
+.toggle-label input { width: 16px; height: 16px; cursor: pointer; }
+
+.btn {
+  display: inline-block; padding: 12px 28px; border-radius: 8px;
+  font-size: 1rem; font-weight: 600; cursor: pointer; border: none;
+  transition: transform .1s, box-shadow .1s; font-family: inherit;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 3px 10px rgba(21,101,192,.3); }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+.btn-secondary:hover { background: rgba(21,101,192,.06); }
+
+/* ── Quiz screen ── */
+.progress-wrap { margin-bottom: 20px; }
+.progress-meta { display: flex; justify-content: space-between; font-size: .85rem; color: var(--muted); margin-bottom: 6px; }
+.progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 3px; transition: width .4s ease; }
+
+.q-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.tag { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 9px; border-radius: 20px; }
+.tag-ch1 { background: rgba(21,101,192,.12); color: var(--primary); }
+.tag-ch2 { background: rgba(0,172,193,.12); color: #00838f; }
+.tag-ch3 { background: rgba(245,124,0,.12); color: #e65100; }
+.tag-ch4 { background: rgba(123,31,162,.12); color: #7b1fa2; }
+.q-num { font-size: .82rem; color: var(--muted); }
+
+.q-text { font-size: 1.08rem; font-weight: 600; line-height: 1.5; margin-bottom: 22px; }
+
+.choices { display: flex; flex-direction: column; gap: 10px; }
+.choice-btn {
+  display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+  border: 2px solid var(--border); border-radius: 10px; background: var(--card);
+  cursor: pointer; text-align: left; transition: border-color .15s, background .15s;
+  font-family: inherit; font-size: .95rem; line-height: 1.45;
+}
+.choice-btn:hover:not(:disabled) { border-color: var(--primary); background: rgba(21,101,192,.04); }
+.choice-btn .letter {
+  width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 700; flex-shrink: 0;
+  background: rgba(21,101,192,.1); color: var(--primary); margin-top: 1px;
+}
+.choice-btn.correct { border-color: var(--success); background: rgba(46,125,50,.08); }
+.choice-btn.correct .letter { background: var(--success); color: #fff; }
+.choice-btn.wrong { border-color: var(--error); background: rgba(198,40,40,.08); }
+.choice-btn.wrong .letter { background: var(--error); color: #fff; }
+.choice-btn:disabled { cursor: default; }
+
+.feedback-box {
+  margin-top: 16px; padding: 14px 16px; border-radius: 10px;
+  border-left: 4px solid var(--success); background: rgba(46,125,50,.07);
+  font-size: .9rem; line-height: 1.55; display: none;
+}
+.feedback-box.wrong-fb { border-color: var(--error); background: rgba(198,40,40,.07); }
+
+.nav-row { display: flex; justify-content: flex-end; margin-top: 20px; }
+
+/* ── Results screen ── */
+.result-top { text-align: center; padding: 12px 0 28px; }
+.score-circle {
+  width: 130px; height: 130px; border-radius: 50%;
+  background: conic-gradient(var(--primary) var(--pct, 0%), #e0e0e0 0%);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px; position: relative;
+}
+.score-inner {
+  width: 102px; height: 102px; border-radius: 50%; background: var(--card);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.score-pct { font-size: 1.9rem; font-weight: 800; color: var(--primary); line-height: 1; }
+.score-label { font-size: .75rem; color: var(--muted); margin-top: 3px; }
+.result-msg { font-size: 1.15rem; font-weight: 600; margin-bottom: 6px; }
+.result-sub { font-size: .9rem; color: var(--muted); }
+
+.chapter-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 14px; margin-top: 22px; }
+.ch-score-card { padding: 18px; border-radius: 10px; border: 2px solid var(--border); }
+.ch-score-card h4 { font-size: .85rem; font-weight: 700; margin-bottom: 8px; }
+.ch-score-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+.ch-score-fill { height: 100%; border-radius: 3px; }
+.ch-score-num { font-size: .8rem; color: var(--muted); }
+.ch1-fill { background: var(--primary); }
+.ch2-fill { background: var(--secondary); }
+.ch3-fill { background: var(--accent); }
+.ch4-fill { background: #7b1fa2; }
+
+.result-actions { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+
+h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
+.subtitle { font-size: .9rem; color: var(--muted); margin-bottom: 20px; }
+
+/* ── History screen ── */
+.hist-list { display: flex; flex-direction: column; gap: 12px; }
+.hist-item { border: 2px solid var(--border); border-radius: 10px; overflow: hidden; }
+.hist-header {
+  display: flex; align-items: center; gap: 14px; padding: 16px;
+  cursor: pointer; background: var(--card); user-select: none;
+}
+.hist-header:hover { background: #f7f9fc; }
+.hist-score-mini {
+  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.hist-score-inner {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .72rem; font-weight: 800;
+}
+.hist-info { flex: 1; min-width: 0; }
+.hist-date { font-size: .75rem; color: var(--muted); }
+.hist-score-line { font-weight: 700; font-size: .98rem; margin-top: 2px; }
+.hist-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+.hist-chevron { font-size: .9rem; color: var(--muted); transition: transform .2s; flex-shrink: 0; }
+.hist-chevron.open { transform: rotate(180deg); }
+.hist-detail { display: none; border-top: 1px solid var(--border); background: #fafbfc; }
+.hist-detail.open { display: block; }
+.hist-q { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.hist-q:last-child { border-bottom: none; }
+.hist-q-label { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.hist-q-text { font-size: .9rem; font-weight: 600; line-height: 1.4; margin-bottom: 10px; color: var(--text); }
+.hist-choice {
+  font-size: .84rem; padding: 6px 10px; border-radius: 6px;
+  margin-bottom: 4px; display: flex; align-items: flex-start; gap: 6px;
+}
+.hist-choice .hc-letter { font-weight: 700; flex-shrink: 0; width: 18px; }
+.hist-choice.correct-ans { background: rgba(46,125,50,.1); color: #2e7d32; }
+.hist-choice.wrong-ans { background: rgba(198,40,40,.1); color: #c62828; }
+.hist-choice.neutral { color: var(--muted); }
+.hist-expl { font-size: .8rem; color: var(--muted); margin-top: 8px; font-style: italic; line-height: 1.5; }
+.empty-history { text-align: center; padding: 52px 24px; color: var(--muted); }
+.empty-history .empty-icon { font-size: 2.8rem; margin-bottom: 14px; }
+.hist-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+.btn-danger { background: transparent; border: 2px solid var(--error); color: var(--error); font-size: .85rem; padding: 8px 16px; }
+.btn-danger:hover { background: rgba(198,40,40,.06); }
+
+@media (max-width: 520px) {
+  .card { padding: 20px 16px; }
+  .header h1 { font-size: 1.35rem; }
+  .chapter-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Quiz MLOps &amp; DataOps</h1>
+  <p>Pr. Mohammed AIT DAOUD — FSBM, Université Hassan II — 2025/2026</p>
+</div>
+
+<div class="container">
+
+  <!-- START SCREEN -->
+  <div id="start-screen" class="screen active">
+    <div class="card">
+      <h2>Choisir les chapitres</h2>
+      <p class="subtitle">Sélectionnez un ou plusieurs chapitres pour générer votre quiz.</p>
+      <div class="chapter-grid">
+        <button class="ch-btn active-ch1" onclick="toggleChapter(1,this)">
+          <div class="ch-title">Chapitre 1</div>
+          <div style="font-size:.82rem;color:var(--primary);font-weight:600;margin-bottom:4px;">Fondamentaux DataOps &amp; MLOps</div>
+          <div class="ch-count">28 questions</div>
+        </button>
+        <button class="ch-btn active-ch2" onclick="toggleChapter(2,this)">
+          <div class="ch-title">Chapitre 2</div>
+          <div style="font-size:.82rem;color:#00838f;font-weight:600;margin-bottom:4px;">Pipelines Agiles &amp; Orchestration</div>
+          <div class="ch-count">27 questions</div>
+        </button>
+        <button class="ch-btn active-ch3" onclick="toggleChapter(3,this)">
+          <div class="ch-title">Chapitre 3</div>
+          <div style="font-size:.82rem;color:#e65100;font-weight:600;margin-bottom:4px;">Qualité &amp; Tests de Données</div>
+          <div class="ch-count">25 questions</div>
+        </button>
+        <button class="ch-btn active-ch4" onclick="toggleChapter(4,this)">
+          <div class="ch-title">Certification</div>
+          <div style="font-size:.82rem;color:#7b1fa2;font-weight:600;margin-bottom:4px;">DataKitchen — DataOps Fundamentals</div>
+          <div class="ch-count">28 questions</div>
+        </button>
+      </div>
+      <div class="options-row">
+        <label class="toggle-label">
+          <input type="checkbox" id="shuffle-q" checked> Mélanger les questions
+        </label>
+        <label class="toggle-label">
+          <input type="checkbox" id="shuffle-c" checked> Mélanger les réponses
+        </label>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="startQuiz()">Commencer le quiz ▶</button>
+        <button class="btn btn-secondary" onclick="showHistory()" style="font-size:.9rem;">Historique</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quiz-screen" class="screen">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="prog-text">Question 1 / 50</span>
+        <span id="score-text">Score : 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="card">
+      <div class="q-header">
+        <span class="tag" id="q-tag">CH1</span>
+        <span class="q-num" id="q-num">Q1</span>
+      </div>
+      <div class="q-text" id="q-text"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback-box" id="feedback"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextQuestion()">Question suivante →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="result-screen" class="screen">
+    <div class="card">
+      <div class="result-top">
+        <div class="score-circle" id="score-circle">
+          <div class="score-inner">
+            <div class="score-pct" id="score-pct">0%</div>
+            <div class="score-label" id="score-fraction">0/0</div>
+          </div>
+        </div>
+        <div class="result-msg" id="result-msg"></div>
+        <div class="result-sub" id="result-sub"></div>
+      </div>
+      <div class="chapter-breakdown" id="ch-breakdown"></div>
+      <div class="result-actions">
+        <button class="btn btn-primary" onclick="retryQuiz()">Recommencer</button>
+        <button class="btn btn-secondary" onclick="backToStart()">Changer chapitres</button>
+        <button class="btn btn-secondary" onclick="showHistory()">Voir l'historique</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY SCREEN -->
+  <div id="history-screen" class="screen">
+    <div class="card">
+      <div class="hist-toolbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="btn btn-secondary" onclick="backToStart()" style="padding:8px 18px;font-size:.88rem;">← Retour</button>
+          <h2 style="margin:0;">Historique des quiz</h2>
+        </div>
+        <button class="btn btn-danger" onclick="clearHistory()">Effacer tout</button>
+      </div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+  // ═══════════════════════════════════════════════════
+  // CHAPITRE 1 — Fondamentaux DataOps & MLOps (18 q)
+  // ═══════════════════════════════════════════════════
+  {
+    ch: 1,
+    q: "Selon Jabbari (2016), DevOps est défini comme :",
+    choices: [
+      "Un ensemble d'outils d'intégration continue et de déploiement automatisé",
+      "Une combinaison de philosophies culturelles, pratiques et outils visant à améliorer la collaboration entre développement et opérations",
+      "Une méthodologie Agile adaptée aux équipes de données",
+      "Un framework de gestion de la qualité des données en production"
+    ],
+    correct: 1,
+    explanation: "Jabbari (2016) définit DevOps comme une combinaison de philosophies culturelles, pratiques et outils permettant d'améliorer la vitesse de livraison et la qualité grâce à la collaboration entre Dev et Ops."
+  },
+  {
+    ch: 1,
+    q: "Le DataOps Manifesto a été publié par :",
+    choices: [
+      "Atwal (2019)",
+      "Gift & Deza (2021)",
+      "Bergh (2017)",
+      "Gartner (2017)"
+    ],
+    correct: 2,
+    explanation: "Le DataOps Manifesto a été publié par Bergh en 2017. Il définit le DataOps comme la combinaison du développement Agile, DevOps et Lean Manufacturing appliqués à la donnée."
+  },
+  {
+    ch: 1,
+    q: "Selon Atwal (2019), le DataOps repose sur l'alignement de :",
+    choices: [
+      "Code, modèles et infrastructure",
+      "Personnes, processus et technologie",
+      "Données, pipelines et orchestrateurs",
+      "Développeurs, data scientists et DevOps engineers"
+    ],
+    correct: 1,
+    explanation: "Atwal (2019) définit le DataOps comme l'alignement des personnes, des processus et de la technologie pour améliorer la qualité, la vitesse et la collaboration autour de la donnée."
+  },
+  {
+    ch: 1,
+    q: "Gift & Deza (2021) définissent MLOps comme :",
+    choices: [
+      "L'automatisation du réentraînement des modèles ML en production",
+      "Le processus de prendre un modèle ML d'un laptop à un environnement de production",
+      "La combinaison de DataOps et DevOps appliquée aux pipelines ML",
+      "Un cadre de gouvernance pour les modèles d'intelligence artificielle"
+    ],
+    correct: 1,
+    explanation: "Gift & Deza (2021) définissent MLOps comme le processus de prendre un modèle ML d'un laptop à un environnement de production, couvrant tout le cycle de vie du modèle."
+  },
+  {
+    ch: 1,
+    q: "Dans le tableau comparatif DevOps / DataOps / MLOps, l'objet principal du DataOps est :",
+    choices: [
+      "Applications logicielles",
+      "Modèles ML",
+      "Pipelines de données",
+      "Infrastructure cloud"
+    ],
+    correct: 2,
+    explanation: "Le DataOps porte sur les pipelines de données (ETL, ELT, flux de données). DevOps porte sur les applications logicielles, et MLOps sur les modèles ML."
+  },
+  {
+    ch: 1,
+    q: "Le risque clé associé au DataOps est :",
+    choices: [
+      "Surapprentissage du modèle",
+      "Drift de données",
+      "Déploiement continu défaillant",
+      "Latence réseau excessive"
+    ],
+    correct: 1,
+    explanation: "Le risque clé du DataOps est le drift de données (changement de distribution des données en production), qui peut dégrader silencieusement la qualité des pipelines et des modèles."
+  },
+  {
+    ch: 1,
+    q: "La fondation de la hiérarchie des besoins MLOps (pyramide) est :",
+    choices: [
+      "Monitoring et observabilité",
+      "Gouvernance et conformité",
+      "Base DevOps : versionnement, CI/CD, tests",
+      "Automatisation du réentraînement"
+    ],
+    correct: 2,
+    explanation: "La base de la pyramide MLOps est la Base DevOps (versionnement du code, CI/CD, tests). Sans ces fondations solides, les couches supérieures (data engineering, ML platform, monitoring) ne peuvent pas tenir."
+  },
+  {
+    ch: 1,
+    q: "La reproductibilité dans le contexte MLOps signifie :",
+    choices: [
+      "Pouvoir réexécuter une expérience dans les mêmes conditions et obtenir un résultat cohérent",
+      "Suivre automatiquement les performances d'un modèle en production",
+      "Déployer le même modèle sur différents environnements cloud",
+      "Documenter toutes les étapes de développement d'un pipeline"
+    ],
+    correct: 0,
+    explanation: "La reproductibilité garantit que l'on peut réexécuter une expérience (entraînement, pipeline) dans les mêmes conditions et obtenir un résultat cohérent. Elle est fondamentale pour la confiance scientifique et opérationnelle."
+  },
+  {
+    ch: 1,
+    q: "La traçabilité répond à la question :",
+    choices: [
+      "Comment améliorer les performances du modèle ?",
+      "Quand faut-il réentraîner le modèle ?",
+      "D'où vient ce résultat ?",
+      "Qui a accès à ces données ?"
+    ],
+    correct: 2,
+    explanation: "La traçabilité répond à la question : « D'où vient ce résultat ? » Elle permet de remonter jusqu'aux données sources, aux transformations et au code ayant produit un artefact donné."
+  },
+  {
+    ch: 1,
+    q: "Selon Gartner (2017), AIOps désigne :",
+    choices: [
+      "L'application de l'IA aux opérations IT pour détecter anomalies et automatiser les réponses",
+      "Les pratiques MLOps appliquées aux systèmes d'IA générative",
+      "L'orchestration automatique des pipelines de données par des agents IA",
+      "La gouvernance des modèles d'IA à l'échelle de l'entreprise"
+    ],
+    correct: 0,
+    explanation: "Gartner (2017) définit AIOps comme l'application de l'intelligence artificielle aux opérations IT afin de détecter les anomalies, corréler les événements et automatiser les réponses opérationnelles."
+  },
+  {
+    ch: 1,
+    q: "Parmi les 4 problèmes du « Bon prototype ≠ Bon système », lequel est le plus directement lié à la production ?",
+    choices: [
+      "Données instables",
+      "Processus manuels",
+      "Déploiement fragile",
+      "Absence de monitoring"
+    ],
+    correct: 3,
+    explanation: "L'absence de monitoring est le problème le plus directement lié à la production : sans surveillance, on ne sait pas si le modèle dérive, si les données changent ou si les performances se dégradent."
+  },
+  {
+    ch: 1,
+    q: "Le « fossé d'industrialisation » en MLOps désigne :",
+    choices: [
+      "L'écart entre les performances train et test d'un modèle",
+      "Le manque d'outils CI/CD dans les équipes data",
+      "L'écart entre un bon prototype en notebook et un système ML robuste en production",
+      "La différence de compétences entre data scientists et ingénieurs MLOps"
+    ],
+    correct: 2,
+    explanation: "Le fossé d'industrialisation est l'écart entre un prototype fonctionnel (notebook) et un système ML robuste, scalable et maintenable en production. Combler ce fossé est l'objet principal du MLOps."
+  },
+  {
+    ch: 1,
+    q: "MLOps est la combinaison de :",
+    choices: [
+      "DevOps + Cloud + IA",
+      "DataOps + DevOps + ML Model",
+      "Agile + Lean + Machine Learning",
+      "CI/CD + Monitoring + Data Engineering"
+    ],
+    correct: 1,
+    explanation: "MLOps est la combinaison de DataOps (gestion des données), DevOps (pratiques de livraison logicielle) et ML Model (cycle de vie du modèle) pour industrialiser le machine learning."
+  },
+  {
+    ch: 1,
+    q: "LLMOps, introduit par Databricks en 2023, correspond à :",
+    choices: [
+      "L'application des pratiques MLOps aux grands modèles de langage (LLM)",
+      "Un framework d'orchestration pour pipelines de données massifs",
+      "La gouvernance des modèles open source hébergés dans le cloud",
+      "L'automatisation du fine-tuning des modèles de deep learning"
+    ],
+    correct: 0,
+    explanation: "LLMOps (Databricks, 2023) est l'extension du MLOps aux grands modèles de langage (LLM), couvrant leur déploiement, évaluation, fine-tuning, versionnement et surveillance."
+  },
+  {
+    ch: 1,
+    q: "Selon Atwal (2019), la vision DataOps repose sur 3 composantes. Laquelle de ces propositions est correcte ?",
+    choices: [
+      "Code, Infrastructure, Sécurité",
+      "Personnes, Processus, Technologie",
+      "Data, Models, Pipelines",
+      "Qualité, Vitesse, Conformité"
+    ],
+    correct: 1,
+    explanation: "La vision DataOps selon Atwal (2019) repose sur trois composantes indissociables : Personnes (culture, collaboration), Processus (Agile, Lean) et Technologie (outils, automatisation)."
+  },
+  {
+    ch: 1,
+    q: "Dans le cycle de vie MLOps, l'ordre correct des étapes principales est :",
+    choices: [
+      "Déployer → Entraîner → Valider → Surveiller → Réentraîner",
+      "Entraîner → Valider → Déployer → Surveiller → Réentraîner",
+      "Valider → Entraîner → Surveiller → Déployer → Réentraîner",
+      "Surveiller → Entraîner → Valider → Déployer → Améliorer"
+    ],
+    correct: 1,
+    explanation: "Le cycle MLOps suit : Entraîner → Valider → Déployer → Surveiller → Réentraîner. C'est une boucle continue (cycle) qui garantit que le modèle reste performant face à l'évolution des données."
+  },
+  {
+    ch: 1,
+    q: "Les pratiques phares du DataOps incluent notamment :",
+    choices: [
+      "Hyperparameter tuning et feature engineering",
+      "A/B testing et blue-green deployment",
+      "Data quality, data lineage et tests automatisés",
+      "Containerisation et service mesh"
+    ],
+    correct: 2,
+    explanation: "Les pratiques phares du DataOps sont : la qualité des données, la traçabilité (lineage), les tests automatisés des pipelines et la surveillance continue. Ces pratiques garantissent des données fiables pour les modèles ML."
+  },
+  {
+    ch: 1,
+    q: "L'idée essentielle derrière le concept de DataOps est que la donnée est :",
+    choices: [
+      "Un coût à minimiser dans le cycle de développement",
+      "Un actif vivant qui doit être géré avec les mêmes rigueurs qu'un logiciel",
+      "Un produit fini qui ne nécessite de maintenance qu'au moment de l'ingestion",
+      "Une ressource statique qui décrit l'état passé d'un système"
+    ],
+    correct: 1,
+    explanation: "L'idée centrale du DataOps est que la donnée est un actif vivant (data product) qui évolue, se dégrade, se transforme — et doit donc être gérée avec la même rigueur qu'un logiciel : versionnement, tests, monitoring, gouvernance."
+  },
+
+  {
+    ch: 1,
+    q: "La gouvernance dans le contexte MLOps désigne :",
+    choices: [
+      "La capacité de versionner les modèles ML dans un registry centralisé",
+      "L'ensemble des règles, rôles et responsabilités qui régissent l'utilisation des données et des modèles",
+      "Le processus d'audit des pipelines de données après un incident de production",
+      "La surveillance continue des métriques de performance d'un modèle en production"
+    ],
+    correct: 1,
+    explanation: "La gouvernance MLOps désigne l'ensemble des règles, rôles, responsabilités et mécanismes de contrôle qui encadrent la création, l'utilisation et le cycle de vie des données et des modèles — c'est le sommet de la pyramide MLOps."
+  },
+  {
+    ch: 1,
+    q: "Le concept de « Data Product » dans le contexte DataOps signifie que :",
+    choices: [
+      "Les données sont vendues comme produit commercial à des clients externes",
+      "Les données sont traitées comme un produit logiciel avec propriétaire, SLA, qualité et versionnement",
+      "Les pipelines de données sont packagés comme microservices déployables",
+      "Les datasets sont encapsulés dans des conteneurs Docker pour la portabilité"
+    ],
+    correct: 1,
+    explanation: "Un data product traite la donnée comme un produit logiciel : il a un propriétaire (data owner), un SLA de qualité, un versionnement, de la documentation et des utilisateurs identifiés. C'est la métaphore centrale du DataOps."
+  },
+  {
+    ch: 1,
+    q: "Dans la pyramide MLOps, l'ordre des couches de bas (fondation) en haut (sommet) est :",
+    choices: [
+      "Monitoring → Automation → ML Platform → Data Engineering → Base DevOps",
+      "Base DevOps → Data Engineering → ML Platform → Automation → Monitoring → Governance",
+      "Data Engineering → Base DevOps → ML Platform → Governance → Monitoring",
+      "Governance → Monitoring → Automation → ML Platform → Data Engineering → Base DevOps"
+    ],
+    correct: 1,
+    explanation: "La pyramide MLOps se lit de bas en haut : Base DevOps (fondation) → Data Engineering → ML Platform → Automation → Monitoring → Governance (sommet). Chaque couche dépend de la stabilité de la couche inférieure."
+  },
+  {
+    ch: 1,
+    q: "La différence entre MLOps et DevOps réside principalement dans :",
+    choices: [
+      "MLOps est plus rapide grâce à l'automatisation des pipelines de déploiement",
+      "MLOps gère en plus le cycle de vie des modèles ML et des données, pas seulement du code",
+      "DevOps ne supporte pas les environnements cloud contrairement à MLOps",
+      "MLOps n'utilise pas de conteneurs contrairement à DevOps"
+    ],
+    correct: 1,
+    explanation: "DevOps gère le cycle de vie du code logiciel. MLOps y ajoute la gestion des données (DataOps) et le cycle de vie des modèles ML (entraînement, évaluation, déploiement, monitoring, réentraînement)."
+  },
+  {
+    ch: 1,
+    q: "La finalité principale du DataOps dans le tableau comparatif est :",
+    choices: [
+      "Déployer des modèles ML en production rapidement",
+      "Livrer des applications logicielles de haute qualité",
+      "Fiabiliser et accélérer la livraison de données de qualité",
+      "Automatiser les tests d'infrastructure cloud"
+    ],
+    correct: 2,
+    explanation: "La finalité du DataOps est de fiabiliser et accélérer la livraison de données de qualité aux consommateurs (data scientists, analystes, applications). Le DevOps vise les applications, et MLOps les modèles ML."
+  },
+  {
+    ch: 1,
+    q: "La temporalité caractéristique du MLOps est :",
+    choices: [
+      "Temps réel uniquement (streaming pur)",
+      "Batch hebdomadaire avec rapports manuels",
+      "Continue avec réentraînement périodique déclenché par la dérive ou de nouvelles données",
+      "Mensuelle avec validation manuelle par un comité d'experts"
+    ],
+    correct: 2,
+    explanation: "La temporalité MLOps est continue : le cycle Entraîner → Valider → Déployer → Surveiller → Réentraîner tourne en boucle, avec des déclencheurs automatiques basés sur la dérive des données ou l'arrivée de nouvelles données."
+  },
+  {
+    ch: 1,
+    q: "AIOps (Gartner 2017) se distingue de MLOps principalement car :",
+    choices: [
+      "AIOps concerne les opérations IT (infra, réseau, logs) tandis que MLOps concerne le cycle de vie des modèles ML",
+      "AIOps est une version plus avancée de MLOps réservée aux grandes entreprises",
+      "AIOps n'utilise pas de machine learning contrairement à MLOps",
+      "AIOps est exclusivement utilisé par les équipes Ops, MLOps par les data scientists"
+    ],
+    correct: 0,
+    explanation: "AIOps applique l'IA aux opérations IT (détection d'anomalies réseau, corrélation de logs, alerting). MLOps concerne le cycle de vie des modèles ML applicatifs (entraînement, déploiement, monitoring de performance)."
+  },
+  {
+    ch: 1,
+    q: "Le cycle de vie MLOps complet en 8 étapes suit l'ordre :",
+    choices: [
+      "Collecte → Exploration → Préparation → Modélisation → Évaluation → Déploiement → Monitoring → Réentraînement",
+      "Modélisation → Collecte → Évaluation → Déploiement → Monitoring → Préparation → Exploration → Réentraînement",
+      "Déploiement → Collecte → Modélisation → Évaluation → Réentraînement → Monitoring → Préparation → Exploration",
+      "Exploration → Déploiement → Collecte → Monitoring → Modélisation → Évaluation → Préparation → Réentraînement"
+    ],
+    correct: 0,
+    explanation: "Le cycle de vie ML en 8 étapes : Collecte → Exploration (EDA) → Préparation/Feature engineering → Modélisation → Évaluation → Déploiement → Monitoring → Réentraînement. C'est un cycle continu, pas une séquence linéaire unique."
+  },
+  {
+    ch: 1,
+    q: "Un artefact MLOps désigne :",
+    choices: [
+      "Uniquement le modèle entraîné sous forme de fichier binaire",
+      "Tout produit tangible du pipeline : modèle, dataset transformé, métriques, image Docker",
+      "Le code source versionné dans Git uniquement",
+      "Les logs de monitoring collectés en production"
+    ],
+    correct: 1,
+    explanation: "Un artefact MLOps est tout produit tangible et versionnable issu du pipeline : le modèle entraîné, les datasets transformés, les rapports de métriques, les images Docker, les fichiers de configuration — tout ce qui doit être tracé et reproductible."
+  },
+  {
+    ch: 1,
+    q: "Le trio fondamental Reproductibilité / Traçabilité / Gouvernance en MLOps sert à :",
+    choices: [
+      "Accélérer le déploiement des modèles en production",
+      "Garantir la confiance, l'auditabilité et le contrôle du cycle de vie des modèles et des données",
+      "Réduire les coûts d'infrastructure cloud liés à l'entraînement ML",
+      "Standardiser les librairies Python utilisées par les équipes data"
+    ],
+    correct: 1,
+    explanation: "Le trio Reproductibilité (même résultat dans les mêmes conditions) / Traçabilité (d'où vient ce résultat ?) / Gouvernance (qui décide quoi, selon quelles règles ?) est le socle de confiance et d'auditabilité du MLOps."
+  },
+
+  // ═══════════════════════════════════════════════════
+  // CHAPITRE 2 — Pipelines Agiles & Orchestration (17 q)
+  // ═══════════════════════════════════════════════════
+  {
+    ch: 2,
+    q: "Un pipeline de données est défini comme une séquence d'étapes qui doit être :",
+    choices: [
+      "Séquentielle, manuelle, documentée et reproductible",
+      "Idempotente, traçable, déclenchable et testable",
+      "Scalable, distribuée, tolérante aux pannes et sécurisée",
+      "Synchrone, monolithique, versionnée et déployable"
+    ],
+    correct: 1,
+    explanation: "Un pipeline de données se définit par 4 propriétés : idempotent (réexécutable sans effet de bord), traçable (chaque étape est loggée), déclenchable (par événement ou schedule) et testable (chaque transformation peut être vérifiée)."
+  },
+  {
+    ch: 2,
+    q: "La propriété d'idempotence d'un pipeline signifie que :",
+    choices: [
+      "Le pipeline peut s'exécuter en parallèle sans conflit",
+      "Exécuter f(f(x)) = f(x) : réexécuter le pipeline donne le même résultat",
+      "Le pipeline peut être déclenché par n'importe quel type d'événement",
+      "Chaque étape du pipeline est indépendante des autres"
+    ],
+    correct: 1,
+    explanation: "L'idempotence signifie que ré-exécuter un pipeline plusieurs fois produit le même résultat que l'exécuter une seule fois : f(f(x)) = f(x). C'est essentiel pour les reprises sur erreur sans corrompre les données."
+  },
+  {
+    ch: 2,
+    q: "Pour versionner des données volumineuses dans un projet MLOps, l'outil recommandé est :",
+    choices: [
+      "Git LFS uniquement",
+      "DVC (Data Version Control)",
+      "Delta Lake uniquement",
+      "Apache Airflow"
+    ],
+    correct: 1,
+    explanation: "DVC (Data Version Control) est l'outil de référence pour versionner des datasets volumineux en complément de Git. Il stocke les métadonnées dans Git et les données réelles dans un stockage distant (S3, GCS, etc.)."
+  },
+  {
+    ch: 2,
+    q: "Un DAG (Directed Acyclic Graph) dans le contexte de l'orchestration de données est :",
+    choices: [
+      "Un graphe bidirectionnel représentant les dépendances entre services",
+      "Un graphe orienté sans cycle définissant l'ordre d'exécution des tâches",
+      "Un algorithme de tri topologique pour les pipelines distribués",
+      "Une structure de données pour stocker les métadonnées de pipeline"
+    ],
+    correct: 1,
+    explanation: "Un DAG est un graphe orienté sans cycle (Directed Acyclic Graph). Dans l'orchestration, il représente les tâches (nœuds) et leurs dépendances (arêtes), garantissant un ordre d'exécution déterministe sans boucle infinie."
+  },
+  {
+    ch: 2,
+    q: "L'orchestrateur de pipelines de données le plus répandu en production est :",
+    choices: [
+      "Prefect",
+      "Dagster",
+      "Apache Airflow",
+      "Metaflow"
+    ],
+    correct: 2,
+    explanation: "Apache Airflow est l'orchestrateur le plus répandu (notamment dans les grandes entreprises). Il utilise des DAGs en Python, dispose d'une UI riche, d'un scheduler, de retry automatique et d'une large communauté."
+  },
+  {
+    ch: 2,
+    q: "Le niveau le plus élevé de reproductibilité d'environnement dans la taxonomie MLOps est :",
+    choices: [
+      "Environnement virtuel Python (venv/conda)",
+      "Fichier requirements.txt versionné",
+      "Conteneurisation (Docker/Podman)",
+      "Machine virtuelle dédiée"
+    ],
+    correct: 2,
+    explanation: "La conteneurisation (Docker/Podman) représente le niveau le plus élevé de reproductibilité : elle encapsule le code, les dépendances, le système d'exploitation et la configuration dans une image immuable et portable."
+  },
+  {
+    ch: 2,
+    q: "Dans les 7 gaspillages Lean appliqués au DataOps, le gaspillage « Attente » correspond à :",
+    choices: [
+      "La copie inutile de datasets entre environnements",
+      "Des données bloquées en attente d'une validation manuelle",
+      "La reprocessing de données déjà transformées",
+      "L'exécution de pipelines non nécessaires"
+    ],
+    correct: 1,
+    explanation: "Le gaspillage Lean « Attente » dans DataOps correspond à des données bloquées dans le pipeline en attente d'une action manuelle (validation, approbation, intervention humaine). Cela crée des délais et rompt le flux continu."
+  },
+  {
+    ch: 2,
+    q: "Le DataOps Manifesto (DataKitchen, 2021) comprend :",
+    choices: [
+      "12 principes inspirés du Manifeste Agile",
+      "18 principes couvrant la collaboration, la qualité et l'automatisation",
+      "7 valeurs et 14 principes Lean adaptés aux données",
+      "10 commandements de la qualité de données"
+    ],
+    correct: 1,
+    explanation: "Le DataOps Manifesto (DataKitchen, 2021) comprend 18 principes organisés autour de la collaboration, la qualité, l'automatisation, la transparence et l'amélioration continue — inspirés des manifestes Agile et Lean."
+  },
+  {
+    ch: 2,
+    q: "Le principe 7 du DataOps Manifesto « Réduire l'héroïsme » signifie :",
+    choices: [
+      "Éviter les déploiements risqués en production le vendredi soir",
+      "Remplacer les interventions manuelles héroïques par des processus automatisés et robustes",
+      "Ne pas dépendre d'un seul expert pour maintenir les pipelines critiques",
+      "Limiter les features non prioritaires pour éviter la dette technique"
+    ],
+    correct: 1,
+    explanation: "« Réduire l'héroïsme » signifie que les systèmes de données ne doivent pas dépendre d'interventions manuelles d'urgence (héroïsme) pour fonctionner. L'objectif est d'automatiser et de rendre les processus robustes par conception."
+  },
+  {
+    ch: 2,
+    q: "Selon Atwal (2019), l'Agile dans le DataOps consiste à :",
+    choices: [
+      "Appliquer Scrum aux projets de data engineering avec sprints de 2 semaines",
+      "Livrer de la valeur en petits incréments, recueillir du feedback et s'adapter continuellement",
+      "Remplacer les plans de projet par des backlogs de données prioritaires",
+      "Automatiser tous les tests de données à chaque commit"
+    ],
+    correct: 1,
+    explanation: "Selon Atwal (2019), l'Agile dans DataOps consiste à livrer de la valeur en petits incréments, recueillir du feedback rapidement et s'adapter continuellement — en opposition aux approches en cascade (waterfall) traditionnelles."
+  },
+  {
+    ch: 2,
+    q: "Un pipeline ML se déclenche notamment lors de :",
+    choices: [
+      "Chaque commit de code dans la branche main uniquement",
+      "L'arrivée d'un nouveau dataset, la détection d'une dérive ou via CI/CD",
+      "La détection d'une anomalie réseau sur le serveur de production",
+      "Chaque mise à jour de la documentation du modèle"
+    ],
+    correct: 1,
+    explanation: "Un pipeline ML peut être déclenché par : l'arrivée d'un nouveau dataset, la détection d'une dérive (data drift / concept drift), un déclencheur CI/CD ou un schedule. L'automatisation du réentraînement est un objectif clé du MLOps."
+  },
+  {
+    ch: 2,
+    q: "Dans un workflow CI pour un pipeline de données, l'étape qui suit les tests unitaires est :",
+    choices: [
+      "Build de l'artefact Docker",
+      "Tests de transformation",
+      "Validation des données",
+      "Lint du code"
+    ],
+    correct: 1,
+    explanation: "L'ordre du workflow CI DataOps est : Push → Lint → Tests unitaires → Tests de transformation → Validation des données → Build artefact. Les tests de transformation vérifient que chaque étape de transformation produit le résultat attendu."
+  },
+  {
+    ch: 2,
+    q: "Le Single Responsibility Principle (SRP) appliqué aux pipelines de données signifie que :",
+    choices: [
+      "Un seul développeur est responsable de chaque pipeline",
+      "Chaque module ou fonction de transformation a une seule responsabilité",
+      "Un pipeline ne doit traiter qu'un seul type de données source",
+      "Chaque transformation ne peut être déclenchée que par une seule source d'événement"
+    ],
+    correct: 1,
+    explanation: "Le SRP (Single Responsibility Principle) appliqué aux pipelines signifie que chaque module/fonction de transformation a une seule responsabilité clairement définie. Cela améliore la testabilité, la lisibilité et la maintenabilité."
+  },
+  {
+    ch: 2,
+    q: "Le concept Lean « Pull Systems » appliqué au DataOps signifie :",
+    choices: [
+      "Ingérer les données dès qu'elles sont disponibles à la source",
+      "Ne produire et livrer des données que lorsqu'elles sont demandées (demand-driven)",
+      "Tirer les données depuis plusieurs sources simultanément",
+      "Utiliser des queues pour gérer les pics de charge"
+    ],
+    correct: 1,
+    explanation: "Le Pull System Lean signifie ne produire que ce qui est demandé (demand-driven) — opposé au Push System qui produit en avance. En DataOps : ne transformer/livrer des données que lorsqu'un consommateur en a besoin, évitant le sur-traitement."
+  },
+  {
+    ch: 2,
+    q: "L'avantage principal d'un orchestrateur (ex. Airflow) par rapport à un simple cron job est :",
+    choices: [
+      "Une exécution plus rapide des tâches grâce au parallélisme natif",
+      "DAG + retry automatique + monitoring + logs centralisés + alertes",
+      "La compatibilité avec tous les langages de programmation",
+      "Un coût d'infrastructure inférieur aux tâches cron sur serveur"
+    ],
+    correct: 1,
+    explanation: "Un orchestrateur apporte : la définition de DAGs (dépendances), le retry automatique en cas d'échec, le monitoring centralisé, les logs détaillés et les alertes. Un cron job ne gère aucune de ces dimensions opérationnelles."
+  },
+  {
+    ch: 2,
+    q: "Dans l'architecture de référence MLOps, l'orchestrateur est responsable de :",
+    choices: [
+      "Stocker les versions des modèles et leurs métriques",
+      "Exécuter les DAGs de pipeline, gérer les retry et centraliser les logs",
+      "Versionner le code source et les artefacts de données",
+      "Valider la qualité des données à l'ingestion"
+    ],
+    correct: 1,
+    explanation: "Dans l'architecture de référence (Git + DVC + Orchestrateur + CI), l'orchestrateur exécute les DAGs, gère les retry en cas d'échec, centralise les logs et les alertes — c'est le moteur d'exécution du pipeline."
+  },
+  {
+    ch: 2,
+    q: "Le gaspillage Lean « Transport » dans DataOps correspond à :",
+    choices: [
+      "Le temps passé à déboguer des pipelines non documentés",
+      "La copie inutile de datasets entre environnements sans valeur ajoutée",
+      "L'attente d'approbation manuelle avant de publier les données",
+      "La surproduction de rapports non consommés par les utilisateurs"
+    ],
+    correct: 1,
+    explanation: "Le gaspillage « Transport » Lean en DataOps correspond à copier ou déplacer des datasets entre environnements (dev → staging → prod) sans nécessité ou valeur ajoutée, consommant des ressources inutilement."
+  },
+
+  {
+    ch: 2,
+    q: "MLflow est principalement utilisé dans un pipeline MLOps pour :",
+    choices: [
+      "Orchestrer les DAGs de pipeline de données comme Airflow",
+      "Versionner les modèles ML, les paramètres et les métriques d'expériences",
+      "Gérer les environnements Conda et les dépendances Python uniquement",
+      "Valider la qualité des données en entrée de pipeline"
+    ],
+    correct: 1,
+    explanation: "MLflow est la plateforme de référence pour le tracking d'expériences ML : il versione les paramètres, métriques, artefacts et modèles. Il complète DVC (données) et Git (code) dans le versionnement étendu MLOps."
+  },
+  {
+    ch: 2,
+    q: "Les 5 principes du Lean Thinking appliqués au DataOps sont :",
+    choices: [
+      "Planifier, Exécuter, Contrôler, Améliorer, Standardiser",
+      "Définir la valeur, Identifier le flux de valeur, Créer le flux, Établir le pull, Poursuivre la perfection",
+      "Réduire les coûts, Éliminer les bugs, Automatiser les tests, Documenter, Former",
+      "Collecter, Transformer, Charger, Valider, Livrer"
+    ],
+    correct: 1,
+    explanation: "Les 5 principes Lean (Womack & Jones) : (1) Définir la valeur du point de vue du client, (2) Identifier le flux de valeur, (3) Créer un flux continu, (4) Établir un système pull, (5) Poursuivre la perfection (amélioration continue)."
+  },
+  {
+    ch: 2,
+    q: "Great Expectations est un outil utilisé pour :",
+    choices: [
+      "Orchestrer les pipelines de données comme Apache Airflow",
+      "Versionner les grands datasets binaires comme DVC",
+      "Valider automatiquement les schémas et la qualité des données via des « expectations »",
+      "Gérer les registres de modèles ML et leurs métriques"
+    ],
+    correct: 2,
+    explanation: "Great Expectations est un framework open source de validation de données. Il permet de définir des « expectations » (contrats de qualité) sur les données et de les exécuter automatiquement dans le pipeline CI/CD."
+  },
+  {
+    ch: 2,
+    q: "Dans le versionnement étendu MLOps, Docker/Conda permettent de versionner :",
+    choices: [
+      "Le code source et les notebooks Jupyter",
+      "Les données d'entraînement volumineuses",
+      "Les environnements d'exécution (dépendances, librairies, versions d'OS)",
+      "Les métriques et hyperparamètres des expériences ML"
+    ],
+    correct: 2,
+    explanation: "Docker et Conda versionnent l'environnement d'exécution : les librairies Python, leurs versions, les dépendances système. Cela garantit que le code s'exécute de façon identique en dev, staging et production."
+  },
+  {
+    ch: 2,
+    q: "Le gaspillage Lean « Surproduction » en DataOps correspond à :",
+    choices: [
+      "Exécuter des pipelines qui génèrent des données non consommées par personne",
+      "Répliquer les mêmes données dans plusieurs environnements sans nécessité",
+      "Traiter des données avec plus de précision que nécessaire",
+      "Attendre des validations manuelles entre les étapes du pipeline"
+    ],
+    correct: 0,
+    explanation: "La Surproduction Lean en DataOps : produire des données, rapports ou features que personne ne consomme. Cela gaspille de la puissance de calcul, du stockage et de la bande passante — le pire des gaspillages car il masque tous les autres."
+  },
+  {
+    ch: 2,
+    q: "La modularité dans un pipeline de données signifie que :",
+    choices: [
+      "Un seul fichier contient tout le code du pipeline pour simplifier le déploiement",
+      "Chaque étape de transformation est un composant indépendant, testable et réutilisable",
+      "Le pipeline est découpé en microservices déployés indépendamment",
+      "Toutes les transformations partagent la même connexion à la base de données"
+    ],
+    correct: 1,
+    explanation: "La modularité (SRP appliqué aux pipelines) : chaque étape est un composant indépendant avec une seule responsabilité, testable isolément et réutilisable dans d'autres pipelines. Cela réduit le couplage et facilite la maintenance."
+  },
+  {
+    ch: 2,
+    q: "L'étape « Data Validation » dans un workflow CI de données valide que :",
+    choices: [
+      "La syntaxe du code SQL des transformations est correcte",
+      "Le schéma, les types et la qualité des données respectent les contrats définis",
+      "Le pipeline s'exécute en moins de 5 minutes",
+      "Les credentials de connexion aux bases de données sont valides"
+    ],
+    correct: 1,
+    explanation: "La Data Validation dans le CI vérifie que les données produites respectent les contrats de qualité (schéma, types, complétude, unicité, plages valides). C'est l'équivalent des tests d'intégration pour les données."
+  },
+  {
+    ch: 2,
+    q: "La différence principale entre un pipeline de données et un pipeline ML est :",
+    choices: [
+      "Le pipeline de données traite uniquement des données structurées",
+      "Le pipeline ML ajoute les étapes d'entraînement, d'évaluation et de déploiement du modèle au-dessus du pipeline de données",
+      "Les pipelines ML sont toujours plus rapides que les pipelines de données",
+      "Il n'y a pas de différence fondamentale entre les deux"
+    ],
+    correct: 1,
+    explanation: "Un pipeline de données gère les flux ETL/ELT (ingestion, transformation, chargement). Un pipeline ML y ajoute : feature engineering, entraînement du modèle, évaluation, enregistrement dans un model registry et déploiement."
+  },
+  {
+    ch: 2,
+    q: "Prefect et Dagster se distinguent d'Apache Airflow principalement par :",
+    choices: [
+      "Une meilleure performance sur les très grands clusters Kubernetes uniquement",
+      "Une approche plus moderne : Python natif, meilleure UX, observabilité améliorée, moins de configuration",
+      "Un support exclusif des pipelines de machine learning",
+      "L'absence de support pour les DAGs"
+    ],
+    correct: 1,
+    explanation: "Prefect et Dagster sont des orchestrateurs de nouvelle génération : Python natif (pas de YAML), meilleure UI, observabilité intégrée, moins de boilerplate. Airflow reste plus répandu mais plus complexe à opérer."
+  },
+  {
+    ch: 2,
+    q: "Le principe « Automatisation progressive » en DataOps signifie :",
+    choices: [
+      "Automatiser 100% du pipeline dès le premier sprint",
+      "Comprendre et maîtriser les processus manuels avant de les automatiser",
+      "Remplacer immédiatement tous les cron jobs par un orchestrateur dès le départ",
+      "Automatiser uniquement les étapes les plus coûteuses en temps"
+    ],
+    correct: 1,
+    explanation: "L'automatisation progressive : on ne peut automatiser que ce qu'on comprend. L'automatisation d'un processus mal compris amplifie les erreurs à grande vitesse. Il faut d'abord maîtriser le processus manuellement, puis l'automatiser par étapes."
+  },
+
+  // ═══════════════════════════════════════════════════
+  // CHAPITRE 3 — Qualité & Tests de Données (15 q)
+  // ═══════════════════════════════════════════════════
+  {
+    ch: 3,
+    q: "Wang & Strong (1996) définissent la qualité des données comme :",
+    choices: [
+      "L'absence totale d'erreurs dans les enregistrements d'une base de données",
+      "La conformité des données aux normes ISO de gestion de l'information",
+      "La capacité des données à être utilisées pour l'entraînement de modèles ML",
+      "« Fitness for use » : l'aptitude des données à l'usage auquel elles sont destinées"
+    ],
+    correct: 3,
+    explanation: "Wang & Strong (1996) définissent la qualité des données comme « fitness for use » — l'aptitude à l'usage. Des données de qualité ne sont pas universellement parfaites, mais appropriées à leur contexte d'utilisation spécifique."
+  },
+  {
+    ch: 3,
+    q: "La dimension de qualité « Complétude » signifie :",
+    choices: [
+      "Les données respectent le format, le type et le domaine autorisé",
+      "Le degré de présence des données attendues (valeurs non nulles, champs requis)",
+      "L'absence de doublons dans les enregistrements",
+      "La cohérence des données entre différentes sources"
+    ],
+    correct: 1,
+    explanation: "La Complétude mesure le degré de présence des données attendues : valeurs non nulles pour les champs obligatoires, lignes complètes, champs requis renseignés. Ex. : un taux de nullité de 5% sur une colonne critique est une anomalie de complétude."
+  },
+  {
+    ch: 3,
+    q: "La dimension de qualité « Validité » désigne :",
+    choices: [
+      "Le fait que les données ont été validées par un expert métier",
+      "La fraîcheur des données par rapport à une fenêtre temporelle définie",
+      "Le respect du format, du type et du domaine autorisé par la donnée",
+      "La cohérence de la donnée avec les données d'autres systèmes"
+    ],
+    correct: 2,
+    explanation: "La Validité désigne le respect du format, du type de données et du domaine autorisé. Ex. : un email doit respecter le pattern @, un code postal doit avoir 5 chiffres, un statut doit appartenir à une liste prédéfinie."
+  },
+  {
+    ch: 3,
+    q: "Dans les 10 dimensions de qualité, la « Fraîcheur » est violée lorsque :",
+    choices: [
+      "Un enregistrement contient une valeur nulle dans un champ obligatoire",
+      "Un fichier attendu quotidiennement arrive avec 2 jours de retard",
+      "Deux enregistrements représentent le même client avec des IDs différents",
+      "Une date de naissance est postérieure à la date de commande"
+    ],
+    correct: 1,
+    explanation: "La Fraîcheur (timeliness) mesure si les données sont à jour par rapport aux besoins. Un fichier reçu avec 2 jours de retard viole la fraîcheur si le SLA exige une livraison quotidienne. Cela peut invalider des décisions basées sur ces données."
+  },
+  {
+    ch: 3,
+    q: "Selon Atwal (2019), les métadonnées sont :",
+    choices: [
+      "Des données agrégées qui résument le contenu d'un dataset",
+      "Des données qui décrivent d'autres données (structure, origine, usage)",
+      "Des index de base de données permettant d'accélérer les requêtes",
+      "Des labels d'entraînement pour les modèles de machine learning supervisé"
+    ],
+    correct: 1,
+    explanation: "Selon Atwal (2019), les métadonnées sont des données qui décrivent d'autres données : leur structure, leur origine, leur format, leurs propriétaires, leur usage prévu. Elles sont essentielles à la gouvernance et à la traçabilité."
+  },
+  {
+    ch: 3,
+    q: "Les métadonnées structurelles incluent :",
+    choices: [
+      "L'auteur, la date de création et les droits d'accès d'un dataset",
+      "La description métier et les glossaires de données d'entreprise",
+      "Les schémas, types de colonnes, clés primaires et étrangères",
+      "Les statistiques descriptives et profils de qualité des données"
+    ],
+    correct: 2,
+    explanation: "Les métadonnées structurelles décrivent la structure interne des données : schémas, types de colonnes, contraintes, clés primaires/étrangères, relations entre tables. Elles sont distinctes des métadonnées descriptives (contexte métier) et administratives (gouvernance)."
+  },
+  {
+    ch: 3,
+    q: "La data lineage (lignage de données), selon Atwal (2019), désigne :",
+    choices: [
+      "La liste des propriétaires successifs d'un dataset au fil du temps",
+      "La traçabilité complète du parcours d'une donnée de sa source à son utilisation finale",
+      "L'historique des versions d'un pipeline de transformation de données",
+      "La cartographie des flux de données entre systèmes dans une architecture microservices"
+    ],
+    correct: 1,
+    explanation: "La data lineage (Atwal 2019) est la traçabilité complète du parcours d'une donnée : de sa source d'origine, à travers toutes les transformations, jusqu'à son utilisation finale. Elle est essentielle pour l'audit, le débogage et la conformité."
+  },
+  {
+    ch: 3,
+    q: "Le principe « Shift Left » en qualité de données signifie :",
+    choices: [
+      "Déplacer les tests de performance vers la fin du pipeline de production",
+      "Appliquer les contrôles qualité le plus tôt possible dans le pipeline, dès l'ingestion",
+      "Donner la priorité aux données les plus récentes dans le traitement",
+      "Déplacer les responsabilités qualité de l'IT vers les équipes métier"
+    ],
+    correct: 1,
+    explanation: "Shift Left signifie déplacer les contrôles qualité vers le début (la gauche) du pipeline — dès l'ingestion plutôt qu'en fin de chaîne. Plus une anomalie est détectée tôt, moins son coût de correction est élevé."
+  },
+  {
+    ch: 3,
+    q: "Pour tester l'unicité d'une colonne `order_id` dans un DataFrame Pandas, le test correct est :",
+    choices: [
+      "df['order_id'].isna().sum() == 0",
+      "df['order_id'].nunique() == len(df)",
+      "df['order_id'].dtype == 'int64'",
+      "df['order_id'].max() > df['order_id'].min()"
+    ],
+    correct: 1,
+    explanation: "Le test d'unicité vérifie que chaque valeur est unique : `df['order_id'].nunique() == len(df)`. Si le nombre de valeurs uniques est inférieur à la longueur du DataFrame, il y a des doublons."
+  },
+  {
+    ch: 3,
+    q: "Pour tester la fraîcheur d'une table avec une colonne `updated_at`, l'assertion correcte est :",
+    choices: [
+      "df['updated_at'].isna().sum() == 0",
+      "df['updated_at'].max() > today - timedelta(days=1)",
+      "df['updated_at'].min() > today - timedelta(days=7)",
+      "df['updated_at'].nunique() == len(df)"
+    ],
+    correct: 1,
+    explanation: "Le test de fraîcheur vérifie que la donnée la plus récente est suffisamment fraîche : `df['updated_at'].max() > today - timedelta(days=1)`. Cela confirme que les données ont été mises à jour dans les dernières 24h."
+  },
+  {
+    ch: 3,
+    q: "La distinction clé entre Disponibilité et Fiabilité des données est :",
+    choices: [
+      "La disponibilité concerne l'accès technique, la fiabilité concerne l'exactitude et la cohérence",
+      "La disponibilité concerne les données temps réel, la fiabilité concerne les données historiques",
+      "La disponibilité est une métrique technique, la fiabilité est une métrique métier",
+      "La disponibilité et la fiabilité sont des synonymes en gestion de données"
+    ],
+    correct: 0,
+    explanation: "Disponibilité ≠ Fiabilité : une donnée peut être accessible (disponible) mais incorrecte, incomplète ou obsolète (non fiable). La disponibilité est technique (la donnée est là), la fiabilité est qualitative (la donnée est juste et exploitable)."
+  },
+  {
+    ch: 3,
+    q: "Les Tests Métier (business tests) dans la taxonomie des tests de données incluent :",
+    choices: [
+      "Vérification du schéma, nullité et types de colonnes",
+      "Cohérence temporelle, intégrité référentielle et fraîcheur SLA",
+      "Unicité des clés primaires et détection des doublons",
+      "Validation des domaines et plages de valeurs autorisées"
+    ],
+    correct: 1,
+    explanation: "Les Tests Métier vérifient la logique métier : cohérence temporelle (date_fin > date_début), intégrité référentielle (chaque commande a un client valide), fraîcheur SLA (données livrées dans les délais contractuels)."
+  },
+  {
+    ch: 3,
+    q: "La « Règle d'or » des tests de données dans le contexte MLOps stipule que :",
+    choices: [
+      "Chaque colonne critique doit avoir au moins 3 tests de qualité différents",
+      "Les tests de données doivent être versionnés dans Git et exécutés comme des tests unitaires",
+      "Tout test de données doit être validé par un expert métier avant déploiement",
+      "Les tests de schéma doivent précéder les tests de contenu dans le pipeline"
+    ],
+    correct: 1,
+    explanation: "La Règle d'or : les tests de données doivent être versionnés dans Git et exécutés automatiquement comme des tests unitaires dans le pipeline CI/CD — garantissant qu'aucune dégradation de qualité n'atteint la production."
+  },
+  {
+    ch: 3,
+    q: "La conséquence directe de données non fiables sur un système ML est :",
+    choices: [
+      "Un ralentissement du pipeline d'entraînement sans impact sur les prédictions",
+      "Une augmentation du coût de stockage des artefacts de modèle",
+      "Des modèles ML défaillants produisant des prédictions erronées",
+      "Une incompatibilité avec les orchestrateurs de pipeline de production"
+    ],
+    correct: 2,
+    explanation: "Garbage In, Garbage Out : des données non fiables produisent directement des modèles ML défaillants et des prédictions erronées. La qualité des données est la condition sine qua non de la qualité des modèles ML."
+  },
+  {
+    ch: 3,
+    q: "Les contrôles de Nullité et d'Unicité permettent de détecter :",
+    choices: [
+      "Les violations de schéma et les types de données incorrects",
+      "Les valeurs manquantes, les doublons et les clés primaires invalides",
+      "Les anomalies statistiques et les valeurs aberrantes (outliers)",
+      "Les incohérences temporelles et les violations de SLA"
+    ],
+    correct: 1,
+    explanation: "Les contrôles de Nullité détectent les valeurs manquantes (NULL, NaN) dans les champs obligatoires. Les contrôles d'Unicité détectent les doublons et les violations de contrainte de clé primaire. Ces deux types forment la base des Tests de Contenu."
+  },
+
+  {
+    ch: 3,
+    q: "La dimension de qualité « Cohérence » des données désigne :",
+    choices: [
+      "L'absence de valeurs nulles dans les colonnes obligatoires",
+      "Le fait que les données représentent la réalité actuelle du monde",
+      "L'absence de contradiction entre les valeurs au sein d'un même dataset ou entre datasets liés",
+      "Le respect des types de données définis dans le schéma"
+    ],
+    correct: 2,
+    explanation: "La Cohérence vérifie qu'il n'existe pas de contradictions entre les valeurs : ex. un client ne peut pas avoir une date de naissance postérieure à sa date de commande, ou un pays différent entre deux tables liées."
+  },
+  {
+    ch: 3,
+    q: "La dimension « Exactitude » (Accuracy) désigne :",
+    choices: [
+      "La rapidité avec laquelle les données sont mises à jour après un événement réel",
+      "Le fait que les données correspondent fidèlement à la réalité du monde réel",
+      "L'absence de doublons dans la base de données",
+      "La conformité aux formats définis dans le data dictionary"
+    ],
+    correct: 1,
+    explanation: "L'Exactitude mesure si les valeurs correspondent à la réalité : un code postal incorrect, un montant de transaction erroné ou un nom mal orthographié sont des violations d'exactitude même si le format est respecté."
+  },
+  {
+    ch: 3,
+    q: "Les 3 niveaux de maturité des données selon le cours sont :",
+    choices: [
+      "Raw → Processed → Curated",
+      "Disponible → Exploitable → Fiable",
+      "Ingested → Transformed → Serving",
+      "Bronze → Silver → Gold"
+    ],
+    correct: 1,
+    explanation: "Le cours distingue 3 niveaux : Disponible (la donnée existe et est accessible techniquement), Exploitable (elle est correctement structurée et compréhensible), Fiable (elle est exacte, cohérente et de confiance pour les décisions)."
+  },
+  {
+    ch: 3,
+    q: "Le « Data Confidence » selon Atwal (2019) représente :",
+    choices: [
+      "Le niveau de confiance statistique dans les prédictions des modèles ML",
+      "La capacité des équipes à faire confiance aux données pour prendre des décisions",
+      "Le taux de disponibilité des pipelines de données en production",
+      "La probabilité qu'une anomalie de données soit détectée par les tests automatisés"
+    ],
+    correct: 1,
+    explanation: "Le Data Confidence (Atwal 2019) est la mesure dans laquelle les équipes peuvent faire confiance aux données pour prendre des décisions. Sans confiance dans les données, même les meilleures analyses seront ignorées ou remises en question."
+  },
+  {
+    ch: 3,
+    q: "DAMA-DMBOK2 est :",
+    choices: [
+      "Un outil open source de validation de données développé par DataKitchen",
+      "Un framework de référence pour la gouvernance et le management des données d'entreprise",
+      "Un standard ISO pour la qualité des pipelines de données",
+      "Un orchestrateur de pipeline spécialisé dans la qualité des données"
+    ],
+    correct: 1,
+    explanation: "DAMA-DMBOK2 (Data Management Body of Knowledge, 2e édition) est le framework de référence mondial pour le management des données : gouvernance, qualité, architecture, sécurité, métadonnées et cycle de vie des données."
+  },
+  {
+    ch: 3,
+    q: "Le test de type « Anomalie » dans la taxonomie des tests de données cherche à détecter :",
+    choices: [
+      "Des valeurs qui violent les contraintes de schéma (type, format)",
+      "Des valeurs statistiquement aberrantes (outliers) par rapport à la distribution historique",
+      "Des enregistrements dupliqués dans la table",
+      "Des clés étrangères qui ne référencent pas de clé primaire valide"
+    ],
+    correct: 1,
+    explanation: "Les tests d'Anomalie détectent les valeurs statistiquement aberrantes (outliers) en comparant à la distribution historique : un chiffre de ventes 10x supérieur à la moyenne, un volume de transactions nul un jour ouvré, etc."
+  },
+  {
+    ch: 3,
+    q: "La dimension « Uniformité » dans les 10 dimensions de qualité signifie :",
+    choices: [
+      "Les données utilisent les mêmes unités, formats et conventions à travers tous les systèmes",
+      "Chaque valeur est unique et n'apparaît qu'une seule fois dans la table",
+      "Les données sont mises à jour à intervalles réguliers et prévisibles",
+      "Le schéma des données est identique dans tous les environnements de déploiement"
+    ],
+    correct: 0,
+    explanation: "L'Uniformité garantit que les données utilisent les mêmes conventions partout : ex. les dates toujours en ISO 8601, les montants toujours en euros, les pays toujours en code ISO 3166 — évitant les incohérences entre systèmes."
+  },
+  {
+    ch: 3,
+    q: "Un test de « Cohérence métier » (business rule test) vérifie par exemple :",
+    choices: [
+      "Que la colonne date_naissance ne contient pas de valeurs nulles",
+      "Que date_fin >= date_début pour toutes les lignes de la table commandes",
+      "Que l'ID commande est unique dans la table",
+      "Que le champ email respecte le pattern xxx@xxx.xxx"
+    ],
+    correct: 1,
+    explanation: "Les tests de cohérence métier vérifient des règles logiques spécifiques au domaine : date_fin ≥ date_début, montant_remboursé ≤ montant_payé, age ≥ 0. Ce sont des invariants métier qui vont au-delà de la simple validation de schéma."
+  },
+  {
+    ch: 3,
+    q: "Les métadonnées administratives incluent :",
+    choices: [
+      "Les schémas de tables et les types de colonnes",
+      "Les descriptions métier et les glossaires de données",
+      "Les propriétaires des données, les droits d'accès, les dates de création et d'expiration",
+      "Les statistiques de distribution et les profils de qualité"
+    ],
+    correct: 2,
+    explanation: "Les métadonnées administratives (ou de gouvernance) concernent la gestion du dataset : propriétaire, classification de sensibilité, droits d'accès, date de création/modification, politique de rétention et conformité réglementaire."
+  },
+  {
+    ch: 3,
+    q: "La « Traçabilité » comme dimension de qualité garantit :",
+    choices: [
+      "Que les données sont disponibles 99,9% du temps en production",
+      "Que l'on peut retracer l'origine, les transformations et l'usage de chaque donnée",
+      "Que les données sont mises à jour en temps réel depuis les sources",
+      "Que les modèles ML peuvent être réentraînés à tout moment sans interruption"
+    ],
+    correct: 1,
+    explanation: "La Traçabilité (dimension de qualité) garantit que chaque donnée peut être retracée de bout en bout : d'où elle vient, quelles transformations elle a subies, qui l'a modifiée et comment elle est utilisée. C'est la base de l'auditabilité."
+  },
+
+  // ═══════════════════════════════════════════════════
+  // CERTIFICATION DataKitchen — DataOps Fundamentals (18 q)
+  // ═══════════════════════════════════════════════════
+  {
+    ch: 4,
+    q: "DataOps is a methodology that combines principles from which three common business practices?",
+    choices: [
+      "Systems Management, SDLC, and Total Quality Management",
+      "Agile, Scrum, and Kanban",
+      "Six Sigma, Continuous Improvement, and Process Engineering",
+      "Agile, DevOps, and Lean Manufacturing"
+    ],
+    correct: 3,
+    explanation: "According to DataKitchen, DataOps combines three business practices: Agile (iterative delivery), DevOps (automation and deployment), and Lean Manufacturing (waste reduction and flow optimization)."
+  },
+  {
+    ch: 4,
+    q: "In DataOps, a data pipeline is best defined as:",
+    choices: [
+      "A dataset stored in a data warehouse",
+      "An organization chart for the data team",
+      "A data workflow",
+      "A deployment procedure for analytics"
+    ],
+    correct: 2,
+    explanation: "A data pipeline is a data workflow — a sequence of steps that moves, transforms, and delivers data from sources to consumers. It is the core operational unit in DataOps."
+  },
+  {
+    ch: 4,
+    q: "What are the three pipelines of DataOps according to DataKitchen?",
+    choices: [
+      "Ingestion pipeline, Transformation pipeline, and Serving pipeline",
+      "Environment pipeline, Development/Innovation pipeline, and Production/Value pipeline",
+      "Data pipeline, ML pipeline, and Deployment pipeline",
+      "Quality pipeline, Delivery pipeline, and Monitoring pipeline"
+    ],
+    correct: 1,
+    explanation: "DataKitchen defines three DataOps pipelines: the Environment pipeline (provisions tooling and infrastructure), the Development/Innovation pipeline (builds and tests analytics), and the Production/Value pipeline (delivers analytics to consumers)."
+  },
+  {
+    ch: 4,
+    q: "What is the best way to eliminate errors in your production pipelines?",
+    choices: [
+      "Add a few manual tests at critical checkpoints",
+      "Add automated tests at every step in your pipeline",
+      "Make sure everyone understands everyone else's part of the value chain",
+      "Put your smartest developer on watch"
+    ],
+    correct: 1,
+    explanation: "Adding automated tests at every step in the pipeline is the most effective way to eliminate errors. Manual tests are slow, inconsistent, and don't scale. Automation enables continuous verification without human bottlenecks."
+  },
+  {
+    ch: 4,
+    q: "Which of the following is a benefit of automated testing in DataOps?",
+    choices: [
+      "Less stress and embarrassment only",
+      "Fewer errors only",
+      "More customer data trust only",
+      "All of the above: fewer errors, more trust, less stress, and more innovation"
+    ],
+    correct: 3,
+    explanation: "Automated testing in DataOps delivers all benefits simultaneously: fewer errors (reliability), more customer data trust (confidence), less stress (no fire-fighting), and more innovation (teams spend time on value, not fixes)."
+  },
+  {
+    ch: 4,
+    q: "DataOps recommends tracking production analytics. Which data points should be monitored?",
+    choices: [
+      "Production error rates only",
+      "SLAs met or missed only",
+      "Test coverage and data provider error rates only",
+      "All of the above: production error rates, data provider error rates, test coverage, and SLAs"
+    ],
+    correct: 3,
+    explanation: "DataOps recommends tracking all production analytics metrics: production error rates, data provider error rates, test coverage, and SLAs met or missed. These together give a complete picture of pipeline health."
+  },
+  {
+    ch: 4,
+    q: "Which statement best describes a DataOps practice?",
+    choices: [
+      "When there's a production error, find the team responsible and blame them",
+      "When a problem occurs, get someone to spend the weekend fixing it",
+      "Every organization needs a hero who fixes every problem",
+      "Run toward errors — every error is an opportunity for improvement"
+    ],
+    correct: 3,
+    explanation: "DataOps embraces a blameless culture: run toward errors and treat every error as an opportunity for improvement. This aligns with the Lean principle of continuous improvement (Kaizen) and psychological safety."
+  },
+  {
+    ch: 4,
+    q: "How do you develop confidence in the quality of new analytics?",
+    choices: [
+      "Assign your best staff resource to check everything manually",
+      "Create a technology review board and hold regular meetings",
+      "Add a few unit tests to critical transformations",
+      "Add automated tests to every part of the system"
+    ],
+    correct: 3,
+    explanation: "Confidence in analytics quality comes from adding automated tests to every part of the system — not from manual reviews or selective testing. Comprehensive automation ensures consistent verification at every layer."
+  },
+  {
+    ch: 4,
+    q: "What are the two main roles of tests in DataOps?",
+    choices: [
+      "In development: validate data schema; In production: validate data volume",
+      "In development: validate code changes with fixed data; In production: validate new data with fixed code",
+      "In development: validate tool connections; In production: validate deployment scripts",
+      "In development: run regression tests; In production: run performance tests"
+    ],
+    correct: 1,
+    explanation: "Tests serve a dual role in DataOps: In development, they validate code changes using fixed (known) data to ensure logic correctness. In production, they validate new incoming data against fixed (stable) code to ensure data quality."
+  },
+  {
+    ch: 4,
+    q: "How is a DataOps process different from a DevOps process?",
+    choices: [
+      "It only requires complex sandbox management",
+      "Tests serve a dual role in development and production only",
+      "CI/CD alone is insufficient for data pipelines only",
+      "All of the above: complex sandboxes, dual-role tests, diverse tool orchestration, and CI/CD being insufficient"
+    ],
+    correct: 3,
+    explanation: "DataOps differs from DevOps in multiple ways: it requires complex sandbox management, diverse tool orchestration, tests that serve dual roles (dev vs prod), complex cross-team collaboration, and CI/CD alone is insufficient for managing data quality."
+  },
+  {
+    ch: 4,
+    q: "Which is NOT a benefit of using DataOps for your development/innovation pipelines?",
+    choices: [
+      "Cautious deployments with manual operations and scripts",
+      "Ability to iterate and answer questions quickly",
+      "Ability to innovate with low risk",
+      "Confidence in the quality of new analytics"
+    ],
+    correct: 0,
+    explanation: "Cautious deployments with manual operations and scripts is NOT a DataOps benefit — it's the opposite. DataOps replaces slow, manual, cautious processes with automated, fast, and reliable deployments."
+  },
+  {
+    ch: 4,
+    q: "Which is NOT a key principle of DataOps for analytic development?",
+    choices: [
+      "Create a repeatable, reliable process",
+      "Avoid version control",
+      "Build quality through automated testing",
+      "Measure your cycle time"
+    ],
+    correct: 1,
+    explanation: "Avoiding version control is NOT a DataOps principle — it's the opposite. Version control (of code, data, configurations, and tools) is fundamental to DataOps for reproducibility, auditability, and collaboration."
+  },
+  {
+    ch: 4,
+    q: "Which of the following is NOT a component of a DataOps development environment?",
+    choices: [
+      "Rapid creation of sandbox workspaces",
+      "Iterative build/run/test cycles",
+      "Repository branching and merging",
+      "Fixed code and changing data"
+    ],
+    correct: 3,
+    explanation: "In a DataOps development environment, you work with fixed (known) data and changing code — not the reverse. 'Fixed code and changing data' describes production, not development. The dev environment isolates code changes from data variability."
+  },
+  {
+    ch: 4,
+    q: "Why is the environment pipeline an important part of DataOps?",
+    choices: [
+      "Environments are low-cost and easy to create manually",
+      "Environment provisioning is a major bottleneck impacting team agility, and environments are the foundation of all pipelines",
+      "Environments dictate the toolchain teams must use",
+      "Environments are only needed for production workloads"
+    ],
+    correct: 1,
+    explanation: "The environment pipeline is critical because: (1) environment provisioning is typically a major bottleneck that slows teams, and (2) environments are the foundations upon which all production and development pipelines are built."
+  },
+  {
+    ch: 4,
+    q: "Which of the following are DataOps principles for environments?",
+    choices: [
+      "Build environments manually and recreate production configurations in development",
+      "Make environments reproducible, disposable, and automate their creation",
+      "Dispose of environment management data after each deployment",
+      "Keep environments static to ensure stability"
+    ],
+    correct: 1,
+    explanation: "DataOps environment principles: make environments reproducible (same result each time), make them disposable (spin up and tear down easily), and automate their creation. This eliminates the 'it works on my machine' problem."
+  },
+  {
+    ch: 4,
+    q: "What is the best way to get started with DataOps?",
+    choices: [
+      "Roll DataOps out across the entire enterprise at once",
+      "Move everything to the cloud first",
+      "Eliminate errors in production",
+      "Wait until next year when tools are more mature"
+    ],
+    correct: 2,
+    explanation: "The best way to start DataOps is to focus on eliminating errors in production — this delivers immediate, measurable value and builds the business case for broader adoption. Start small, demonstrate wins, then expand."
+  },
+  {
+    ch: 4,
+    q: "Why should you measure your analytic processes in DataOps?",
+    choices: [
+      "To build successful teams only",
+      "To educate stakeholders on the value of DataOps only",
+      "To get real-time insight into your data operations only",
+      "All of the above: build teams, demonstrate value, gain insights, and improve performance"
+    ],
+    correct: 3,
+    explanation: "Measuring analytic processes serves all purposes: building successful teams (visibility), demonstrating DataOps ROI (stakeholder buy-in), gaining real-time operational insights (observability), and tracking/improving project performance (Kaizen)."
+  },
+  {
+    ch: 4,
+    q: "Which is NOT a best practice for starting DataOps?",
+    choices: [
+      "Automate some tests",
+      "Find a small project for an initial use case",
+      "Demonstrate and socialize your successes",
+      "Do everything at once"
+    ],
+    correct: 3,
+    explanation: "'Do everything at once' is NOT a DataOps best practice — it's an anti-pattern. DataOps recommends starting small: find a focused use case, automate incrementally, measure results, demonstrate success, then expand gradually."
+  },
+  {
+    ch: 4,
+    q: "In DataKitchen's DataOps, 'Meta-orchestration' is defined as:",
+    choices: [
+      "Running multiple Airflow instances in parallel for high availability",
+      "A practice of plugging existing tools into pipelines, automating tool connections and monitoring tool performance across multiple pipelines — a DAG of DAGs",
+      "Orchestrating machine learning model training across distributed GPU clusters",
+      "Managing environment variables across different deployment stages"
+    ],
+    correct: 1,
+    explanation: "Meta-orchestration (DataKitchen): plugging existing tools into pipelines, automating their connections and functionality, and monitoring their performance across multiple pipelines. It's essentially orchestrating orchestrators — a DAG of DAGs."
+  },
+  {
+    ch: 4,
+    q: "According to DataKitchen, Statistical Process Control (SPC) in DataOps is:",
+    choices: [
+      "A method for controlling the size and budget of data science teams",
+      "A method of measuring trends and identifying instances that are out of acceptable bounds",
+      "A technique for optimizing SQL query performance in data pipelines",
+      "A framework for scheduling recurring data pipeline executions"
+    ],
+    correct: 1,
+    explanation: "SPC in DataOps (borrowed from Lean/manufacturing): a method of measuring trends over time and identifying data points or processes that fall outside acceptable control bounds — used to detect pipeline degradation before it becomes a failure."
+  },
+  {
+    ch: 4,
+    q: "A 'Safety Culture' in DataOps (DataKitchen) refers to:",
+    choices: [
+      "A set of security protocols to protect sensitive data in production",
+      "A corporate environment where contributors and teams feel comfortable reporting problems without fear of blame",
+      "The process of creating backups of data pipelines before deploying changes",
+      "A policy requiring dual approval before any production deployment"
+    ],
+    correct: 1,
+    explanation: "Safety Culture in DataOps means creating an environment where team members can report problems, near-misses, and errors without fear of blame. This psychological safety enables faster error detection and continuous improvement."
+  },
+  {
+    ch: 4,
+    q: "According to DataKitchen, which of the following statements about DataOps is TRUE?",
+    choices: [
+      "DataOps requires a specific set of tools to implement",
+      "Tests in DataOps are manual and single-purpose",
+      "DataOps reduces the time it takes to deliver business value",
+      "DataOps cannot address high error rates"
+    ],
+    correct: 2,
+    explanation: "DataOps reduces the time to deliver business value — this is one of its core goals. The other statements are false: DataOps is tool-agnostic, tests are automated and multi-purpose, and reducing error rates is a primary DataOps outcome."
+  },
+  {
+    ch: 4,
+    q: "A 'Value Pipeline' in DataKitchen's DataOps framework is:",
+    choices: [
+      "A Git repository containing all data transformation code",
+      "A production process flow that delivers analytics value to end consumers",
+      "A CI/CD pipeline specifically designed for deploying ML models",
+      "A monitoring dashboard showing data quality KPIs"
+    ],
+    correct: 1,
+    explanation: "The Value Pipeline (Production/Value Pipeline) is the production process flow that takes analytics from development and delivers them to end consumers (business users, dashboards, applications). It's one of the three DataOps pipelines."
+  },
+  {
+    ch: 4,
+    q: "According to DataKitchen, 'Location Balance tests' in DataOps:",
+    choices: [
+      "Verify that data is geographically distributed across multiple data centers",
+      "Check the same data as it moves across an entire system to ensure it stays consistent",
+      "Validate that data latency meets SLA requirements in each geographic region",
+      "Confirm that load balancing is properly configured in the production environment"
+    ],
+    correct: 1,
+    explanation: "Location Balance tests check the same data as it moves across an entire system — verifying that data integrity and values are preserved as data flows from one stage/location to another in the pipeline."
+  },
+  {
+    ch: 4,
+    q: "What should you keep under version control in DataOps according to DataKitchen?",
+    choices: [
+      "Sensitive tool credentials and user login passwords",
+      "Only the production deployment scripts",
+      "Data analytics work, deployment processes, and tool settings",
+      "Only source code, not configuration files"
+    ],
+    correct: 2,
+    explanation: "DataKitchen recommends keeping under version control: data analytics work (queries, notebooks, models), deployment processes (scripts, pipelines), and tool settings (configurations). Sensitive credentials should NOT be in version control."
+  },
+  {
+    ch: 4,
+    q: "Which of the following is a key consideration when implementing DataOps in an organization?",
+    choices: [
+      "Purchasing additional hardware and software licenses first",
+      "Corporate strategy and culture, team organization and priorities, and executive sponsorship",
+      "Hiring external consultants to design the entire DataOps architecture",
+      "Migrating all data to the cloud before starting any DataOps initiative"
+    ],
+    correct: 1,
+    explanation: "DataKitchen identifies key implementation considerations: corporate strategy and culture (alignment), team organization and priorities (structure), and executive sponsorship (top-down support). Technology choices come after these organizational foundations."
+  },
+  {
+    ch: 4,
+    q: "Which statement about DataOps tests is FALSE, according to DataKitchen?",
+    choices: [
+      "Tests should monitor the data and artifacts created in a pipeline",
+      "Test results should never stop a production line",
+      "Historical Balance tests verify that your data is current",
+      "Alerts should be configured to send when errors occur"
+    ],
+    correct: 1,
+    explanation: "FALSE: Test results should NEVER stop a production line. In DataOps, when tests detect errors, the pipeline should be stopped to prevent bad data from propagating downstream. Letting bad data flow through is worse than stopping the pipeline."
+  },
+  {
+    ch: 4,
+    q: "What are the goals of DataOps according to DataKitchen?",
+    choices: [
+      "Increase sales and reduce hardware costs",
+      "Implement Kanban and perform cloud analytics",
+      "Reduce delivery cycle time, lower error rates, increase collaboration, and measure processes for productivity",
+      "Adhere to security controls and boost product sales"
+    ],
+    correct: 2,
+    explanation: "DataKitchen's DataOps goals: reduce delivery cycle time (faster insights), lower error rates (higher quality), increase collaboration across teams and technologies (better alignment), and measure processes for increased productivity (continuous improvement)."
+  }
+];
+
+// ── State ──
+let selectedChapters = new Set([1, 2, 3, 4]);
+let questions = [], currentIdx = 0, score = 0, answered = false;
+let chapterScores = { 1:{correct:0,total:0}, 2:{correct:0,total:0}, 3:{correct:0,total:0} };
+let shuffleChoices = true;
+let choiceMap = [];
+let sessionLog = [];
+
+function toggleChapter(num, el) {
+  if (selectedChapters.has(num)) {
+    if (selectedChapters.size === 1) return; // keep at least 1
+    selectedChapters.delete(num);
+    el.className = 'ch-btn';
+  } else {
+    selectedChapters.add(num);
+    el.className = `ch-btn active-ch${num}`;
+  }
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function show(id) {
+  ['start-screen','quiz-screen','result-screen','history-screen'].forEach(s => {
+    document.getElementById(s).classList.toggle('active', s === id);
+  });
+}
+
+function startQuiz() {
+  const doShuffleQ = document.getElementById('shuffle-q').checked;
+  shuffleChoices    = document.getElementById('shuffle-c').checked;
+
+  let pool = ALL_QUESTIONS.filter(q => selectedChapters.has(q.ch));
+  questions = doShuffleQ ? shuffle(pool) : pool;
+  currentIdx = 0; score = 0; answered = false;
+  chapterScores = { 1:{correct:0,total:0}, 2:{correct:0,total:0}, 3:{correct:0,total:0}, 4:{correct:0,total:0} };
+  sessionLog = [];
+
+  show('quiz-screen');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentIdx];
+  const total = questions.length;
+
+  document.getElementById('prog-text').textContent = `Question ${currentIdx+1} / ${total}`;
+  document.getElementById('score-text').textContent = `Score : ${score}`;
+
+  const pct = (currentIdx / total) * 100;
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  const tag = document.getElementById('q-tag');
+  tag.textContent = `CH${q.ch}`;
+  tag.className = `tag tag-ch${q.ch}`;
+  document.getElementById('q-num').textContent = `Q${currentIdx+1}`;
+  document.getElementById('q-text').textContent = q.q;
+
+  const letters = ['A','B','C','D'];
+  const indices = shuffleChoices ? shuffle([0,1,2,3].slice(0, q.choices.length)) : [0,1,2,3].slice(0, q.choices.length);
+  choiceMap = indices;
+
+  const container = document.getElementById('choices');
+  container.innerHTML = '';
+  indices.forEach((origIdx, displayPos) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="letter">${letters[displayPos]}</span><span>${q.choices[origIdx]}</span>`;
+    btn.onclick = () => selectAnswer(origIdx);
+    container.appendChild(btn);
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'none';
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+
+  document.getElementById('next-btn').style.display = 'none';
+  answered = false;
+}
+
+function selectAnswer(origIdx) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[currentIdx];
+  const isCorrect = (origIdx === q.correct);
+
+  sessionLog.push({ ch: q.ch, q: q.q, choices: q.choices, correct: q.correct, selected: origIdx, explanation: q.explanation });
+
+  if (isCorrect) {
+    score++;
+    chapterScores[q.ch].correct++;
+  }
+  chapterScores[q.ch].total++;
+
+  document.getElementById('score-text').textContent = `Score : ${score}`;
+
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach((btn, displayPos) => {
+    btn.disabled = true;
+    const thisOrig = choiceMap[displayPos];
+    if (thisOrig === q.correct) {
+      btn.classList.add('correct');
+    } else if (thisOrig === origIdx && !isCorrect) {
+      btn.classList.add('wrong');
+    }
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.className = 'feedback-box';
+    fb.innerHTML = `<strong>✓ Correct !</strong> ${q.explanation}`;
+  } else {
+    fb.className = 'feedback-box wrong-fb';
+    fb.innerHTML = `<strong>✗ Incorrect.</strong> ${q.explanation}`;
+  }
+
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').textContent =
+    currentIdx + 1 < questions.length ? 'Question suivante →' : 'Voir les résultats';
+}
+
+function nextQuestion() {
+  currentIdx++;
+  if (currentIdx < questions.length) {
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('score-fraction').textContent = `${score}/${total}`;
+
+  let color = pct >= 80 ? '#2e7d32' : pct >= 60 ? '#f57c00' : '#c62828';
+  const circle = document.getElementById('score-circle');
+  circle.style.background = `conic-gradient(${color} ${pct}%, #e0e0e0 0%)`;
+  document.getElementById('score-pct').style.color = color;
+
+  let msg = '', sub = '';
+  if (pct >= 80) { msg = 'Excellent ! Très bon résultat !'; sub = 'Vous maîtrisez très bien le cours.'; }
+  else if (pct >= 60) { msg = 'Bien joué, continuez !'; sub = 'Quelques points à retravailler.'; }
+  else { msg = 'Encore un effort !'; sub = 'Relisez les chapitres et réessayez.'; }
+  document.getElementById('result-msg').textContent = msg;
+  document.getElementById('result-sub').textContent = sub;
+
+  const chNames = { 1:'CH1 — Fondamentaux', 2:'CH2 — Pipelines & Orchestration', 3:'CH3 — Qualité & Tests', 4:'Certification — DataKitchen' };
+  const chColors = { 1:'ch1-fill', 2:'ch2-fill', 3:'ch3-fill', 4:'ch4-fill' };
+  const bd = document.getElementById('ch-breakdown');
+  bd.innerHTML = '';
+  [1,2,3,4].forEach(ch => {
+    const s = chapterScores[ch];
+    if (s.total === 0) return;
+    const p = Math.round((s.correct / s.total) * 100);
+    bd.innerHTML += `
+      <div class="ch-score-card">
+        <h4>${chNames[ch]}</h4>
+        <div class="ch-score-bar"><div class="ch-score-fill ${chColors[ch]}" style="width:${p}%"></div></div>
+        <div class="ch-score-num">${s.correct}/${s.total} — ${p}%</div>
+      </div>`;
+  });
+
+  saveSession({ date: new Date().toLocaleString('fr-FR'), chapters: [...selectedChapters].sort(), score, total, pct, chapterScores: JSON.parse(JSON.stringify(chapterScores)), questions: sessionLog });
+
+  show('result-screen');
+}
+
+function retryQuiz() {
+  currentIdx = 0; score = 0; answered = false;
+  chapterScores = { 1:{correct:0,total:0}, 2:{correct:0,total:0}, 3:{correct:0,total:0}, 4:{correct:0,total:0} };
+  const doShuffleQ = document.getElementById('shuffle-q').checked;
+  shuffleChoices    = document.getElementById('shuffle-c').checked;
+  if (doShuffleQ) questions = shuffle(questions);
+  show('quiz-screen');
+  renderQuestion();
+}
+
+function backToStart() { show('start-screen'); }
+
+// ── History ──
+const HIST_KEY = 'quiz_mlops_history';
+
+function saveSession(session) {
+  let hist = JSON.parse(localStorage.getItem(HIST_KEY) || '[]');
+  hist.unshift({ id: Date.now(), ...session });
+  if (hist.length > 50) hist = hist.slice(0, 50);
+  localStorage.setItem(HIST_KEY, JSON.stringify(hist));
+}
+
+function showHistory() {
+  const hist = JSON.parse(localStorage.getItem(HIST_KEY) || '[]');
+  const container = document.getElementById('history-list');
+  if (hist.length === 0) {
+    container.innerHTML = `
+      <div class="empty-history">
+        <div class="empty-icon">📋</div>
+        <p style="font-size:.95rem;line-height:1.6;">Aucun quiz effectué pour le moment.<br>Complétez un quiz pour voir votre historique ici.</p>
+      </div>`;
+  } else {
+    container.innerHTML = hist.map((s, i) => renderHistSession(s, i)).join('');
+  }
+  show('history-screen');
+}
+
+function renderHistSession(s, idx) {
+  const color = s.pct >= 80 ? '#2e7d32' : s.pct >= 60 ? '#f57c00' : '#c62828';
+  const chLabels = {1:'CH1',2:'CH2',3:'CH3',4:'Certif.'};
+  const tags = (s.chapters || []).map(c => `<span class="tag tag-ch${c}">${chLabels[c]||'CH'+c}</span>`).join('');
+  const letters = ['A','B','C','D'];
+
+  const questionsHtml = (s.questions || []).map((q, qi) => {
+    const isCorrect = q.selected === q.correct;
+    const choicesHtml = q.choices.map((text, ci) => {
+      let cls = 'neutral', icon = '';
+      if (ci === q.correct) { cls = 'correct-ans'; icon = '✓'; }
+      else if (ci === q.selected && !isCorrect) { cls = 'wrong-ans'; icon = '✗'; }
+      return `<div class="hist-choice ${cls}"><span class="hc-letter">${icon || letters[ci]}.</span><span>${text}</span></div>`;
+    }).join('');
+
+    return `<div class="hist-q">
+      <div class="hist-q-label">
+        <span>${isCorrect ? '✅' : '❌'}</span>
+        <span class="tag tag-ch${q.ch}" style="font-size:.65rem">${chLabels[q.ch]||'CH'+q.ch}</span>
+        <span style="font-size:.75rem;color:var(--muted)">Q${qi+1}</span>
+      </div>
+      <div class="hist-q-text">${q.q}</div>
+      ${choicesHtml}
+      <div class="hist-expl">${q.explanation}</div>
+    </div>`;
+  }).join('');
+
+  const wrong = (s.questions||[]).filter(q => q.selected !== q.correct).length;
+  const wrongBadge = wrong > 0 ? `<span style="font-size:.75rem;color:var(--error);margin-left:6px;">${wrong} erreur${wrong>1?'s':''}</span>` : '';
+
+  return `<div class="hist-item">
+    <div class="hist-header" onclick="toggleHistDetail(${idx})">
+      <div class="hist-score-mini" style="background:conic-gradient(${color} ${s.pct}%,#e0e0e0 0%)">
+        <div class="hist-score-inner" style="color:${color}">${s.pct}%</div>
+      </div>
+      <div class="hist-info">
+        <div class="hist-date">${s.date}</div>
+        <div class="hist-score-line">${s.score}/${s.total} correct${wrongBadge}</div>
+        <div class="hist-tags">${tags}</div>
+      </div>
+      <span class="hist-chevron" id="chev-${idx}">▼</span>
+    </div>
+    <div class="hist-detail" id="detail-${idx}">
+      ${questionsHtml}
+    </div>
+  </div>`;
+}
+
+function toggleHistDetail(idx) {
+  document.getElementById(`detail-${idx}`).classList.toggle('open');
+  document.getElementById(`chev-${idx}`).classList.toggle('open');
+}
+
+function clearHistory() {
+  if (!confirm('Supprimer tout l\'historique ?')) return;
+  localStorage.removeItem(HIST_KEY);
+  showHistory();
+}
+</script>
+</body>
+</html>
