@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Entrepreneuriat — Révision Examen</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-shapes" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">E</span>
+    <span class="brand-text">QCM <strong>Entrepreneuriat</strong></span>
+  </div>
+  <div class="topbar-score" id="topbarScore" hidden>
+    <span id="liveScore">0</span>/<span id="liveTotal">0</span>
+  </div>
+</header>
+
+<main class="app">
+
+  <!-- ===================== ÉCRAN D'ACCUEIL ===================== -->
+  <section id="screen-start" class="screen active">
+    <div class="card start-card">
+      <p class="eyebrow">Révision d'examen</p>
+      <h1>Découverte de l'entrepreneuriat</h1>
+      <p class="subtitle">Basé sur le support de cours : culture entrepreneuriale, positionnement stratégique &amp; communication / marketing digital.</p>
+
+      <div class="category-grid" id="categoryGrid"></div>
+
+      <div class="start-options">
+        <div class="option-block">
+          <label for="questionCount">Nombre de questions</label>
+          <select id="questionCount">
+            <option value="10">10 questions</option>
+            <option value="20" selected>20 questions</option>
+            <option value="40">40 questions</option>
+            <option value="all">Toutes les questions</option>
+          </select>
+        </div>
+        <div class="option-block">
+          <label for="modeSelect">Mode</label>
+          <select id="modeSelect">
+            <option value="feedback" selected>Correction immédiate</option>
+            <option value="exam">Mode examen (correction à la fin)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-lg" id="startBtn">Commencer le QCM</button>
+      <p class="hint" id="poolHint"></p>
+    </div>
+  </section>
+
+  <!-- ===================== ÉCRAN QUIZ ===================== -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-head">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="quiz-meta">
+        <span class="q-counter"><span id="qIndex">1</span> / <span id="qTotal">20</span></span>
+        <span class="q-category" id="qCategoryBadge">Catégorie</span>
+      </div>
+    </div>
+
+    <div class="card quiz-card">
+      <h2 class="question-text" id="questionText">Question ?</h2>
+      <div class="options" id="optionsList"></div>
+
+      <div class="explanation" id="explanationBox" hidden>
+        <p class="explanation-label" id="explanationLabel">✓ Correct</p>
+        <p id="explanationText"></p>
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <button class="btn btn-ghost" id="quitBtn">Quitter</button>
+      <button class="btn btn-primary" id="nextBtn" disabled>Question suivante</button>
+    </div>
+  </section>
+
+  <!-- ===================== ÉCRAN RÉSULTATS ===================== -->
+  <section id="screen-results" class="screen">
+    <div class="card results-card">
+      <p class="eyebrow" id="resultEyebrow">Résultat</p>
+      <div class="score-circle" id="scoreCircle">
+        <span id="scorePercent">0%</span>
+      </div>
+      <h1 id="resultTitle">Bien joué !</h1>
+      <p class="subtitle" id="resultSubtitle">Vous avez obtenu <strong id="resultFraction">0/0</strong> bonnes réponses.</p>
+
+      <div class="category-breakdown" id="categoryBreakdown"></div>
+
+      <div class="results-actions">
+        <button class="btn btn-ghost" id="reviewBtn">Revoir mes réponses</button>
+        <button class="btn btn-primary" id="restartBtn">Recommencer</button>
+      </div>
+    </div>
+
+    <div class="review-list" id="reviewList" hidden></div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>Support : « Découverte de l'entrepreneuriat » — Culture entrepreneuriale · Positionnement stratégique · Communication</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
