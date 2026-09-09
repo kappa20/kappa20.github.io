@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révision ML — Examen Benlahmar</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header>
+  <div class="hbar">
+    <div class="brand">Révision Machine Learning
+      <small>Contrôle final — Pr. Benlahmar El Habib — FSBM</small>
+    </div>
+    <div class="sp"></div>
+    <button class="icon-btn" id="themeBtn" title="Thème clair / sombre">◐</button>
+    <button class="icon-btn" id="resetBtn" title="Réinitialiser la progression">Reset</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" id="tabs">
+    <button data-view="home" aria-current="true">Accueil</button>
+    <button data-view="cards">Flashcards</button>
+    <button data-view="quiz">Quiz</button>
+    <button data-view="exam">Examen blanc</button>
+    <button data-view="fiches">Fiches</button>
+  </nav>
+
+  <!-- ===================== HOME ===================== -->
+  <section id="view-home">
+    <h1>Ta préparation en un coup d'œil</h1>
+    <p class="lead">Objectif : maîtriser les questions récurrentes de ce professeur. Les thèmes
+      <span class="pill hi">Haute</span> sont déjà tombés aux examens passés.</p>
+
+    <div class="card" style="margin-top:14px">
+      <div class="row" style="justify-content:space-between">
+        <strong>Flashcards maîtrisées</strong>
+        <span id="cardsPct" class="muted">0 %</span>
+      </div>
+      <div class="prog" style="margin:8px 0 4px"><i id="cardsBar"></i></div>
+      <div class="muted" style="font-size:12.5px"><span id="cardsKnown">0</span> connues ·
+        <span id="cardsReview">0</span> à revoir · <span id="cardsTotal">0</span> au total</div>
+      <div class="row" style="margin-top:12px">
+        <button id="goRevise">▶ Réviser aujourd'hui (cartes à revoir + nouvelles)</button>
+        <button id="goQuizRandom">▶ Quiz aléatoire (20 questions)</button>
+      </div>
+      <div class="muted" style="font-size:12.5px;margin-top:10px">Meilleur score au quiz :
+        <strong id="quizBest">—</strong></div>
+    </div>
+
+    <h2>Progression par thème</h2>
+    <div class="card" id="topicProgress"></div>
+
+    <h2>Comment ce prof conçoit ses examens</h2>
+    <div class="card">
+      <ul style="margin:0;padding-left:18px">
+        <li>Questions surtout <strong>conceptuelles</strong> : « Expliquez… », « Discutez… », « Justifier votre réponse ».</li>
+        <li><strong>QCM courts à justifier</strong> (signe du gradient, formule de <code>b</code>).</li>
+        <li><strong>Études de cas sur un tableau de données</strong> : nommer les problèmes, dire comment les traiter.</li>
+        <li><strong>Arbre de décision</strong> sur un tableau de contingence, <em>sans faire les calculs</em>.</li>
+        <li>Favoris : MSE/MAE/RMSE · défis du gradient · sigmoïde + « pourquoi le log ? » · concept SVM · 3 distances KNN · données déséquilibrées · feature engineering · précision vs accuracy · fiabilité.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== CARDS ===================== -->
+  <section id="view-cards" class="hidden">
+    <h1>Flashcards</h1>
+    <div class="card">
+      <div class="row">
+        <label class="inline">Thème
+          <select id="fcTopic"><option value="all">Tous les thèmes</option></select>
+        </label>
+        <label class="inline"><input type="checkbox" id="fcReviewOnly"> À revoir seulement</label>
+        <label class="inline"><input type="checkbox" id="fcHiOnly"> Priorité haute seulement</label>
+        <button id="fcShuffle">↻ Mélanger</button>
+      </div>
+    </div>
+
+    <div id="fcEmpty" class="card hidden" style="margin-top:14px">Aucune carte pour ce filtre.
+      Décoche « à revoir seulement » ou change de thème.</div>
+
+    <div id="fcStage">
+      <div class="fc" id="fcCard">
+        <div class="fc-inner">
+          <div class="fc-face front">
+            <span class="fc-tag" id="fcTagF"></span>
+            <div class="fc-q" id="fcQ"></div>
+            <div class="fc-hint">Clique la carte ou <kbd>Espace</kbd> pour retourner</div>
+          </div>
+          <div class="fc-face back">
+            <span class="fc-tag" id="fcTagB"></span>
+            <div class="fc-a" id="fcA"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="justify-content:space-between">
+        <button id="fcPrev">←</button>
+        <button id="fcReview" style="border-color:var(--warn);color:var(--warn)">À revoir</button>
+        <button id="fcKnow" style="border-color:var(--good);color:var(--good)">Je sais ✓</button>
+        <button id="fcNext">→</button>
+      </div>
+      <div class="counter" id="fcCounter"></div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="view-quiz" class="hidden">
+    <h1>Quiz</h1>
+    <div id="quizSetup" class="card">
+      <p class="lead" style="margin-top:0">QCM avec correction immédiate + questions ouvertes que
+        tu t'auto-évalues (comme à l'examen).</p>
+      <div class="row">
+        <label class="inline">Mode
+          <select id="quizMode">
+            <option value="random20">Aléatoire — 20 questions</option>
+            <option value="all">Toutes les questions</option>
+            <option value="topic">Par thème…</option>
+          </select>
+        </label>
+        <label class="inline hidden" id="quizTopicWrap">Thème
+          <select id="quizTopic"></select>
+        </label>
+        <button id="quizStart">Commencer</button>
+      </div>
+    </div>
+
+    <div id="quizPlay" class="hidden">
+      <div class="row" style="justify-content:space-between;margin-bottom:6px">
+        <span class="q-num" id="quizProgress"></span>
+        <span class="muted" id="quizRunning"></span>
+      </div>
+      <div class="card">
+        <div class="q-num" id="quizTopicTag"></div>
+        <div class="q-text" id="quizQ"></div>
+        <div id="quizChoices"></div>
+        <div id="quizOpen" class="hidden">
+          <button id="quizReveal">Afficher la réponse modèle</button>
+          <div id="quizModel" class="explain hidden"></div>
+          <div class="row hidden" id="quizSelfGrade" style="margin-top:10px">
+            <span class="muted">Tu avais juste ?</span>
+            <button data-sg="1" style="border-color:var(--good);color:var(--good)">Oui ✓</button>
+            <button data-sg="0" style="border-color:var(--bad);color:var(--bad)">Non ✗</button>
+          </div>
+        </div>
+        <div id="quizExplain" class="explain hidden"></div>
+      </div>
+      <div class="row" style="justify-content:flex-end;margin-top:12px">
+        <button id="quizNext" class="hidden">Suivant →</button>
+      </div>
+    </div>
+
+    <div id="quizDone" class="card hidden" style="text-align:center">
+      <div class="big-score"><span id="quizScore"></span></div>
+      <p class="muted" id="quizVerdict"></p>
+      <button id="quizAgain">Recommencer</button>
+    </div>
+  </section>
+
+  <!-- ===================== EXAM ===================== -->
+  <section id="view-exam" class="hidden">
+    <h1>Examen blanc</h1>
+    <p class="lead">Les vraies questions des contrôles finaux passés, avec réponse modèle
+      masquée. Chronomètre-toi : <strong>1 h 30</strong>.</p>
+    <div class="card">
+      <div class="row">
+        <label class="inline">Sujet
+          <select id="examPick">
+            <option value="2022">Contrôle final 2022 / 2023</option>
+            <option value="2023">Contrôle final 2023 / 2024</option>
+          </select>
+        </label>
+        <button id="examTimerBtn">▶ Démarrer le chrono</button>
+        <span id="examTimer" class="muted" style="font-variant-numeric:tabular-nums">00:00</span>
+      </div>
+    </div>
+    <div id="examBody"></div>
+  </section>
+
+  <!-- ===================== FICHES ===================== -->
+  <section id="view-fiches" class="hidden">
+    <h1>Fiches de révision détaillées</h1>
+    <p class="lead">Clique une fiche pour l'ouvrir <strong>mise en forme</strong> dans cette page.
+      Les fichiers Markdown sont aussi dans le dossier <code>study_guide/</code>.</p>
+    <div class="card list-fiche" id="ficheList"></div>
+  </section>
+</div>
+
+<div id="ficheModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="ficheTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="mt" id="ficheTitle"></span>
+      <button id="ficheRaw" class="icon-btn" title="Ouvrir le fichier .md brut">.md</button>
+      <button id="ficheClose" class="icon-btn" title="Fermer (Échap)">✕</button>
+    </div>
+    <div class="md-body" id="ficheBody"></div>
+  </div>
+</div>
+
+<script src="data/topics.js"></script>
+<script src="data/flashcards.js"></script>
+<script src="data/quiz.js"></script>
+<script src="data/exams.js"></script>
+<script src="data/fiches.js"></script>
+<script src="app/markdown.js"></script>
+<script src="app/app.js"></script>
+</body>
+</html>
