@@ -1,48 +1,245 @@
-/* app/markdown.js — mini renderer Markdown + LaTeX (aucune dépendance, marche en file://).
- * Exposé en window.MLmd. Généralement pas besoin d'y toucher. */
+/* app/markdown.js — mini renderer Markdown + LaTeX→MathML (aucune dépendance, marche en file://).
+ * Exposé en window.MLmd. Le LaTeX ($...$ / $$...$$) est converti en MathML natif,
+ * rendu par le navigateur (vraies barres de fraction, indices/exposants empilés). */
 window.MLmd = (function(){
   "use strict";
   const P0 = String.fromCharCode(0xE000), P1 = String.fromCharCode(0xE001), PD = String.fromCharCode(0xE002);
   function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function tex(s){
-    s = s.replace(/\\(left|right|displaystyle|big|Big|bigg|Bigg|!|,|;|:|\\)/g,' ');
-    s = s.replace(/\\quad|\\qquad/g,'  ');
-    s = s.replace(/\\operatorname\s*\{([^{}]*)\}/g,'$1');
-    s = s.replace(/\\mathbb\s*\{R\}/g,'ℝ').replace(/\\mathbb\s*\{([^{}]*)\}/g,'$1');
-    s = s.replace(/\\underbrace\s*\{([^{}]*)\}_\{[^{}]*\}/g,'$1');
-    // balanced-brace helpers for \boxed{}, \text{}, \frac{}{}, \sqrt{}
-    const grp = (str,p)=>{ let d=0; for(let k=p;k<str.length;k++){ const ch=str[k]; if(ch==='{')d++; else if(ch==='}'){ d--; if(!d) return {c:str.slice(p+1,k), e:k+1}; } } return null; };
-    const one = (str,names,fn)=>{ const re=new RegExp('\\\\(?:'+names+')\\s*\\{','g'); let mm,o='',last=0;
-      while((mm=re.exec(str))){ const a=grp(str,mm.index+mm[0].length-1); if(!a){ continue; } o+=str.slice(last,mm.index)+fn(rec(a.c)); last=a.e; re.lastIndex=last; } return o+str.slice(last); };
-    const two = (str,names,fn)=>{ const re=new RegExp('\\\\(?:'+names+')\\s*\\{','g'); let mm,o='',last=0;
-      while((mm=re.exec(str))){ const a=grp(str,mm.index+mm[0].length-1); if(!a){ continue; } let j=a.e; while(str[j]===' ')j++; if(str[j]!=='{'){ continue; } const b=grp(str,j); if(!b){ continue; }
-        o+=str.slice(last,mm.index)+fn(rec(a.c),rec(b.c)); last=b.e; re.lastIndex=last; } return o+str.slice(last); };
-    function rec(x){ x=one(x,'boxed|text',v=>v); x=two(x,'[dt]?frac',(a,b)=>'('+a+') / ('+b+')'); x=one(x,'sqrt',v=>'√('+v+')'); return x; }
-    s = rec(s);
-    s = s.replace(/\\hat\s*\{([^{}]*)\}/g,'$1̂');
-    const M = {
-      partial:'∂',nabla:'∇',sum:'∑',prod:'∏',sigma:'σ',Sigma:'Σ',theta:'θ',Theta:'Θ',
-      alpha:'α',beta:'β',gamma:'γ',Gamma:'Γ',delta:'δ',Delta:'Δ',lambda:'λ',mu:'μ',eta:'η',
-      xi:'ξ',phi:'φ',varphi:'φ',pi:'π',rho:'ρ',tau:'τ',epsilon:'ε',varepsilon:'ε',
-      infty:'∞',times:'×',cdot:'·',div:'÷',pm:'±',mp:'∓',approx:'≈',neq:'≠',ne:'≠',
-      le:'≤',leq:'≤',ge:'≥',geq:'≥',ll:'≪',gg:'≫',equiv:'≡',propto:'∝',sim:'∼',
-      to:'→',rightarrow:'→',Rightarrow:'⇒',leftarrow:'←',Leftarrow:'⇐',iff:'⟺',mapsto:'↦',
-      in:'∈',notin:'∉',subset:'⊂',subseteq:'⊆',cup:'∪',cap:'∩',emptyset:'∅',
-      forall:'∀',exists:'∃',land:'∧',lor:'∨',lnot:'¬',
-      ldots:'…',dots:'…',cdots:'⋯',top:'ᵀ',prime:'′',angle:'∠',
-      mid:'|',lvert:'|',rvert:'|',vert:'|',lVert:'‖',rVert:'‖',Vert:'‖',langle:'⟨',rangle:'⟩',
-      log:'log',ln:'ln',exp:'exp',min:'min',max:'max',arg:'arg',lim:'lim',sin:'sin',cos:'cos',tan:'tan',det:'det'
-    };
-    s = s.replace(/\\([A-Za-z]+)/g,(m,c)=> M[c]!=null ? M[c] : c);
-    s = s.replace(/\\([\s{}()[\],;.!|])/g,'$1');   // unescape LaTeX-escaped punctuation/space
-    s = s.replace(/\^\{([^{}]*)\}/g,(m,x)=>'<sup>'+x.trim()+'</sup>');
-    s = s.replace(/_\{([^{}]*)\}/g,(m,x)=>'<sub>'+x.trim()+'</sub>');
-    s = s.replace(/\^([^\s{}])/g,'<sup>$1</sup>');
-    s = s.replace(/_([A-Za-z0-9])/g,'<sub>$1</sub>');
-    s = s.replace(/[{}]/g,'');
-    s = s.replace(/[ \t]{2,}/g,' ');
-    return s.trim();
+
+  /* ============================ LaTeX → MathML ============================ */
+  const TEX_GREEK = {alpha:'α',beta:'β',gamma:'γ',Gamma:'Γ',delta:'δ',Delta:'Δ',epsilon:'ε',
+    varepsilon:'ε',zeta:'ζ',eta:'η',theta:'θ',vartheta:'ϑ',Theta:'Θ',iota:'ι',kappa:'κ',
+    lambda:'λ',Lambda:'Λ',mu:'μ',nu:'ν',xi:'ξ',Xi:'Ξ',pi:'π',Pi:'Π',rho:'ρ',varrho:'ϱ',
+    sigma:'σ',Sigma:'Σ',tau:'τ',upsilon:'υ',phi:'φ',varphi:'φ',Phi:'Φ',chi:'χ',psi:'ψ',
+    Psi:'Ψ',omega:'ω',Omega:'Ω'};
+  const TEX_OP = {cdot:'⋅',times:'×',div:'÷',pm:'±',mp:'∓',ast:'∗',star:'⋆',circ:'∘',
+    bullet:'∙',approx:'≈',cong:'≅',neq:'≠',ne:'≠',equiv:'≡',le:'≤',leq:'≤',ge:'≥',geq:'≥',
+    ll:'≪',gg:'≫',prec:'≺',succ:'≻',sim:'∼',simeq:'≃',propto:'∝',to:'→',rightarrow:'→',
+    longrightarrow:'⟶',Rightarrow:'⇒',implies:'⟹',leftarrow:'←',Leftarrow:'⇐',
+    leftrightarrow:'↔',Leftrightarrow:'⇔',iff:'⟺',mapsto:'↦',in:'∈',notin:'∉',ni:'∋',
+    subset:'⊂',subseteq:'⊆',supset:'⊃',supseteq:'⊇',cup:'∪',cap:'∩',setminus:'∖',
+    emptyset:'∅',varnothing:'∅',forall:'∀',exists:'∃',nexists:'∄',neg:'¬',lnot:'¬',
+    land:'∧',wedge:'∧',lor:'∨',vee:'∨',oplus:'⊕',otimes:'⊗',perp:'⊥',parallel:'∥',
+    angle:'∠',nabla:'∇',partial:'∂',infty:'∞',ldots:'…',dots:'…',cdots:'⋯',vdots:'⋮',
+    ddots:'⋱',langle:'⟨',rangle:'⟩',lceil:'⌈',rceil:'⌉',lfloor:'⌊',rfloor:'⌋',
+    hookrightarrow:'↪',triangleq:'≜',approxeq:'≊',doteq:'≐'};
+  const TEX_FUN = {log:1,ln:1,lg:1,exp:1,sin:1,cos:1,tan:1,cot:1,sec:1,csc:1,sinh:1,cosh:1,
+    tanh:1,det:1,deg:1,dim:1,ker:1,hom:1,Pr:1};
+  const TEX_LIMOP = {lim:'lim',max:'max',min:'min',sup:'sup',inf:'inf',arg:'arg',gcd:'gcd'};
+  const TEX_BIG = {sum:'∑',prod:'∏',coprod:'∐',int:'∫',iint:'∬',oint:'∮',bigcup:'⋃',
+    bigcap:'⋂',bigoplus:'⨁',bigotimes:'⨂',bigwedge:'⋀',bigvee:'⋁'};
+
+  function texBalanced(str, openIdx){
+    if(str[openIdx] !== '{') return null;
+    let d = 0;
+    for(let k = openIdx; k < str.length; k++){
+      if(str[k] === '{') d++;
+      else if(str[k] === '}'){ d--; if(!d) return {body: str.slice(openIdx + 1, k), end: k + 1}; }
+    }
+    return {body: str.slice(openIdx + 1), end: str.length};
   }
+
+  function texParse(str, disp){
+    const out = [];
+    let i = 0;
+    const n = str.length;
+    const ent = c => c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const skip = () => { while(i < n && str[i] === ' ') i++; };
+    const wrap = x => /^<m(row|i|n|o|frac|sqrt|root|sub|sup|subsup|under|over|underover|space|text)[ />]/.test(x)
+      ? x : '<mrow>' + x + '</mrow>';
+
+    function charTok(c){
+      if(c >= '0' && c <= '9') return '<mn>' + c + '</mn>';
+      if(/[A-Za-z]/.test(c)) return '<mi>' + c + '</mi>';
+      if(c === ' ') return '';
+      if(c === '~') return '<mspace width="0.33em"/>';
+      if(c === '|') return '<mo stretchy="false">|</mo>';
+      return '<mo>' + ent(c) + '</mo>';
+    }
+    function accent(base, ch){
+      return '<mover>' + wrap(base) + '<mo stretchy="false">' + ch + '</mo></mover>';
+    }
+    function readArg(){
+      skip();
+      if(i >= n) return '<mrow></mrow>';
+      if(str[i] === '{'){ const g = texBalanced(str, i); i = g.end; return '<mrow>' + texParse(g.body, disp) + '</mrow>'; }
+      if(str[i] === '\\') return command();
+      return charTok(str[i++]);
+    }
+    function command(){
+      i++;                                             // passe le backslash
+      if(i < n && !/[A-Za-z]/.test(str[i])){
+        const ch = str[i++];
+        if(ch === ',' || ch === ':') return '<mspace width="0.22em"/>';
+        if(ch === ';') return '<mspace width="0.28em"/>';
+        if(ch === '!') return '<mspace width="-0.17em"/>';
+        if(ch === '\\') return '';
+        if(ch === ' ') return '<mspace width="0.25em"/>';
+        if(ch === '|') return '<mo stretchy="false">‖</mo>';
+        if(ch === '{' || ch === '}') return '<mo>' + ch + '</mo>';
+        if(ch === '%' || ch === '#' || ch === '&' || ch === '_' || ch === '$') return '<mo>' + ent(ch) + '</mo>';
+        return '<mo>' + ent(ch) + '</mo>';
+      }
+      let name = '';
+      while(i < n && /[A-Za-z]/.test(str[i])) name += str[i++];
+      while(i < n && str[i] === ' ') i++;
+
+      if(name === 'frac' || name === 'dfrac' || name === 'tfrac' || name === 'cfrac'){
+        const a = readArg(), b = readArg();
+        return '<mfrac>' + wrap(a) + wrap(b) + '</mfrac>';
+      }
+      if(name === 'binom' || name === 'dbinom'){
+        const b1 = readArg(), b2 = readArg();
+        return '<mrow><mo>(</mo><mfrac linethickness="0">' + wrap(b1) + wrap(b2) + '</mfrac><mo>)</mo></mrow>';
+      }
+      if(name === 'sqrt'){
+        skip();
+        if(str[i] === '['){
+          const e = str.indexOf(']', i), idx = str.slice(i + 1, e); i = e + 1;
+          return '<mroot>' + wrap(readArg()) + '<mrow>' + texParse(idx, disp) + '</mrow></mroot>';
+        }
+        return '<msqrt>' + readArg() + '</msqrt>';
+      }
+      if(name === 'boxed' || name === 'fbox') return '<mrow class="boxed">' + readArg() + '</mrow>';
+      if(name === 'text' || name === 'textrm' || name === 'textbf' || name === 'textit' || name === 'textsf' || name === 'mbox'){
+        skip(); const g = texBalanced(str, i); if(!g) return '';
+        i = g.end; return '<mtext>' + ent(g.body) + '</mtext>';
+      }
+      if(name === 'operatorname'){
+        skip(); const g = texBalanced(str, i); if(!g) return '';
+        i = g.end; return '<mo lspace="0.17em" rspace="0.17em">' + ent(g.body) + '</mo>';
+      }
+      if(name === 'mathrm' || name === 'mathbf' || name === 'mathsf' || name === 'mathtt'){
+        const vv = {mathrm:'normal', mathbf:'bold', mathsf:'sans-serif', mathtt:'monospace'}[name];
+        skip(); const g = texBalanced(str, i);
+        if(!g) return '';
+        i = g.end; return '<mi mathvariant="' + vv + '">' + ent(g.body) + '</mi>';
+      }
+      if(name === 'mathbb' || name === 'mathcal' || name === 'mathscr' || name === 'mathfrak'){
+        const mvar = name === 'mathbb' ? 'double-struck' : name === 'mathfrak' ? 'fraktur' : 'script';
+        skip(); const g = texBalanced(str, i);
+        const raw = g ? g.body : (str[i] || ''); if(g) i = g.end; else i++;
+        const bb = {R:'ℝ', N:'ℕ', Z:'ℤ', Q:'ℚ', C:'ℂ', E:'𝔼', P:'ℙ'};
+        if(name === 'mathbb' && bb[raw]) return '<mi>' + bb[raw] + '</mi>';
+        return '<mi mathvariant="' + mvar + '">' + ent(raw) + '</mi>';
+      }
+      if(name === 'hat' || name === 'widehat') return accent(readArg(), '^');
+      if(name === 'bar' || name === 'overline') return accent(readArg(), '‾');
+      if(name === 'vec') return accent(readArg(), '→');
+      if(name === 'tilde' || name === 'widetilde') return accent(readArg(), '~');
+      if(name === 'dot') return accent(readArg(), '˙');
+      if(name === 'underbrace'){
+        const ub = readArg(); skip();
+        let sub = '';
+        if(str[i] === '_'){ i++; sub = readArg(); }
+        return '<munder><munder accentunder="true">' + wrap(ub) + '<mo stretchy="true">⏟</mo></munder>' + wrap(sub) + '</munder>';
+      }
+      if(name === 'overbrace'){
+        const ob = readArg(); skip();
+        let sup = '';
+        if(str[i] === '^'){ i++; sup = readArg(); }
+        return '<mover><mover accent="true">' + wrap(ob) + '<mo stretchy="true">⏞</mo></mover>' + wrap(sup) + '</mover>';
+      }
+      if(name === 'left' || name === 'right'){
+        skip();
+        let d = str[i++] || '';
+        if(d === '\\'){
+          if(/[A-Za-z]/.test(str[i])){
+            let nm = '';
+            while(i < n && /[A-Za-z]/.test(str[i])) nm += str[i++];
+            if(nm === 'lVert' || nm === 'rVert' || nm === 'Vert') return '<mo stretchy="false">‖</mo>';
+            if(nm === 'langle') return '<mo>⟨</mo>';
+            if(nm === 'rangle') return '<mo>⟩</mo>';
+            return '<mo stretchy="false">|</mo>';      // lvert / rvert / vert
+          }
+          d = str[i++] || '';                          // \{  \}  \|
+          if(d === '|') return '<mo stretchy="false">‖</mo>';
+          return '<mo>' + ent(d) + '</mo>';
+        }
+        if(d === '.' || d === '') return '';
+        if(d === '|') return '<mo stretchy="false">|</mo>';
+        return '<mo>' + ent(d) + '</mo>';
+      }
+      if(/^(bigg?|Bigg?)[lrm]?$/.test(name)) return '';       // \big( → le ( devient <mo>
+      if(name === 'displaystyle' || name === 'textstyle' || name === 'scriptstyle' ||
+         name === 'limits' || name === 'nolimits' || name === 'nonumber' || name === 'nobreak') return '';
+      if(name === 'quad') return '<mspace width="1em"/>';
+      if(name === 'qquad') return '<mspace width="2em"/>';
+      if(name === 'prime') return '<mo>′</mo>';
+      if(name === 'top') return '<mo>⊤</mo>';
+      if(name === 'bot') return '<mo>⊥</mo>';
+      if(name === 'colon') return '<mo>:</mo>';
+      if(name === 'mid') return '<mo stretchy="false">∣</mo>';
+      if(name === 'lvert' || name === 'rvert' || name === 'vert') return '<mo stretchy="false">|</mo>';
+      if(name === 'lVert' || name === 'rVert' || name === 'Vert') return '<mo stretchy="false">‖</mo>';
+      if(name === 'backslash') return '<mo>\\</mo>';
+      if(TEX_GREEK[name]) return '<mi>' + TEX_GREEK[name] + '</mi>';
+      if(TEX_OP[name]) return '<mo>' + TEX_OP[name] + '</mo>';
+      if(TEX_BIG[name]) return '<mo class="bigop" largeop="true" movablelimits="' + (disp ? 'true' : 'false') + '">' + TEX_BIG[name] + '</mo>';
+      if(TEX_LIMOP[name]) return '<mo class="bigop" lspace="0" rspace="0.12em" movablelimits="' + (disp ? 'true' : 'false') + '">' + TEX_LIMOP[name] + '</mo>';
+      if(TEX_FUN[name]) return '<mi mathvariant="normal">' + name + '</mi>';
+      return '<mi>' + ent(name) + '</mi>';
+    }
+
+    while(i < n){
+      const c = str[i];
+      if(c === ' '){ i++; continue; }
+      if(c === '}'){ i++; continue; }
+      if(c === ':' && str[i + 1] === '='){ i += 2; out.push('<mo>:=</mo>'); continue; }
+      if(c === '{'){ const g = texBalanced(str, i); i = g.end; out.push('<mrow>' + texParse(g.body, disp) + '</mrow>'); continue; }
+      if(c === '\\'){ out.push(command()); continue; }
+      if(c === '_' || c === '^'){
+        i++;
+        const base = out.pop() || '<mrow></mrow>';
+        const big = /class="bigop"/.test(base);
+        const k1 = c, v1 = readArg();
+        let k2 = null, v2 = null;
+        skip();
+        if(str[i] === '_' || str[i] === '^'){ k2 = str[i++]; v2 = readArg(); }
+        const sub = k1 === '_' ? v1 : (k2 === '_' ? v2 : null);
+        const sup = k1 === '^' ? v1 : (k2 === '^' ? v2 : null);
+        let tag, kids;
+        if(sub != null && sup != null){ tag = big ? 'munderover' : 'msubsup'; kids = wrap(base) + wrap(sub) + wrap(sup); }
+        else if(sub != null){ tag = big ? 'munder' : 'msub'; kids = wrap(base) + wrap(sub); }
+        else { tag = big ? 'mover' : 'msup'; kids = wrap(base) + wrap(sup); }
+        out.push('<' + tag + '>' + kids + '</' + tag + '>');
+        continue;
+      }
+      if(c === "'"){
+        i++; let p = '′';
+        while(str[i] === "'"){ p += '′'; i++; }
+        const pb = out.pop() || '<mrow></mrow>';
+        out.push('<msup>' + wrap(pb) + '<mo>' + p + '</mo></msup>');
+        continue;
+      }
+      if(c >= '0' && c <= '9'){
+        let num = '';
+        while(i < n && (/[0-9]/.test(str[i]) || ((str[i] === '.' || str[i] === ',') && /[0-9]/.test(str[i + 1])))) num += str[i++];
+        out.push('<mn>' + num + '</mn>');
+        continue;
+      }
+      i++;
+      out.push(charTok(c));
+    }
+    return out.join('');
+  }
+
+  function tex(input, block){
+    let s = String(input).replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+    s = s.replace(/[\s ]+/g,' ').trim();
+    s = s.replace(/(\d)\s*\{\s*,\s*\}\s*(\d)/g,'$1,$2').replace(/(\d)\s*\{\s*\.\s*\}\s*(\d)/g,'$1.$2');
+    s = s.replace(/\\%/g,'%');
+    // \boxed{...} enveloppant toute l'expression → cadre CSS sur <math>
+    let boxed = false, m;
+    if((m = /^(?:\\[,;:]\s*|\\quad\s*|\\qquad\s*)*\\boxed\s*\{/.exec(s))){
+      const open = s.indexOf('{', m.index);
+      const g = texBalanced(s, open);
+      if(g && s.slice(g.end).replace(/\s|\\[,;:]|\\quad|\\qquad/g,'') === ''){ boxed = true; s = g.body; }
+    }
+    const body = texParse(s, !!block);
+    return '<math class="mathml' + (boxed ? ' boxed' : '') + '"' + (block ? ' display="block"' : '') + '>' + body + '</math>';
+  }
+
   function inl(t){
     t = t.replace(/\*\*([^*]+?)\*\*/g,'<strong>$1</strong>');
     t = t.replace(/(^|[^*\w])\*([^*\n]+?)\*(?!\w)/g,'$1<em>$2</em>');
@@ -58,12 +255,11 @@ window.MLmd = (function(){
     src = src.replace(/```[^\n]*\n([\s\S]*?)```/g,(m,code)=>
       put('<pre><code>'+esc(code.replace(/\n$/,''))+'</code></pre>'));
     src = src.replace(/\$\$([\s\S]+?)\$\$/g,(m,x)=>
-      put('<div class="math math-block">'+tex(esc(x.trim()))+'</div>'));
+      put('<div class="math math-block">'+tex(x.trim(), true)+'</div>'));
     src = esc(src);
     src = src.replace(/\\\$/g, PD);
     src = src.replace(/`([^`]+?)`/g,(m,c)=> put('<code>'+c+'</code>'));
-    src = src.replace(/\$([^$]+?)\$/g,(m,x)=> put('<span class="math'+
-      (/\n/.test(x) ? ' mathwrap' : '')+'">'+tex(x.replace(/\n/g,' '))+'</span>'));
+    src = src.replace(/\$([^$]+?)\$/g,(m,x)=> put('<span class="math">'+tex(x.replace(/\n/g,' '), false)+'</span>'));
     src = src.split(PD).join('$');
 
     const lines = src.split('\n');

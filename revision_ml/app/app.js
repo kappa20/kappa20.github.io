@@ -9,6 +9,22 @@
   const TMAP = Object.fromEntries(TOPICS.map(t=>[t.id,t.title]));
   const KEY = 'ml_revision_v1';
 
+  // ---- rendu Markdown + LaTeX (mêmes règles que les Fiches) ----
+  const MD = window.MLmd;
+  // Rendu Markdown + LaTeX. Le contenu "hérité" (texte brut multi-lignes, sans $…$)
+  // voit ses simples retours à la ligne promus en paragraphes pour rester lisible.
+  function mdBlock(src){
+    src = src == null ? '' : String(src);
+    if(src.indexOf('$') === -1 && src.indexOf('\n\n') === -1) src = src.replace(/\n/g, '\n\n');
+    return MD.mdToHtml(src).replace(/>\n</g, '><');
+  }
+  function rich(el, src){ if(el) el.innerHTML = mdBlock(src); }
+  function richInline(src){
+    const h = mdBlock(src).trim();
+    const m = h.match(/^<p>([\s\S]*?)<\/p>$/);
+    return (m && m[1].indexOf('<p>') === -1 && m[1].indexOf('<div') === -1 && m[1].indexOf('<ul') === -1) ? m[1] : h;
+  }
+
   // ---- persistence ----
   let store = {cards:{}, quizBest:0, theme:null};
   try{ const raw = localStorage.getItem(KEY); if(raw) store = Object.assign(store, JSON.parse(raw)); }catch(e){}
@@ -133,9 +149,20 @@
     const tag = TMAP[c.topic] + (store.cards[c.id] ? ' · '+(store.cards[c.id]==='known'?'connue ✓':'à revoir') : '');
     document.getElementById('fcTagF').textContent = tag;
     document.getElementById('fcTagB').textContent = tag;
-    document.getElementById('fcQ').textContent = c.q;
-    document.getElementById('fcA').textContent = c.a;
+    document.getElementById('fcQ').innerHTML = richInline(c.q);
+    rich(document.getElementById('fcA'), c.a);
     document.getElementById('fcCounter').textContent = `carte ${fcIdx+1} / ${fcOrder.length}`;
+    fitCard();
+  }
+  function fitCard(){
+    const inner = fcCardEl.querySelector('.fc-inner');
+    if(!inner) return;
+    inner.style.minHeight = '';
+    requestAnimationFrame(()=>{
+      let h = 0;
+      fcCardEl.querySelectorAll('.fc-face').forEach(f=>{ h = Math.max(h, f.scrollHeight); });
+      if(h) inner.style.minHeight = (h + 2) + 'px';
+    });
   }
   function mark(status){
     if(!fcOrder.length) return;
@@ -189,7 +216,7 @@
     document.getElementById('quizProgress').textContent = `Question ${qi+1} / ${qSet.length}`;
     document.getElementById('quizRunning').textContent = `Score : ${qCorrect}/${qAnswered}`;
     document.getElementById('quizTopicTag').textContent = TMAP[q.t] + (q.type==='open'?' · question ouverte (auto-évaluée)':'');
-    document.getElementById('quizQ').textContent = q.q;
+    rich(document.getElementById('quizQ'), q.q);
     const cc = document.getElementById('quizChoices'); cc.innerHTML='';
     const openBox = document.getElementById('quizOpen');
     const expl = document.getElementById('quizExplain');
@@ -201,7 +228,7 @@
       cc.classList.remove('hidden');
       q.choices.forEach((ch,idx)=>{
         const b = document.createElement('button');
-        b.className='choice'; b.textContent=ch;
+        b.className='choice'; b.innerHTML = richInline(ch);
         b.addEventListener('click', ()=>pickMcq(idx, b));
         cc.appendChild(b);
       });
@@ -209,7 +236,7 @@
       cc.classList.add('hidden');
       openBox.classList.remove('hidden');
       document.getElementById('quizModel').classList.add('hidden');
-      document.getElementById('quizModel').textContent = q.model;
+      rich(document.getElementById('quizModel'), q.model);
       document.getElementById('quizSelfGrade').classList.add('hidden');
       document.getElementById('quizReveal').classList.remove('hidden');
     }
@@ -224,7 +251,7 @@
     qAnswered++;
     if(idx===q.answer) qCorrect++;
     const expl = document.getElementById('quizExplain');
-    expl.textContent = (idx===q.answer ? '✓ Correct. ' : '✗ Faux. ') + q.explain;
+    expl.innerHTML = '<p class="verdict">' + (idx===q.answer ? '✓ Correct.' : '✗ Faux.') + '</p>' + mdBlock(q.explain);
     expl.classList.remove('hidden');
     document.getElementById('quizRunning').textContent = `Score : ${qCorrect}/${qAnswered}`;
     nextOrFinish();
@@ -271,11 +298,11 @@
     const ex = window.ML.exams[examPick.value];
     const body = document.getElementById('examBody');
     body.innerHTML = `<h2>${ex.title}</h2>`;
-    const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     ex.items.forEach((it,i)=>{
       const d = document.createElement('details');
       d.className = 'exam-q';
-      d.innerHTML = `<summary>${i+1}. ${esc(it[0])}</summary><div class="exam-a">${esc(it[1])}</div>`;
+      d.innerHTML = `<summary>${i+1}. ${richInline(it[0])}</summary>` +
+        `<div class="exam-a md-body">${mdBlock(it[1])}</div>`;
       body.appendChild(d);
     });
   }

@@ -55,21 +55,21 @@
   .fc-inner{position:relative;transition:transform .5s;transform-style:preserve-3d;min-height:230px}
   .fc.flip .fc-inner{transform:rotateX(180deg)}
   .fc-face{position:absolute;inset:0;backface-visibility:hidden;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;justify-content:center;gap:8px}
-  .fc-face.back{transform:rotateX(180deg)}
+  .fc-face.back{transform:rotateX(180deg);overflow-y:auto}
   .fc-tag{position:absolute;top:12px;right:14px;font-size:11px;color:var(--text-soft)}
   .fc-q{font-size:18px;font-weight:600}
-  .fc-a{font-size:15.5px;white-space:pre-wrap}
+  .fc-a{font-size:15px}
   .fc-hint{color:var(--text-soft);font-size:12.5px;margin-top:6px}
   .counter{color:var(--text-soft);font-size:13px;text-align:center;margin-top:6px}
   kbd{font:inherit;font-size:11px;background:var(--surface-2);border:1px solid var(--border);border-bottom-width:2px;border-radius:6px;padding:1px 6px}
   /* Quiz */
-  .choice{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px;white-space:pre-wrap}
+  .choice{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px}
   .choice.correct{background:color-mix(in srgb,var(--good) 20%,var(--surface));border-color:var(--good)}
   .choice.wrong{background:color-mix(in srgb,var(--bad) 18%,var(--surface));border-color:var(--bad)}
   .choice[disabled]{cursor:default;opacity:1}
-  .explain{margin-top:10px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 10px 10px 0;font-size:14px;white-space:pre-wrap}
+  .explain{margin-top:10px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 10px 10px 0;font-size:14px}
   .q-num{color:var(--text-soft);font-size:12.5px;letter-spacing:.4px;text-transform:uppercase}
-  .q-text{font-size:17px;font-weight:600;margin:6px 0 10px;white-space:pre-wrap}
+  .q-text{font-size:17px;font-weight:600;margin:6px 0 10px}
   .big-score{font-size:34px;font-weight:800}
   .muted{color:var(--text-soft)}
   .list-fiche{display:grid;gap:8px}
@@ -94,14 +94,42 @@
   .md-body table{border-collapse:collapse;width:100%;font-size:13.5px}
   .md-body th,.md-body td{border:1px solid var(--border);padding:6px 10px;text-align:left;vertical-align:top}
   .md-body th{background:var(--surface-2);font-weight:700}
-  .md-body .math{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.95em;white-space:nowrap}
-  .md-body .math.mathwrap{white-space:normal}
-  .md-body .math-block{display:block;text-align:center;white-space:normal;overflow-x:auto;margin:14px 0;padding:6px 0;font-size:1em}
+  .md-body .math{font-family:inherit}
+  .md-body .math-block{display:block;text-align:center;overflow-x:auto;overflow-y:hidden;margin:16px 0;padding:4px 2px}
+  .md-body math{font-size:1.1em}
+  .md-body .math-block math{font-size:1.3em}
+  .md-body math.boxed{border:1.6px solid var(--accent);border-radius:8px;padding:.35em .8em;background:var(--surface-2)}
+  .md-body .math-block math.boxed{width:fit-content;margin:2px auto}
+  .md-body math .boxed{padding:.1em .35em}
   .md-body sup,.md-body sub{font-size:.72em;line-height:0}
   details.exam-q{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin:10px 0}
   details.exam-q > summary{cursor:pointer;font-weight:600}
   details.exam-q[open] > summary{margin-bottom:8px}
-  .exam-a{white-space:pre-wrap;font-size:14.5px;border-top:1px dashed var(--border);padding-top:8px}
+  .exam-a{font-size:14.5px;border-top:1px dashed var(--border);padding-top:8px}
   code{background:var(--surface-2);padding:1px 5px;border-radius:5px;font-size:.92em}
   .hidden{display:none!important}
+
+  /* ---- contenu riche (Markdown + MathML natif) dans flashcards / quiz / examen ---- */
+  .fc-a>:first-child,.explain>:first-child,.exam-a>:first-child,.q-text>:first-child,.choice>:first-child{margin-top:0}
+  .fc-a>:last-child,.explain>:last-child,.exam-a>:last-child,.q-text>:last-child,.choice>:last-child{margin-bottom:0}
+  .fc-a p,.explain p,.exam-a p{margin:8px 0}
+  .choice p{margin:.15em 0}
+  .fc-a ul,.fc-a ol,.explain ul,.explain ol,.exam-a ul,.exam-a ol{margin:8px 0;padding-left:20px}
+  .fc-a li,.explain li,.exam-a li{margin:4px 0}
+  .fc-a h3,.explain h3,.exam-a h3,.fc-a h4,.explain h4,.exam-a h4{margin:12px 0 4px;font-size:14px}
+  .fc-q math,.fc-a math,.q-text math,.choice math,.explain math,.exam-a math{font-size:1.05em}
+  .fc-a .math-block,.explain .math-block,.exam-a .math-block,.q-text .math-block{display:block;text-align:center;overflow-x:auto;overflow-y:hidden;margin:12px 0;padding:2px}
+  .fc-a .math-block math,.explain .math-block math,.exam-a .math-block math,.q-text .math-block math{font-size:1.18em}
+  .fc-a math.boxed,.explain math.boxed,.exam-a math.boxed,.q-text math.boxed{border:1.6px solid var(--accent);border-radius:8px;padding:.3em .7em;background:var(--surface-2)}
+  .fc-a .math-block math.boxed,.explain .math-block math.boxed,.exam-a .math-block math.boxed{width:fit-content;margin:2px auto}
+  .fc-a math .boxed,.explain math .boxed,.exam-a math .boxed{padding:.1em .35em}
+  .fc-a .tbl-wrap,.explain .tbl-wrap,.exam-a .tbl-wrap{overflow-x:auto;margin:10px 0}
+  .fc-a table,.explain table,.exam-a table{border-collapse:collapse;width:100%;font-size:13px}
+  .fc-a th,.fc-a td,.explain th,.explain td,.exam-a th,.exam-a td{border:1px solid var(--border);padding:5px 9px;text-align:left;vertical-align:top}
+  .fc-a th,.explain th,.exam-a th{background:var(--surface-2);font-weight:700}
+  .fc-a code,.explain code,.exam-a code,.q-text code,.choice code{background:var(--surface-2);padding:1px 5px;border-radius:5px;font-size:.9em}
+  .fc-a blockquote,.explain blockquote,.exam-a blockquote{margin:10px 0;padding:6px 12px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0}
+  p.verdict{margin:0 0 6px;font-weight:700}
+  details.exam-q > summary math{font-size:1em}
+
   @media (max-width:520px){ .fc-q{font-size:16px} h1{font-size:19px} }

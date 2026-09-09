@@ -366,6 +366,47 @@ $$\\boxed{\\;\\frac{\\partial E}{\\partial x_{in}}
 
 (car $x_{out} = \\sigma(x_{in})$ donc $\\sigma'(x_{in}) = x_{out}(1-x_{out})$).
 
+#### Démonstration détaillée — 5 étapes (Contrôle final 2022/2023, Q5)
+
+On part **uniquement de la sigmoïde** $x_{out}=\\dfrac{1}{1+e^{-x_{in}}}$ et on veut
+$\\dfrac{\\partial x_{out}}{\\partial x_{in}}$.
+
+**Étape 1 — forme puissance.** On écrit $x_{out}=(1+e^{-x_{in}})^{-1}$.
+
+**Étape 2 — dérivée de $u^{-1}$.** On sait que $\\dfrac{d}{dx}(u^{-1})=-u^{-2}\\,\\dfrac{du}{dx}$.
+Ici $u=1+e^{-x_{in}}$, donc
+
+$$\\frac{\\partial x_{out}}{\\partial x_{in}}
+= -(1+e^{-x_{in}})^{-2}\\,\\frac{\\partial}{\\partial x_{in}}(1+e^{-x_{in}})$$
+
+**Étape 3 — dériver l'intérieur.** La dérivée de $1$ est $0$ et $\\dfrac{d}{dx}e^{-x}=-e^{-x}$,
+donc $\\dfrac{\\partial}{\\partial x_{in}}(1+e^{-x_{in}}) = -e^{-x_{in}}$. Les deux signes moins se
+compensent :
+
+$$\\boxed{\\;\\frac{\\partial x_{out}}{\\partial x_{in}}
+= \\frac{e^{-x_{in}}}{(1+e^{-x_{in}})^2}\\;}$$
+
+**Étape 4 — réexprimer avec $x_{out}$.** Comme
+$1-x_{out}=1-\\dfrac{1}{1+e^{-x_{in}}}=\\dfrac{1+e^{-x_{in}}-1}{1+e^{-x_{in}}}
+=\\dfrac{e^{-x_{in}}}{1+e^{-x_{in}}}$, on a
+
+$$x_{out}(1-x_{out})
+= \\frac{1}{1+e^{-x_{in}}}\\times\\frac{e^{-x_{in}}}{1+e^{-x_{in}}}
+= \\frac{e^{-x_{in}}}{(1+e^{-x_{in}})^2}
+= \\frac{\\partial x_{out}}{\\partial x_{in}}$$
+
+d'où $\\dfrac{\\partial x_{out}}{\\partial x_{in}} = x_{out}(1-x_{out})$.
+
+**Étape 5 — règle de la chaîne $E \\to x_{out} \\to x_{in}$.**
+
+$$\\frac{\\partial E}{\\partial x_{in}}
+= \\frac{\\partial E}{\\partial x_{out}}\\,\\frac{\\partial x_{out}}{\\partial x_{in}}
+= \\frac{\\partial E}{\\partial x_{out}}\\,x_{out}(1-x_{out})$$
+
+C'est **cette dernière étape qui est la rétropropagation**. La forme $x_{out}(1-x_{out})$ est
+préférée à $\\dfrac{e^{-x_{in}}}{(1+e^{-x_{in}})^2}$ car $x_{out}$ est **déjà calculé** lors de la
+passe avant. *(Détail complet : \`Demonstration_Q5_backprop_sigmoide_2022-2023.md\`.)*
+
 ### Log-loss / entropie croisée / perte logistique
 
 $$\\text{Log Loss} = \\sum_{(x,y)\\in D} \\Big[ -y\\log(y') - (1-y)\\log(1 - y') \\Big]
@@ -1582,7 +1623,21 @@ $$\\frac{\\partial E}{\\partial x_{in}} = \\frac{\\partial E}{\\partial x_{out}}
 = \\frac{\\partial E}{\\partial x_{out}}\\cdot x_{out}(1 - x_{out})$$
 
 (règle de la chaîne ; $\\sigma'(z) = \\sigma(z)(1-\\sigma(z))$ et $x_{out} = \\sigma(x_{in})$).
-→ Fiche \`03_regression_logistique.md\`.
+
+**Démonstration en 5 étapes :**
+
+1. **Forme puissance** : $x_{out}=(1+e^{-x_{in}})^{-1}$.
+2. **Dérivée de $u^{-1}$** : $\\dfrac{d}{dx}(u^{-1})=-u^{-2}u'$ avec $u=1+e^{-x_{in}}$ ⇒
+   $\\dfrac{\\partial x_{out}}{\\partial x_{in}} = -(1+e^{-x_{in}})^{-2}\\,(1+e^{-x_{in}})'$.
+3. **Intérieur** : $(1+e^{-x_{in}})' = -e^{-x_{in}}$ (dérivée de $1$ nulle, $\\left(e^{-x}\\right)'=-e^{-x}$).
+   Les deux « moins » se compensent ⇒ $\\dfrac{\\partial x_{out}}{\\partial x_{in}} = \\dfrac{e^{-x_{in}}}{(1+e^{-x_{in}})^2}$.
+4. **Réécriture avec $x_{out}$** : $1-x_{out} = \\dfrac{e^{-x_{in}}}{1+e^{-x_{in}}}$, donc
+   $x_{out}(1-x_{out}) = \\dfrac{e^{-x_{in}}}{(1+e^{-x_{in}})^2}$ = même résultat ⇒
+   $\\dfrac{\\partial x_{out}}{\\partial x_{in}} = x_{out}(1-x_{out})$.
+5. **Règle de la chaîne** $E\\to x_{out}\\to x_{in}$ ⇒
+   $\\dfrac{\\partial E}{\\partial x_{in}} = \\dfrac{\\partial E}{\\partial x_{out}}\\,x_{out}(1-x_{out})$ — **c'est la rétropropagation**.
+
+→ Fiches \`03_regression_logistique.md\` et \`Demonstration_Q5_backprop_sigmoide_2022-2023.md\`.
 
 #### Q6. Perte logistique : $\\text{Log Loss} = \\sum_{(x,y)\\in D} -y\\log(y') - (1-y)\\log(1 - y')$. Expliquez pourquoi on utilise la fonction Log.
 

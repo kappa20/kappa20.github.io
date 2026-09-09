@@ -101,11 +101,23 @@ CSS → `assets/styles.css`. Logic → `app/app.js` (single IIFE; sections are m
 
 Hand-rolled, supports: headings, `**bold**` / `*italic*`, `` `code` ``, fenced code, GFM pipe
 tables, blockquotes, `-`/`1.` lists (+ `- [ ]` checkboxes, one nesting level via 2-space indent),
-`---` rules, links, and `$…$` / `$$…$$` math converted to Unicode + `<sup>`/`<sub>`
-(`\frac{a}{b}` → `(a) / (b)`, balanced-brace aware for `\frac \sqrt \boxed \text`).
+`---` rules, links, and `$…$` / `$$…$$` math.
 Uses PUA sentinels `U+E000..E002` internally for stashing — keep those out of source content.
 It's "good enough for these sheets", not a spec-compliant Markdown parser; extend the specific
 case rather than rewriting.
+
+**Math → MathML.** `tex(latex, block)` is a small recursive LaTeX→MathML converter (`texParse` +
+`texBalanced`). The browser renders the `<math>` natively — real fraction bars, stacked
+`msub`/`msup`, `munderover` for `\sum`/`\lim` in display. No KaTeX, no fonts, no network
+(MathML Core is built into Chrome 109+/Firefox/Safari). Covered: `\frac \dfrac \tfrac \sqrt
+\boxed \text \underbrace \hat \bar \left \right \big… \mathbb \mathcal`, Greek, ~120 operator
+macros, `_`/`^` (+ combined), primes, `:=`, French decimals `0{,}5`. Vertical bars
+(`| \lvert \lVert \mid`) are forced `stretchy="false"` so they never balloon. `\boxed{…}`
+wrapping the whole expression → CSS box on `<math class="boxed">` (`assets/styles.css`, `.md-body
+math` rules); mid-expression `\boxed` → `<mrow class="boxed">`. Unknown `\cmd` → `<mi>cmd</mi>`.
+To extend: add a case in `command()`, not a post-hoc string replace. Sanity check after edits:
+convert every `$…$`/`$$…$$` in `../study_guide/*.md` and assert the `<math>` output has balanced
+tags (541 blocks currently).
 
 `data/fiches.js` embeds each sheet as a template literal with `` ` ``, `\`, and `${` escaped
 (done by `build_fiches.py`). That's why it must not be hand-edited.
@@ -126,6 +138,6 @@ case rather than rewriting.
 
 ## Content facts (keep consistent if you change counts)
 
-Currently 143 flashcards, 80 quiz questions, 13 themes, 15 sheets, 2 exam papers. The Accueil
+Currently 145 flashcards, 80 quiz questions, 13 themes, 15 sheets, 2 exam papers. The Accueil
 "Progression par thème" expects every `hi`-priority theme to have ≥ 8 flashcards and ≥ 6 quiz
 questions.
