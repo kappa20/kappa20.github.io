@@ -138,6 +138,6 @@ tags (541 blocks currently).
 
 ## Content facts (keep consistent if you change counts)
 
-Currently 145 flashcards, 80 quiz questions, 13 themes, 15 sheets, 2 exam papers. The Accueil
+Currently 145 flashcards, 84 quiz questions, 13 themes, 16 sheets, 2 exam papers. The Accueil
 "Progression par thème" expects every `hi`-priority theme to have ≥ 8 flashcards and ≥ 6 quiz
 questions.

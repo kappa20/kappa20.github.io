@@ -1545,6 +1545,248 @@ Un modèle fiable est un modèle qui :
 - [ ] Citer 4 menaces + parades
 - [ ] Citer le monitoring / ré-entraînement en production
 `;
+window.ML.ficheText["14"] = `# 14 — Exercice guidé : Naive Bayes sur le dataset météo · 🟠 Priorité moyenne
+
+> Exercice type **corrigé pas à pas**, dans l'esprit du cours (TD7) et d'une explication
+> « idée d'abord, puis calcul ».
+> **Partie 1** : une prédiction Naive Bayes normale. **Partie 2** : un cas *fabriqué exprès*
+> où le **lissage de Laplace** devient **obligatoire** (sinon le modèle ne peut rien décider).
+
+---
+
+## L'idée en une phrase
+
+Naive Bayes calcule, **pour chaque classe** $C$, un **score**
+$$\\text{Score}(C) = P(C)\\prod_{i=1}^{n} P(x_i \\mid C)$$
+puis prédit la classe de **score maximal**. Toutes les probabilités sont de simples
+**comptages** lus dans le tableau.
+
+**La chaîne à retenir :** Données → théorème de Bayes → hypothèse d'indépendance →
+comparaison des classes → $\\arg\\max$.
+
+## Rappel des formules (à écrire de mémoire)
+
+- **Bayes :** $P(C \\mid X) = \\dfrac{P(X \\mid C)\\,P(C)}{P(X)}$
+- **Hypothèse naïve :** $P(x_1,\\dots,x_n \\mid C) = \\prod_{i=1}^{n} P(x_i \\mid C)$
+  (features **indépendantes conditionnellement à la classe**).
+- **Décision :** $\\hat{y} = \\arg\\max_{C}\\; P(C)\\prod_{i=1}^{n} P(x_i \\mid C)$
+- On **ignore $P(X)$** : même valeur pour toutes les classes ⇒ ne change pas l'$\\arg\\max$.
+- Pour une **probabilité** (et pas seulement l'$\\arg\\max$), on **normalise** :
+  $P(C \\mid X) = \\dfrac{\\text{Score}(C)}{\\sum_{c}\\text{Score}(c)}$.
+
+| Terme | Nom | Sens |
+|---|---|---|
+| $P(C \\mid X)$ | *posterior* (a posteriori) | ce qu'on cherche : proba de la classe **sachant** les features |
+| $P(x_i \\mid C)$ | *likelihood* (vraisemblance) | proba d'observer la feature **si** on est dans la classe |
+| $P(C)$ | *prior* (a priori) | fréquence de la classe **avant** de regarder les features |
+| $P(X)$ | *evidence* (évidence) | proba des données ; sert seulement à normaliser |
+
+---
+
+## Le dataset (14 jours, celui du cours)
+
+| Jour | Ciel | Température | Humidité | Vent | Jouer ? |
+|---|---|---|---|---|---|
+| 1 | Ensoleillé | Chaud | Élevée | Non | **Non** |
+| 2 | Ensoleillé | Chaud | Élevée | Oui | **Non** |
+| 3 | Nuageux | Chaud | Élevée | Non | **Oui** |
+| 4 | Pluie | Doux | Élevée | Non | **Oui** |
+| 5 | Pluie | Frais | Normale | Non | **Oui** |
+| 6 | Pluie | Frais | Normale | Oui | **Non** |
+| 7 | Nuageux | Frais | Normale | Oui | **Oui** |
+| 8 | Ensoleillé | Doux | Élevée | Non | **Non** |
+| 9 | Ensoleillé | Frais | Normale | Non | **Oui** |
+| 10 | Pluie | Doux | Normale | Non | **Oui** |
+| 11 | Ensoleillé | Doux | Normale | Oui | **Oui** |
+| 12 | Nuageux | Doux | Élevée | Oui | **Oui** |
+| 13 | Nuageux | Chaud | Normale | Non | **Oui** |
+| 14 | Pluie | Doux | Élevée | Oui | **Non** |
+
+**Comptage des classes :** Jouer = **Oui : 9 jours** (3,4,5,7,9,10,11,12,13) ·
+Jouer = **Non : 5 jours** (1,2,6,8,14) · total 14.
+
+$$P(\\text{Oui}) = \\tfrac{9}{14} \\approx 0{,}643 \\qquad P(\\text{Non}) = \\tfrac{5}{14} \\approx 0{,}357$$
+
+---
+
+## Partie 1 — Prédiction Naive Bayes (sans lissage)
+
+**Question.** Nouveau jour
+$$X = (\\text{Ciel}=\\text{Ensoleillé},\\ \\text{Température}=\\text{Frais},\\ \\text{Humidité}=\\text{Élevée},\\ \\text{Vent}=\\text{Oui})$$
+**Joue-t-on ?**
+
+### Étape 1 — Les a priori $P(C)$
+
+$P(\\text{Oui}) = 9/14$, $P(\\text{Non}) = 5/14$ (déjà comptés).
+
+### Étape 2 — Les vraisemblances $P(x_i \\mid C)$ par comptage
+
+On regarde **uniquement les lignes de la classe**, puis on compte la modalité voulue.
+
+**Classe Oui** (9 jours : 3,4,5,7,9,10,11,12,13)
+
+| $x_i$ | jours qui collent | $P(x_i \\mid \\text{Oui})$ |
+|---|---|---|
+| Ciel = Ensoleillé | 9, 11 | $2/9 \\approx 0{,}222$ |
+| Température = Frais | 5, 7, 9 | $3/9 \\approx 0{,}333$ |
+| Humidité = Élevée | 3, 4, 12 | $3/9 \\approx 0{,}333$ |
+| Vent = Oui | 7, 11, 12 | $3/9 \\approx 0{,}333$ |
+
+**Classe Non** (5 jours : 1,2,6,8,14)
+
+| $x_i$ | jours qui collent | $P(x_i \\mid \\text{Non})$ |
+|---|---|---|
+| Ciel = Ensoleillé | 1, 2, 8 | $3/5 = 0{,}6$ |
+| Température = Frais | 6 | $1/5 = 0{,}2$ |
+| Humidité = Élevée | 1, 2, 8, 14 | $4/5 = 0{,}8$ |
+| Vent = Oui | 2, 6, 14 | $3/5 = 0{,}6$ |
+
+**Aucun comptage nul** ⇒ pas besoin de lissage ici.
+
+### Étape 3 — Le score de chaque classe
+
+$$\\text{Score}(\\text{Oui}) = \\frac{9}{14}\\times\\frac{2}{9}\\times\\frac{3}{9}\\times\\frac{3}{9}\\times\\frac{3}{9} \\approx 0{,}643\\times0{,}222\\times0{,}333\\times0{,}333\\times0{,}333 \\approx 5{,}3\\times10^{-3}$$
+
+$$\\text{Score}(\\text{Non}) = \\frac{5}{14}\\times\\frac{3}{5}\\times\\frac{1}{5}\\times\\frac{4}{5}\\times\\frac{3}{5} \\approx 0{,}357\\times0{,}6\\times0{,}2\\times0{,}8\\times0{,}6 \\approx 20{,}6\\times10^{-3}$$
+
+### Étape 4 — Décision et normalisation
+
+$\\text{Score}(\\text{Non}) > \\text{Score}(\\text{Oui})$ ⇒ on prédit **Non** (on ne joue pas).
+
+$$P(\\text{Non}\\mid X) = \\frac{20{,}6}{20{,}6 + 5{,}3} \\approx 0{,}795 \\qquad P(\\text{Oui}\\mid X) \\approx 0{,}205$$
+
+**Réponse : Non, avec ≈ 80 % de confiance.**
+
+> **Astuce anti-*underflow* :** on passe souvent au **log**,
+> $\\log \\text{Score}(C) = \\log P(C) + \\sum_i \\log P(x_i\\mid C)$.
+> Un produit de nombreux facteurs $< 1$ devient une **somme** ; l'$\\arg\\max$ est le même.
+
+---
+
+## Partie 2 — Le cas où le lissage de Laplace est OBLIGATOIRE
+
+### D'où vient le problème
+
+Dans le tableau du cours : **Ciel = Nuageux ⇒ toujours Jouer = Oui** (jours 3, 7, 12, 13).
+Donc $N(\\text{Nuageux}, \\text{Non}) = 0$ : cette modalité **n'apparaît jamais** avec la classe Non.
+
+Pour rendre le cas vraiment **critique** (un zéro **dans chaque classe**), on **fabrique exprès**
+un dataset **B** en modifiant **2 lignes** :
+
+> **Dataset B** = dataset du cours, **sauf** aux jours **3** et **13** où
+> **Température : Chaud → Doux**.
+
+Conséquence : dans la classe **Oui**, la modalité **Température = Chaud n'apparaît plus jamais**
+⇒ $N(\\text{Chaud}, \\text{Oui}) = 0$.
+
+### Question
+
+Nouveau jour
+$$X_B = (\\text{Ciel}=\\text{Nuageux},\\ \\text{Température}=\\text{Chaud},\\ \\text{Humidité}=\\text{Élevée},\\ \\text{Vent}=\\text{Oui})$$
+
+### Étape 1 — Tentative SANS lissage → échec
+
+- Classe Oui : $P(\\text{Chaud}\\mid\\text{Oui}) = 0/9 = 0 \\Rightarrow \\text{Score}(\\text{Oui}) = \\dots\\times 0 = 0$.
+- Classe Non : $P(\\text{Nuageux}\\mid\\text{Non}) = 0/5 = 0 \\Rightarrow \\text{Score}(\\text{Non}) = \\dots\\times 0 = 0$.
+
+$$\\text{Score}(\\text{Oui}) = 0 \\qquad \\text{Score}(\\text{Non}) = 0$$
+
+**Les deux scores valent 0.** La normalisation donne $0/0$ : **le modèle ne peut rien décider.**
+Une **seule** probabilité nulle dans le produit **absorbe tout le score** — c'est le
+« **problème du zéro** ».
+
+### Étape 2 — Lissage de Laplace (additif)
+
+$$P(x_i \\mid C) = \\frac{N(x_i, C) + \\alpha}{N(C) + \\alpha\\,K}$$
+
+- $\\alpha = 1$ : lissage de **Laplace** (le classique) ; $\\alpha \\in\\ ]0,1[$ : Lidstone ; $\\alpha = 0$ : pas de lissage.
+- $K$ = **nombre de modalités possibles de la feature** (⚠️ pas la taille du dataset).
+- $N(C)$ = nombre d'exemples de la classe.
+
+| Feature | Modalités | $K$ |
+|---|---|---|
+| Ciel | Ensoleillé, Nuageux, Pluie | 3 |
+| Température | Chaud, Doux, Frais | 3 |
+| Humidité | Élevée, Normale | 2 |
+| Vent | Oui, Non | 2 |
+
+**Comptages dans le Dataset B** ($N(\\text{Oui}) = 9$, $N(\\text{Non}) = 5$) :
+
+| $x_i$ | $N(x_i, \\text{Oui})$ | $N(x_i, \\text{Non})$ |
+|---|---|---|
+| Ciel = Nuageux | 4 (j. 3,7,12,13) | **0** |
+| Température = Chaud | **0** | 2 (j. 1,2) |
+| Humidité = Élevée | 3 (j. 3,4,12) | 4 (j. 1,2,8,14) |
+| Vent = Oui | 3 (j. 7,11,12) | 3 (j. 2,6,14) |
+
+**Probabilités lissées, $\\alpha = 1$ — Classe Oui**
+
+$$P(\\text{Nuageux}\\mid\\text{Oui}) = \\frac{4+1}{9+1\\cdot 3} = \\frac{5}{12} \\approx 0{,}417$$
+$$P(\\text{Chaud}\\mid\\text{Oui}) = \\frac{0+1}{9+3} = \\frac{1}{12} \\approx 0{,}083 \\quad (\\neq 0\\ \\text{maintenant})$$
+$$P(\\text{Élevée}\\mid\\text{Oui}) = \\frac{3+1}{9+1\\cdot 2} = \\frac{4}{11} \\approx 0{,}364$$
+$$P(\\text{Vent=Oui}\\mid\\text{Oui}) = \\frac{3+1}{9+2} = \\frac{4}{11} \\approx 0{,}364$$
+
+**Probabilités lissées, $\\alpha = 1$ — Classe Non**
+
+$$P(\\text{Nuageux}\\mid\\text{Non}) = \\frac{0+1}{5+3} = \\frac{1}{8} = 0{,}125 \\quad (\\neq 0)$$
+$$P(\\text{Chaud}\\mid\\text{Non}) = \\frac{2+1}{5+3} = \\frac{3}{8} = 0{,}375$$
+$$P(\\text{Élevée}\\mid\\text{Non}) = \\frac{4+1}{5+2} = \\frac{5}{7} \\approx 0{,}714$$
+$$P(\\text{Vent=Oui}\\mid\\text{Non}) = \\frac{3+1}{5+2} = \\frac{4}{7} \\approx 0{,}571$$
+
+*(L'a priori n'est pas concerné : $P(\\text{Oui}) = 9/14$, $P(\\text{Non}) = 5/14$.)*
+
+### Étape 3 — Nouveaux scores
+
+$$\\text{Score}(\\text{Oui}) = \\frac{9}{14}\\times\\frac{5}{12}\\times\\frac{1}{12}\\times\\frac{4}{11}\\times\\frac{4}{11} \\approx 2{,}95\\times10^{-3}$$
+
+$$\\text{Score}(\\text{Non}) = \\frac{5}{14}\\times\\frac{1}{8}\\times\\frac{3}{8}\\times\\frac{5}{7}\\times\\frac{4}{7} \\approx 6{,}83\\times10^{-3}$$
+
+### Étape 4 — Décision et normalisation
+
+$\\text{Score}(\\text{Non}) > \\text{Score}(\\text{Oui})$ ⇒ on prédit **Non**.
+
+$$P(\\text{Non}\\mid X_B) = \\frac{6{,}83}{6{,}83 + 2{,}95} \\approx 0{,}70 \\qquad P(\\text{Oui}\\mid X_B) \\approx 0{,}30$$
+
+**Sans lissage : $0/0$, rien à décider. Avec lissage : Non à ≈ 70 %.** C'est exactement
+à ça que sert le lissage de Laplace.
+
+---
+
+## Ce qu'il faut retenir
+
+| | Sans lissage | Avec Laplace ($\\alpha = 1$) |
+|---|---|---|
+| $P(x_i \\mid C)$ | $\\dfrac{N(x_i, C)}{N(C)}$ | $\\dfrac{N(x_i, C) + 1}{N(C) + K}$ |
+| Modalité jamais vue | $P = 0$ ⇒ **score entier nul** | $P > 0$ ⇒ score exploitable |
+| Deux zéros (un par classe) | $0/0$ : **aucune décision** | décision + probabilité correctes |
+
+- Le lissage **ne sert vraiment** que quand un comptage $N(x_i, C) = 0$, mais on l'applique
+  **à toutes** les $P(x_i \\mid C)$ (même formule partout, par cohérence).
+- $\\alpha \\to 0$ : on retrouve les fréquences brutes (retour du danger du zéro).
+  $\\alpha \\to \\infty$ : toutes les modalités tendent vers $1/K$ (on « oublie » les données).
+- Après lissage, $\\sum_{v} P(x_i = v \\mid C) = 1$ reste vrai (vérification rapide en examen).
+
+## Pièges du prof
+
+- Prendre $K$ = taille du dataset au lieu du **nombre de modalités de la feature**.
+- Oublier l'a priori $P(C)$ dans le score (surtout si classes déséquilibrées).
+- Dire « $P(X)$ est inutile » : on l'ignore **pour l'$\\arg\\max$**, on la remet
+  (via $\\sum_c \\text{Score}(c)$) pour obtenir une **probabilité**.
+- Voir un score nul et conclure « probabilité 0 % » sans réaliser que c'est juste une
+  **modalité jamais observée** dans l'échantillon.
+- Confondre les variantes : ici features **catégorielles** ⇒ on compte des occurrences
+  (esprit **Multinomial / Catégoriel NB**) ; continu ⇒ Gaussian ; binaire 0/1 ⇒ Bernoulli.
+
+## Checklist
+
+- [ ] Écrire $\\text{Score}(C) = P(C)\\prod_i P(x_i\\mid C)$ puis $\\arg\\max_C$
+- [ ] Calculer $P(C)$ et les $P(x_i\\mid C)$ par simple comptage dans les lignes de la classe
+- [ ] Repérer un comptage nul ⇒ appliquer Laplace $\\dfrac{N(x_i,C)+\\alpha}{N(C)+\\alpha K}$
+- [ ] Normaliser $\\text{Score}(C)$ pour donner une probabilité
+- [ ] Savoir expliquer pourquoi, sans lissage, le score « s'effondre à 0 »
+
+→ Théorie complète : fiche \`07_naive_bayes.md\`.
+`;
 window.ML.ficheText["99"] = `# 99 — Annales corrigées (2022/2023 & 2023/2024)
 
 > Transcription des questions lisibles sur les 6 photos + **réponse modèle** rédigée.

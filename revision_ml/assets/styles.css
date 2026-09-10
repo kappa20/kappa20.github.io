@@ -128,6 +128,8 @@
   .fc-a th,.fc-a td,.explain th,.explain td,.exam-a th,.exam-a td{border:1px solid var(--border);padding:5px 9px;text-align:left;vertical-align:top}
   .fc-a th,.explain th,.exam-a th{background:var(--surface-2);font-weight:700}
   .fc-a code,.explain code,.exam-a code,.q-text code,.choice code{background:var(--surface-2);padding:1px 5px;border-radius:5px;font-size:.9em}
+  .fc-a pre,.explain pre,.exam-a pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:10px 0;overflow-x:auto}
+  .fc-a pre code,.explain pre code,.exam-a pre code{background:none;padding:0;font-size:12px;line-height:1.5;white-space:pre}
   .fc-a blockquote,.explain blockquote,.exam-a blockquote{margin:10px 0;padding:6px 12px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0}
   p.verdict{margin:0 0 6px;font-weight:700}
   details.exam-q > summary math{font-size:1em}

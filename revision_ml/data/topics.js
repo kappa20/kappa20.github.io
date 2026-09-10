@@ -127,6 +127,10 @@ window.ML.fiches = [
     "d": "Définition, dimensions, menaces, drift, pourquoi ça compte"
   },
   {
+    "f": "14_exo_naive_bayes.md",
+    "d": "Exercice corrigé pas à pas : Naive Bayes sur le dataset météo + cas où le lissage de Laplace est obligatoire"
+  },
+  {
     "f": "99_annales_corrigees.md",
     "d": "Les 2 examens transcrits + réponses modèles rédigées"
   }
