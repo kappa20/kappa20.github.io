@@ -190,7 +190,27 @@ window.MLmd = (function(){
       if(c === '\\'){ out.push(command()); continue; }
       if(c === '_' || c === '^'){
         i++;
-        const base = out.pop() || '<mrow></mrow>';
+        let base = out.pop() || '<mrow></mrow>';
+        // Si la base est une parenthèse / un crochet fermant, on regroupe tout
+        // le groupe « ( … ) » dans un <mrow> pour que l'exposant ou l'indice
+        // porte sur l'ensemble. Sinon « (ŷ - y)^2 » collerait le 2 à la seule
+        // « ) » et les parenthèses prendraient l'espacement d'un opérateur infixe.
+        const cm = base.match(/^<mo\b[^>]*>([)\]}])<\/mo>$/);
+        if(cm){
+          const open = {')':'(', ']':'[', '}':'{'}[cm[1]];
+          const isOpen  = s => new RegExp('^<mo\\b[^>]*>\\' + open  + '</mo>$').test(s);
+          const isClose = s => new RegExp('^<mo\\b[^>]*>\\' + cm[1] + '</mo>$').test(s);
+          let depth = 1, j = out.length - 1;
+          while(j >= 0){
+            if(isClose(out[j])) depth++;
+            else if(isOpen(out[j]) && --depth === 0) break;
+            j--;
+          }
+          if(depth === 0){
+            base = '<mrow>' + out.slice(j).join('') + base + '</mrow>';
+            out.length = j;
+          }
+        }
         const big = /class="bigop"/.test(base);
         const k1 = c, v1 = readArg();
         let k2 = null, v2 = null;

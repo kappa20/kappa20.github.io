@@ -24,6 +24,7 @@
     <button data-view="cards">Flashcards</button>
     <button data-view="quiz">Quiz</button>
     <button data-view="exam">Examen blanc</button>
+    <button data-view="viz">Visuels</button>
     <button data-view="fiches">Fiches</button>
   </nav>
 
@@ -178,6 +179,19 @@
     <div id="examBody"></div>
   </section>
 
+  <!-- ===================== VISUELS ===================== -->
+  <section id="view-viz" class="hidden">
+    <h1>Visuels — comprendre en une image</h1>
+    <p class="lead">Une visualisation 2D interactive par thème. Bouge les curseurs et regarde
+      ce qui change ; la phrase <strong>« L'idée »</strong> résume l'essentiel.</p>
+    <div class="card" style="margin-top:12px">
+      <label class="inline">Thème
+        <select id="vizPick"></select>
+      </label>
+    </div>
+    <div class="card viz-wrap" id="vizStage" style="margin-top:14px"></div>
+  </section>
+
   <!-- ===================== FICHES ===================== -->
   <section id="view-fiches" class="hidden">
     <h1>Fiches de révision détaillées</h1>
@@ -204,6 +218,7 @@
 <script src="data/exams.js"></script>
 <script src="data/fiches.js"></script>
 <script src="app/markdown.js"></script>
+<script src="app/viz.js"></script>
 <script src="app/app.js"></script>
 </body>
 </html>

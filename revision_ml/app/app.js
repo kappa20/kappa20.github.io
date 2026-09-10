@@ -53,13 +53,14 @@
   });
 
   // ---- nav ----
-  const views = ['home','cards','quiz','exam','fiches'];
+  const views = ['home','cards','quiz','exam','viz','fiches'];
   const tabBtns = [...document.querySelectorAll('#tabs button')];
   function show(v){
     views.forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden', x!==v));
     tabBtns.forEach(b=>b.setAttribute('aria-current', String(b.dataset.view===v)));
     if(v==='home') renderHome();
     if(v==='fiches') renderFiches();
+    if(v==='viz' && window.MLviz) window.MLviz.show();
     window.scrollTo({top:0,behavior:'smooth'});
   }
   tabBtns.forEach(b=>b.addEventListener('click', ()=>show(b.dataset.view)));
