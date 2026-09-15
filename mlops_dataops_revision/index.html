@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révision MLOps &amp; DataOps</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header>
+  <div class="hbar">
+    <div class="brand">Révision MLOps &amp; DataOps
+      <small>Pr. AIT DAOUD, M. — FSBM, Université Hassan II — 2025/2026</small>
+    </div>
+    <div class="sp"></div>
+    <button class="icon-btn" id="themeBtn" title="Thème clair / sombre">◐</button>
+    <button class="icon-btn" id="resetBtn" title="Réinitialiser la progression">Reset</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" id="tabs">
+    <button data-view="home" aria-current="true">Accueil</button>
+    <button data-view="cards">Flashcards</button>
+    <button data-view="quiz">Quiz</button>
+    <button data-view="exam">Examen</button>
+    <button data-view="mindmap">Mindmap</button>
+  </nav>
+
+  <!-- ===================== HOME ===================== -->
+  <section id="view-home">
+    <h1>Ta préparation, chapitre par chapitre</h1>
+    <p class="lead">6 chapitres, construits directement à partir des cours et des TD/TP — le format des exercices d'entraînement suit exactement celui de l'examen.</p>
+
+    <div class="ch-grid" id="homeChapters"></div>
+
+    <div class="callout" id="churnCallout">
+      <strong>Fil rouge : le cas « churn » (désabonnement client)</strong>
+      <p style="margin:6px 0 0">Un même exemple — un modèle de prédiction de désabonnement — revient dans plusieurs chapitres (Fondamentaux, Pipelines, Reproductibilité, CI/CD) pour illustrer comment un prototype devient une chaîne industrialisée. Utile comme fil conducteur pour mémoriser les liens entre chapitres.</p>
+    </div>
+
+    <h2>Progression par chapitre</h2>
+    <div class="card" id="topicProgress"></div>
+  </section>
+
+  <!-- ===================== FLASHCARDS ===================== -->
+  <section id="view-cards" class="hidden">
+    <h1>Flashcards</h1>
+    <div class="card">
+      <div class="row">
+        <label class="inline">Chapitre
+          <select id="fcChapter"><option value="all">Tous les chapitres</option></select>
+        </label>
+        <label class="inline"><input type="checkbox" id="fcReviewOnly"> À revoir seulement</label>
+        <button id="fcShuffle">↻ Mélanger</button>
+      </div>
+    </div>
+
+    <div id="fcEmpty" class="card hidden" style="margin-top:14px">Aucune carte pour ce filtre. Décoche « à revoir seulement » ou change de chapitre.</div>
+
+    <div id="fcStage">
+      <div class="fc" id="fcCard">
+        <div class="fc-inner">
+          <div class="fc-face front">
+            <span class="fc-tag" id="fcTagF"></span>
+            <div class="fc-q" id="fcQ"></div>
+            <div class="fc-hint">Clique la carte ou <kbd>Espace</kbd> pour retourner</div>
+          </div>
+          <div class="fc-face back">
+            <span class="fc-tag" id="fcTagB"></span>
+            <div class="fc-a" id="fcA"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="justify-content:space-between">
+        <button id="fcPrev">←</button>
+        <button id="fcReview" style="border-color:var(--warn);color:var(--warn)">À revoir</button>
+        <button id="fcKnow" style="border-color:var(--good);color:var(--good)">Je sais ✓</button>
+        <button id="fcNext">→</button>
+      </div>
+      <div class="counter" id="fcCounter"></div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="view-quiz" class="hidden">
+    <h1>Quiz</h1>
+    <div id="quizSetup" class="card">
+      <p class="lead" style="margin-top:0">QCM avec correction immédiate + questions ouvertes que tu t'auto-évalues, comme au TD.</p>
+      <div class="row">
+        <label class="inline">Chapitre
+          <select id="quizChapter"><option value="all">Tous les chapitres</option></select>
+        </label>
+        <label class="inline">Type
+          <select id="quizType">
+            <option value="mixed">QCM + questions ouvertes</option>
+            <option value="mcq">QCM seulement</option>
+            <option value="open">Questions ouvertes seulement</option>
+          </select>
+        </label>
+        <button id="quizStart" class="btn-primary">Commencer</button>
+      </div>
+    </div>
+
+    <div id="quizPlay" class="hidden">
+      <div class="row" style="justify-content:space-between;margin-bottom:6px">
+        <span class="q-num" id="quizProgress"></span>
+        <span class="muted" id="quizRunning"></span>
+      </div>
+      <div class="card">
+        <div class="q-num" id="quizTopicTag"></div>
+        <div class="q-text" id="quizQ"></div>
+        <div id="quizChoices"></div>
+        <div id="quizOpen" class="hidden">
+          <button id="quizReveal">Afficher la réponse modèle</button>
+          <div id="quizModel" class="explain hidden"></div>
+          <div class="row hidden" id="quizSelfGrade" style="margin-top:10px">
+            <span class="muted">Tu avais juste ?</span>
+            <button data-sg="1" style="border-color:var(--good);color:var(--good)">Oui ✓</button>
+            <button data-sg="0" style="border-color:var(--bad);color:var(--bad)">Non ✗</button>
+          </div>
+        </div>
+        <div id="quizExplain" class="explain hidden"></div>
+      </div>
+      <div class="row" style="justify-content:flex-end;margin-top:12px">
+        <button id="quizNext" class="hidden btn-primary">Suivant →</button>
+      </div>
+    </div>
+
+    <div id="quizDone" class="card hidden" style="text-align:center">
+      <div class="score-wrap"><div class="score-circle" id="quizScoreCircle"><div class="inner"><span class="pct" id="quizScorePct"></span><span class="lbl">score</span></div></div></div>
+      <div id="quizScoreLine" class="muted"></div>
+      <p class="muted" id="quizVerdict"></p>
+      <button id="quizAgain" class="btn-primary">Recommencer</button>
+    </div>
+  </section>
+
+  <!-- ===================== EXAMEN ===================== -->
+  <section id="view-exam" class="hidden">
+    <h1>Examen — format TD/TP</h1>
+    <p class="lead">Reprend exactement la structure des TD/TP : QCM, questions directes, définitions, questions d'analyse et étude de cas. Correction masquée section par section.</p>
+    <div class="card">
+      <div class="row">
+        <label class="inline">Chapitre
+          <select id="examChapter"></select>
+        </label>
+        <button id="examTimerBtn">▶ Démarrer le chrono (90 min)</button>
+        <span id="examTimer" class="timer">00:00</span>
+      </div>
+    </div>
+    <div id="examBody"></div>
+  </section>
+
+  <!-- ===================== MINDMAP ===================== -->
+  <section id="view-mindmap" class="hidden">
+    <h1>Mindmap</h1>
+    <p class="lead">Carte mentale de chaque chapitre : déplie/replie les branches, clique une feuille pour voir sa définition.</p>
+    <div class="mm-toolbar">
+      <label class="inline">Chapitre
+        <select id="mmChapter"></select>
+      </label>
+      <button id="mmExpandAll">Tout déplier</button>
+      <button id="mmCollapseAll">Tout replier</button>
+      <button id="mmRecenter">Recentrer</button>
+    </div>
+    <div class="mm-stage" id="mmStage">
+      <svg id="mmSvg" viewBox="0 0 800 600"><g id="mmView"></g></svg>
+    </div>
+    <p class="mm-hint">Glisse pour déplacer la carte, molette pour zoomer, clique un nœud avec des enfants pour le replier/déplier.</p>
+  </section>
+</div>
+
+<script src="data/chapters.js"></script>
+<script src="data/flashcards-ch1.js"></script>
+<script src="data/flashcards-ch2.js"></script>
+<script src="data/flashcards-ch3.js"></script>
+<script src="data/flashcards-ch4.js"></script>
+<script src="data/flashcards-ch5.js"></script>
+<script src="data/flashcards-ch6.js"></script>
+<script src="data/quiz-ch1.js"></script>
+<script src="data/quiz-ch2.js"></script>
+<script src="data/quiz-ch3.js"></script>
+<script src="data/quiz-ch4.js"></script>
+<script src="data/quiz-ch5.js"></script>
+<script src="data/quiz-ch6.js"></script>
+<script src="data/exam-ch1.js"></script>
+<script src="data/exam-ch2.js"></script>
+<script src="data/exam-ch3.js"></script>
+<script src="data/exam-ch4.js"></script>
+<script src="data/exam-ch5.js"></script>
+<script src="data/exam-ch6.js"></script>
+<script src="data/mindmap-ch1.js"></script>
+<script src="data/mindmap-ch2.js"></script>
+<script src="data/mindmap-ch3.js"></script>
+<script src="data/mindmap-ch4.js"></script>
+<script src="data/mindmap-ch5.js"></script>
+<script src="data/mindmap-ch6.js"></script>
+<script src="app/markdown.js"></script>
+<script src="app/flashcards.js"></script>
+<script src="app/quiz.js"></script>
+<script src="app/exam.js"></script>
+<script src="app/mindmap.js"></script>
+<script src="app/app.js"></script>
+</body>
+</html>
