@@ -1,0 +1,25 @@
+/* Chapter 3 — MongoDB : CRUD, requêtes & TP1-3 : quiz (QCM + questions ouvertes).
+   Adapté du cours (Pr. Esswidi) et des TP1-3 (Pr. Bentaib). */
+window.DE = window.DE || {};
+window.DE.quiz = window.DE.quiz || [];
+window.DE.quiz.push(
+  // --- QCM (8) ---
+  { id:"q-ch3-mcq-01", chapter:3, type:"mcq", q:`Quelle commande modifie **tous** les documents correspondant à un filtre ?`, choices:[`updateOne`,`updateMany`,`replaceOne`,`findAndModify`], answer:1, explain:`updateMany modifie tous les documents qui correspondent ; updateOne seulement le premier.` },
+  { id:"q-ch3-mcq-02", chapter:3, type:"mcq", q:`Pour augmenter tous les prix de 10 %, on utilise :`, choices:[`db.ventes.updateMany({}, {$inc:{prix:10}})`,`db.ventes.updateMany({}, {$mul:{prix:1.1}})`,`db.ventes.updateOne({}, {$mul:{prix:1.1}})`,`db.ventes.updateMany({}, {$set:{prix:1.1}})`], answer:1, explain:`$mul multiplie par 1.1 ; updateMany + filtre vide = tous les documents.` },
+  { id:"q-ch3-mcq-03", chapter:3, type:"mcq", q:`Que fait \`db.clients.find({}, {nom:1, ville:1, _id:0})\` ?`, choices:[`Affiche nom, ville et _id`,`Affiche uniquement nom et ville (sans _id)`,`Supprime les champs nom et ville`,`Affiche tout sauf nom et ville`], answer:1, explain:`Projection inclusive (1) + exclusion explicite de _id, seule exception autorisée.` },
+  { id:"q-ch3-mcq-04", chapter:3, type:"mcq", q:`Quel opérateur ajoute un élément à un tableau **seulement s'il n'existe pas** déjà ?`, choices:[`$push`,`$addToSet`,`$pop`,`$each`], answer:1, explain:`$addToSet = comportement d'ensemble (pas de doublons) ; $push autorise les doublons.` },
+  { id:"q-ch3-mcq-05", chapter:3, type:"mcq", q:`\`db.ventes.deleteMany({})\` :`, choices:[`ne supprime rien (filtre vide)`,`supprime le premier document`,`supprime tous les documents de la collection`,`supprime la collection et ses index`], answer:2, explain:`Filtre vide = tous les documents : la collection est vidée (les index restent).` },
+  { id:"q-ch3-mcq-06", chapter:3, type:"mcq", q:`Pour trouver les ventes dont le prix est compris entre 150 et 1500 (bornes incluses) :`, choices:[`{prix:{$gt:150, $lt:1500}}`,`{prix:{$gte:150, $lte:1500}}`,`{prix:{$in:[150,1500]}}`,`{prix:{$ne:150}}`], answer:1, explain:`Bornes incluses → $gte / $lte. Le corrigé accepte aussi $gt/$lt (bornes exclues).` },
+  { id:"q-ch3-mcq-07", chapter:3, type:"mcq", q:`Quel outil produit une sauvegarde **BSON** complète d'une base ?`, choices:[`mongoexport`,`mongodump`,`mongoimport`,`db.copyDatabase()`], answer:1, explain:`mongodump --db vente --out … (BSON) ; mongoexport produit du JSON/CSV par collection.` },
+  { id:"q-ch3-mcq-08", chapter:3, type:"mcq", q:`Que renvoie \`find()\` en PyMongo ?`, choices:[`une liste Python`,`un Cursor à parcourir ou convertir avec list()`,`un dictionnaire`,`un DataFrame`], answer:1, explain:`find() renvoie un Cursor ; il faut itérer ou faire list(cursor).` },
+
+  // --- Questions ouvertes (6) ---
+  { id:"q-ch3-open-01", chapter:3, type:"open", q:`Différence entre updateOne et updateMany. Donner un cas d'usage de chacun.`, model:`updateOne : modifie le 1er document trouvé (même si plusieurs correspondent) → modification précise (email d'un utilisateur via son _id).
+updateMany : modifie tous les documents correspondants → mise à jour globale (remise de 10 % sur tous les produits).` },
+  { id:"q-ch3-open-02", chapter:3, type:"open", q:`Expliquer la différence entre projection inclusive et exclusive, et l'exception de _id.`, model:`Inclusive {nom:1, ville:1} : seuls les champs listés (+ _id par défaut). Exclusive {prix:0, date:0} : tout sauf les champs listés. Exception : _id:0 peut être combiné avec des inclusions.` },
+  { id:"q-ch3-open-03", chapter:3, type:"open", q:`Comment modifier Bentaib et Moss avec des valeurs **différentes** en une seule opération ?`, model:`db.clients.bulkWrite([{updateOne:{filter:{nom:"Bentaib"}, update:{$set:{ville:"Tanger"}}}}, {updateOne:{filter:{nom:"Moss"}, update:{$set:{ville:"Agadir"}}}}]). Une seule requête réseau, plus efficace que 2 commandes. Mêmes valeurs → updateMany + $in.` },
+  { id:"q-ch3-open-04", chapter:3, type:"open", q:`Ajouter un champ « achats » (tableau) au client Bentaib, puis ajouter deux achats d'un coup.`, model:`updateOne({nom:"Bentaib"}, {$push:{achats:"Smartphone"}}) crée le tableau. Plusieurs : {$push:{achats:{$each:["Chargeur","Coque"]}}}. $push autorise les doublons ; $addToSet les évite.` },
+  { id:"q-ch3-open-05", chapter:3, type:"open", q:`Supprimer une vente spécifique : quelles méthodes et laquelle est la plus sûre ?`, model:`deleteOne({produit:"Casque"}) supprime seulement le premier ; deleteMany({produit:"Casque"}) tous ; deleteMany({prix:{$lt:500}}) par critère. Le plus sûr : deleteOne({_id:ObjectId("...")}) car _id est unique.` },
+  { id:"q-ch3-open-06", chapter:3, type:"open", q:`Écrire les requêtes : ventes de Smartphone à plus de 400 €, et magasins situés à Safi ou Fes.`, model:`db.ventes.find({produit:"Smartphone", prix:{$gt:400}}) (ET implicite).
+db.magasins.find({$or:[{ville:"Safi"},{ville:"Fes"}]}) ou {ville:{$in:["Safi","Fes"]}}. Attention à la casse des valeurs.` }
+);

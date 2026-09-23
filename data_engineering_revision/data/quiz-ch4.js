@@ -1,0 +1,23 @@
+/* Chapter 4 — Cassandra : quiz (QCM + questions ouvertes).
+   Construit à partir du cours Cassandra (Pr. Esswidi). */
+window.DE = window.DE || {};
+window.DE.quiz = window.DE.quiz || [];
+window.DE.quiz.push(
+  // --- QCM (8) ---
+  { id:"q-ch4-mcq-01", chapter:4, type:"mcq", q:`Quelle est l'architecture de Cassandra ?`, choices:[`maître / esclaves avec NameNode`,`pair-à-pair, nœuds identiques sans maître`,`un serveur central et des clients légers`,`base mono-nœud avec sauvegarde`], answer:1, explain:`Nœuds identiques, pas de nœud maître → pas de SPOF.` },
+  { id:"q-ch4-mcq-02", chapter:4, type:"mcq", q:`Le protocole Gossip sert à :`, choices:[`chiffrer les données`,`échanger l'état des nœuds du cluster chaque seconde`,`compresser les SSTables`,`parser le CQL`], answer:1, explain:`Communication entre nœuds : échange d'informations d'état chaque seconde.` },
+  { id:"q-ch4-mcq-03", chapter:4, type:"mcq", q:`Le partitionneur par défaut (recommandé) est :`, choices:[`ordonné`,`aléatoire (MD5 / Murmur3)`,`par ordre alphabétique`,`par datacenter`], answer:1, explain:`Random : répartition équitable via hachage MD5 ou Murmur3 de la clé.` },
+  { id:"q-ch4-mcq-04", chapter:4, type:"mcq", q:`Avec un facteur de réplication de 3, le nombre de répliques d'un QUORUM est :`, choices:[`1`,`2`,`3`,`4`], answer:1, explain:`(3/2)+1 = 1+1 = 2 (division entière).` },
+  { id:"q-ch4-mcq-05", chapter:4, type:"mcq", q:`Quel niveau d'écriture offre la plus haute disponibilité mais la plus basse consistance ?`, choices:[`ALL`,`QUORUM`,`ANY`,`EACH_QUORUM`], answer:2, explain:`ANY : réussir sur un nœud quelconque (hint inclus) ; ALL : consistance max, disponibilité min.` },
+  { id:"q-ch4-mcq-06", chapter:4, type:"mcq", q:`Ordre du chemin d'écriture dans Cassandra :`, choices:[`SSTable → MemTable → commit log`,`MemTable → SSTable → commit log`,`commit log → MemTable → SSTable`,`commit log → SSTable → MemTable`], answer:2, explain:`Commit log (durabilité) puis MemTable en RAM, puis flush en SSTable.` },
+  { id:"q-ch4-mcq-07", chapter:4, type:"mcq", q:`Le Read Repair consiste à :`, choices:[`recharger le cluster`,`comparer les répliques en arrière-plan et mettre à jour les incohérentes`,`supprimer les SSTables`,`réparer le disque`], answer:1, explain:`Le coordinateur compare les répliques et pousse la valeur la plus récente.` },
+  { id:"q-ch4-mcq-08", chapter:4, type:"mcq", q:`Quelle opération n'est PAS supportée librement en CQL ?`, choices:[`INSERT`,`SELECT`,`GROUP BY`,`DELETE`], answer:2, explain:`Pas de GROUP BY ; ORDER BY limité aux clés composées.` },
+
+  // --- Questions ouvertes (6) ---
+  { id:"q-ch4-open-01", chapter:4, type:"open", q:`Pourquoi Cassandra n'a-t-elle pas de point de défaillance unique (SPOF) ?`, model:`Architecture pair-à-pair : nœuds identiques, pas de NameNode/maître ; données partitionnées et répliquées (RF) ; lecture/écriture possibles sur n'importe quel nœud ; Gossip pour l'état du cluster.` },
+  { id:"q-ch4-open-02", chapter:4, type:"open", q:`Comparer SimpleStrategy et la stratégie par topologie du réseau.`, model:`Simple : réplique suivante sur le nœud suivant de l'anneau, sans considération de datacenter/baie → un seul datacenter. Topologie : place les répliques dans des baies différentes, distingue plusieurs datacenters, plus de contrôle.` },
+  { id:"q-ch4-open-03", chapter:4, type:"open", q:`Expliquer la consistance ajustable et donner les niveaux d'écriture.`, model:`Choix par opération entre consistance forte et éventuelle. Écriture : ANY, ONE (défaut), QUORUM ((RF/2)+1), LOCAL_QUORUM, EACH_QUORUM, ALL. Plus le niveau monte, plus la consistance augmente et la disponibilité baisse.` },
+  { id:"q-ch4-open-04", chapter:4, type:"open", q:`Décrire le chemin d'une écriture et le rôle du hinted handoff.`, model:`Commit log (durabilité) → MemTable (RAM) → SSTable (disque, quand la MemTable est pleine). Hinted handoff : si une réplique est en panne, un hint est gardé sur un nœud actif pour la mettre à jour à son retour.` },
+  { id:"q-ch4-open-05", chapter:4, type:"open", q:`RF=3 : combien de répliques pour QUORUM ? Que se passe-t-il si un nœud tombe ? Quel test fait le cours ?`, model:`QUORUM = (3/2)+1 = 2. Un nœud down : lectures/écritures QUORUM toujours possibles (2 répliques vivantes) ; ALL échouerait. Test du cours : docker stop cassandra2, nodetool status (DN), SELECT toujours disponible.` },
+  { id:"q-ch4-open-06", chapter:4, type:"open", q:`Modéliser des mesures de capteurs : quelle clé primaire et pourquoi ?`, model:`PRIMARY KEY(capteur, temps) : capteur = clé de partition (toutes les mesures d'un capteur dans une partition), temps = clustering (mesures triées chronologiquement) → lectures par capteur/intervalle efficaces.` }
+);
